@@ -13,7 +13,16 @@ public class Administrator extends User implements Serializable {
 		
 	}
 	
+	public Administrator() {}
+
+	
 	//Methods
+	
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+	
 	
 
 	
