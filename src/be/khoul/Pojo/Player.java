@@ -20,15 +20,15 @@ public class Player extends User implements Serializable{
 	
 	
 	//Constructor
-	public Player(String username, String password, int credit, LocalDate registrationDate, LocalDate dateOfBirth, String pseudo, ArrayList<Booking> bookings, ArrayList<Loan> loans, ArrayList<Copy> copies){
+	public Player(String username, String password, int credit, LocalDate registrationDate, LocalDate dateOfBirth, String pseudo){
 		super(username, password);
 		this.credit = credit;
 		this.registrationDate = registrationDate;
 		this.dateOfBirth = dateOfBirth;
 		this.pseudo = pseudo;
-		this.bookings = bookings;
-		this.loans = loans;
-		this.copies = copies;
+		this.bookings = new ArrayList<>();
+		this.loans = new ArrayList<>();
+		this.copies = new ArrayList<>();
 	}
 	
 
@@ -86,6 +86,28 @@ public class Player extends User implements Serializable{
 
 
 	//Methods
+	public void addBooking(Booking b) {
+		bookings.add(b);
+	}
+	public void addLoan(Loan l) {
+		loans.add(l);
+	}
+	
+	public void addCopy(Copy c) {
+		copies.add(c);
+	}
+	
+	public void removeBooking(Booking b) {
+		bookings.remove(b);
+	}
+	public void removeLoan(Loan l) {
+		loans.remove(l);
+	}
+	
+	public void removeCopy(Copy c) {
+		copies.remove(c);
+	}
+	
 	public boolean loanAllowed() {
 		//Check is user has enough credit
 		if(credit > 0) {
@@ -97,5 +119,7 @@ public class Player extends User implements Serializable{
 	public void addBirthdayBonus() {
 		
 	}
+	
+	
 	
 }
