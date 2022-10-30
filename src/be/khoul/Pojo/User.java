@@ -8,6 +8,8 @@ public abstract class User implements Serializable{
 	private String username;
 	private String password;
 	
+	public static final int ADMIN = 0;
+	public static final int PLAYER= 1;
 	
 	public User(String username, String password) {
 		this.username = username;

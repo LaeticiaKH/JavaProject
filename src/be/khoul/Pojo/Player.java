@@ -1,8 +1,16 @@
 package be.khoul.Pojo;
+import be.khoul.Connection.VideoGameConnection;
+import be.khoul.DAO.DAO;
+import be.khoul.DAO.PlayerDAO;
+import be.khoul.DAOFactory.AbstractDAOFactory;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
+
+import java.sql.*;
 
 public class Player extends User implements Serializable{
 	
@@ -108,6 +116,16 @@ public class Player extends User implements Serializable{
 		copies.remove(c);
 	}
 	
+	public java.sql.Date getDateOfBirthToDate() {
+		
+		return java.sql.Date.valueOf(this.dateOfBirth);
+	}
+	
+    public java.sql.Date getRegistrationDateToDate() {
+		
+		return java.sql.Date.valueOf(this.registrationDate);
+	}
+	
 	public boolean loanAllowed() {
 		//Check is user has enough credit
 		if(credit > 0) {
@@ -121,5 +139,13 @@ public class Player extends User implements Serializable{
 	}
 	
 	
+	//Methods for playerDAO
+	
+	public boolean addPlayer() {
+		AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
+		DAO<Player> playerDAO = adf.getPlayerDAO();
+	
+		return playerDAO.create(this);
+	}
 	
 }
