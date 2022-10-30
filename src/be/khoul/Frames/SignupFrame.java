@@ -84,6 +84,11 @@ public class SignupFrame extends JFrame {
 			lbl_username_error.setVisible(true);
 			
 		}
+		if(Player.usernameExist(username)) {
+			signupValid = false;
+			lbl_username_error.setText("Ce nom d'utilisateur est déjà utilisé.");
+			lbl_username_error.setVisible(true);
+		}
 		if(password.isEmpty() || password == null) {
 			signupValid = false;
 			lbl_password_error.setText("Veuillez saisir un mot de passe");
@@ -97,11 +102,19 @@ public class SignupFrame extends JFrame {
 	}
 	
 	public void verificationPseudo(JTextField tf_pseudo) {
-		if(tf_pseudo.getText().isEmpty() || tf_pseudo.getText() == null) {
+		String pseudo = tf_pseudo.getText();
+		if(pseudo.isEmpty() || tf_pseudo.getText() == null) {
 			signupValid = false;
 			lbl_pseudo_error.setText("Veuillez saisir un pseudo");
 			lbl_pseudo_error.setVisible(true);
 		}
+		if(Player.pseudoExist(pseudo)) {
+			signupValid = false;
+			lbl_pseudo_error.setText("Ce pseudo est déjà utilisé.");
+			lbl_pseudo_error.setVisible(true);
+		}
+		
+		
 		
 	}
 	
@@ -213,6 +226,7 @@ public class SignupFrame extends JFrame {
 	    JButton btn_confirm = new JButton("Confirmer");
 	    btn_confirm.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
+	    		maskErrorMessage();
 	    		signupValid = true;
 	    		verificationDate(dateChooser);
 	    		verificationUsernamePassword(tf_username, pf_password);
@@ -220,9 +234,7 @@ public class SignupFrame extends JFrame {
 	    		if(signupValid) {
 	    			maskErrorMessage();
 	    			LocalDate birth_date = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-	    			//System.out.println(birth_date);
 	    			Player player = new Player(tf_username.getText(), new String(pf_password.getPassword()), 10, LocalDate.now(), birth_date, tf_pseudo.getText());
-	    			//System.out.println(player.getDateOfBirthToDate());
 	    			if(player.addPlayer()) {
 	    				lbl_message.setText("Inscription réussite");
 	    				lbl_message.setVisible(true);

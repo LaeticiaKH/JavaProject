@@ -62,6 +62,42 @@ public class PlayerDAO extends DAO<Player> {
 		return null;
 	}
 	
+	public boolean pseudoExist(String pseudo) {
+		boolean exist = false;
+		try{
+			
+			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Player WHERE pseudo = ?");
+			statement.setString(1, pseudo);
+			ResultSet result = statement.executeQuery();
+			if(result.next()) {
+				exist = true;
+			}
+				
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return exist;
+	}
+	
+	public boolean usernameExist(String username) {
+		boolean exist = false;
+		try{
+			
+			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Users WHERE username = ?");
+			statement.setString(1, username);
+			ResultSet result = statement.executeQuery();
+			if(result.next()) {
+				exist = true;
+			}
+				
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return exist;
+	}
+	
 }
 
 

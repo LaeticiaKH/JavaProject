@@ -16,6 +16,7 @@ public class Player extends User implements Serializable{
 	
 	
 	private static final long serialVersionUID = -6054067668325036045L;
+	private static final AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
 	
 	private int credit;
 	private LocalDate registrationDate;
@@ -142,10 +143,19 @@ public class Player extends User implements Serializable{
 	//Methods for playerDAO
 	
 	public boolean addPlayer() {
-		AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
 		DAO<Player> playerDAO = adf.getPlayerDAO();
 	
 		return playerDAO.create(this);
+	}
+	
+	public static boolean pseudoExist(String pseudo) {
+		PlayerDAO playerDAO = (PlayerDAO) adf.getPlayerDAO();
+		return playerDAO.pseudoExist(pseudo);
+	}
+	
+	public static boolean usernameExist(String username) {
+		PlayerDAO playerDAO = (PlayerDAO) adf.getPlayerDAO();
+		return playerDAO.usernameExist(username);
 	}
 	
 }
