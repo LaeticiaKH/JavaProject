@@ -9,6 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PlayerHomeFrame extends JFrame {
 
@@ -21,8 +24,10 @@ public class PlayerHomeFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PlayerHomeFrame frame = new PlayerHomeFrame();
-					frame.setVisible(true);
+					//PlayerHomeFrame frame = new PlayerHomeFrame();
+					//frame.setVisible(true);
+					LoginFrame loginFrame = new LoginFrame();
+					loginFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -51,9 +56,19 @@ public class PlayerHomeFrame extends JFrame {
 		lbl_credit.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lbl_credit.setBounds(31, 71, 248, 13);
 		contentPane.add(lbl_credit);
-	}
-	
-	public PlayerHomeFrame() {}
-	
 		
+		JButton btn_consultgames = new JButton("Voir Jeux Vidéos");
+		btn_consultgames.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ConsultGamesFrame consultGamesFrame = new ConsultGamesFrame(player);
+				consultGamesFrame.setVisible(true);
+				dispose();
+					
+				
+			}
+		});
+		btn_consultgames.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_consultgames.setBounds(10, 131, 142, 30);
+		contentPane.add(btn_consultgames);
+	}
 }

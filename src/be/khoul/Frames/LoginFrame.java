@@ -136,7 +136,7 @@ public class LoginFrame extends JFrame {
 				verificationLogin();
 				if(loginValid) {
 					maskErrorsMessage();
-					User u = User.getUser(tf_username.getText(), new String(pf_password.getPassword()));
+					User u = User.logIn(tf_username.getText(), new String(pf_password.getPassword()));
 					if(u != null) {
 						if(u instanceof Player) {
 							//Send player to the Home frame	

@@ -104,26 +104,23 @@ public class PlayerDAO extends DAO<Player> {
 		Player player = null;
 		String username = null;
 		String password = null;
-		System.out.println("id" + id);
-		
+			
 		try{
 			
 			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Users WHERE id_user = ?");
 			statement.setInt(1, id);
 			ResultSet result = statement.executeQuery();
 			if(result.next()) {
-			   System.out.println(result.getRow());
 			   username = result.getString("username");
 			   password = result.getString("password");
-			   System.out.println(username);
 			}
 			
 			PreparedStatement statement2 = connect.prepareStatement("SELECT * FROM Player WHERE id_user = ?");
 			statement2.setInt(1, id);
 			ResultSet result2 = statement2.executeQuery();
 			if(result2.next()) {
-				System.out.println(result2.getRow());
-				LocalDate registration =  (LocalDate)result2.getDate("registration_date").toLocalDate();
+				
+				LocalDate registration = result2.getDate("registration_date").toLocalDate();
 				LocalDate birth = result2.getDate("date_of_birth").toLocalDate();
 				player = new Player(username, password, result2.getInt("credit"), registration , birth , result2.getString("pseudo"));
 			}

@@ -3,25 +3,30 @@ package be.khoul.Pojo;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class VideoGame implements Serializable {
+import be.khoul.DAO.DAO;
+import be.khoul.DAOFactory.AbstractDAOFactory;
 
-	
+public class VideoGame implements Serializable {
 	 
 	private static final long serialVersionUID = -6793786723230122631L;
+	private static final AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
+	
 	private String name;
 	private int creditCost;
 	private String console;
 	
-	private ArrayList<Booking> bookings = new ArrayList<>();
+	private ArrayList<Booking> bookings;
 	private ArrayList<Copy> copies;
 	
 	//Constructor
-	public VideoGame(String name, int creditCost, String console, ArrayList<Copy> copies) {
+	public VideoGame(String name, int creditCost, String console) {
 		
 		this.name = name;
 		this.creditCost = creditCost;
 		this.console = console;
-		this.copies = copies;
+		bookings = new ArrayList<>();
+		copies = new ArrayList<>();
+		
 	}
 	
 	//Getters and Setters
@@ -67,14 +72,21 @@ public class VideoGame implements Serializable {
 	}
 
 	//Methods
-	/*public Copy copyAvailable() {
-	
-	}*/
+	public Copy copyAvailable() {
+		
+		return null;
+	}
 	
 	public void selectBooking() {
 		
 	}
 	
+	//Methods for DAO
+	public static ArrayList<VideoGame> getAllVideoGames() {
+		DAO<VideoGame> videoGameDao= adf.getVideoGameDAO();
+
+		return  videoGameDao.findAll();
+	}
 	
 	
 }

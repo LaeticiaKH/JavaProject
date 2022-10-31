@@ -55,11 +55,7 @@ public class UserDAO extends DAO<User> {
 					admin = adminDao.find(id);
 					return admin;
 				}
-				
-			}else {
-				System.out.println("Utilisateur non trouvé");
 			}
-				
 		}
 		catch(SQLException e){
 			e.printStackTrace();

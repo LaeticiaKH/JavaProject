@@ -49,7 +49,7 @@ public abstract class User implements Serializable{
 	
 	
 	//Methods for UserDAO
-	public static User getUser(String username, String password) {
+	public static User logIn(String username, String password) {
 		UserDAO userDao = (UserDAO) adf.getUserDAO();
 		return userDao.getUser(username, password);
 	}
