@@ -30,4 +30,10 @@ public class CopyDAO extends DAO<Copy> {
 		return null;
 	}
 
+	@Override
+	public Copy find(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

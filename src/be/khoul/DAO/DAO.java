@@ -19,4 +19,6 @@ public abstract class DAO<T>{
 	
 	public abstract ArrayList<T> findAll();
 	
+	public abstract T find(int id);
+	
 }

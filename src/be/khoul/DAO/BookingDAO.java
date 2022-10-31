@@ -30,6 +30,12 @@ public class BookingDAO extends DAO<Booking> {
 		return null;
 	}
 
+	@Override
+	public Booking find(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 }

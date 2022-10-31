@@ -27,6 +27,12 @@ public class VideoGameDAO extends DAO<VideoGame> {
 		
 		return null;
 	}
+
+	@Override
+	public VideoGame find(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 }

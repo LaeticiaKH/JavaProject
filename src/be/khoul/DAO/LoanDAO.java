@@ -30,4 +30,10 @@ public class LoanDAO extends DAO<Loan> {
 		
 		return null;
 	}
+
+	@Override
+	public Loan find(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

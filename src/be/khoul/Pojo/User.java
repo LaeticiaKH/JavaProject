@@ -2,9 +2,13 @@ package be.khoul.Pojo;
 
 import java.io.Serializable;
 
+import be.khoul.DAO.UserDAO;
+import be.khoul.DAOFactory.AbstractDAOFactory;
+
 public abstract class User implements Serializable{
 
 	private static final long serialVersionUID = 3673341612140501824L;
+	private static final AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
 	private String username;
 	private String password;
 	
@@ -41,6 +45,13 @@ public abstract class User implements Serializable{
 	@Override
 	public String toString() {
 		return "Pseudo: " + username + " Mot de passe:  " + password;
+	}
+	
+	
+	//Methods for UserDAO
+	public static User getUser(String username, String password) {
+		UserDAO userDao = (UserDAO) adf.getUserDAO();
+		return userDao.getUser(username, password);
 	}
 	
 	

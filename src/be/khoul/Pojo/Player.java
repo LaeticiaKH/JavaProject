@@ -40,6 +40,9 @@ public class Player extends User implements Serializable{
 		this.copies = new ArrayList<>();
 	}
 	
+	public Player() {
+		
+	}
 
 	//Getters and Setters
 	public int getCredit() {
@@ -92,7 +95,14 @@ public class Player extends User implements Serializable{
 	public void setLoans(ArrayList<Loan> loans) {
 		this.loans = loans;
 	}
+	
 
+
+	@Override
+	public String toString() {
+		return "Player [credit=" + credit + ", registrationDate=" + registrationDate + ", dateOfBirth=" + dateOfBirth
+				+ ", pseudo=" + pseudo + ", bookings=" + bookings + ", loans=" + loans + ", copies=" + copies + "]";
+	}
 
 	//Methods
 	public void addBooking(Booking b) {
