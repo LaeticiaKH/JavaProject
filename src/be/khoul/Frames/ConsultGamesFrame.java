@@ -16,12 +16,15 @@ import javax.swing.*;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ConsultGamesFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
 	private ArrayList<VideoGame> listGames;
+	private JButton btn_back;
 	
 	/**
 	 * Launch the application.
@@ -39,22 +42,15 @@ public class ConsultGamesFrame extends JFrame {
 		});
 	}
 
-	private void tableMouseClick(java.awt.event.MouseEvent evt) {                                     
-	     JTable source = (JTable)evt.getSource();
-	            int row = source.rowAtPoint( evt.getPoint() );
-	            int column = source.columnAtPoint( evt.getPoint() );
-	            String s=source.getModel().getValueAt(row, column)+"";
-
-	            System.out.println(s);
 
 
-	} 	
+		
 	/**
 	 * Create the frame.
 	 */
 	public ConsultGamesFrame(Player player) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 561, 414);
+		setBounds(100, 100, 576, 475);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -73,13 +69,25 @@ public class ConsultGamesFrame extends JFrame {
 		
 	    JScrollPane scrollPane = new JScrollPane();
 	    scrollPane.setSize(527, 323);
-	    scrollPane.setLocation(10, 44);
+	    scrollPane.setLocation(25, 48);
 		contentPane.add(scrollPane);
 	    
 	    table = new JTable();
 	    scrollPane.setViewportView(table);
 	    table.setDefaultEditor(Object.class, null);
 	    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	    
+	    btn_back = new JButton("Retour");
+	    btn_back.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		PlayerHomeFrame playerHomeFrame = new PlayerHomeFrame(player);
+	    		playerHomeFrame.setVisible(true);
+	    		dispose();
+	    	}
+	    });
+	    btn_back.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    btn_back.setBounds(67, 381, 87, 33);
+	    contentPane.add(btn_back);
         
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.setColumnIdentifiers(nomCol);
@@ -102,6 +110,22 @@ public class ConsultGamesFrame extends JFrame {
                 
             }
         });
+        
+        
+        
+        
+        
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 			
 	}
 }

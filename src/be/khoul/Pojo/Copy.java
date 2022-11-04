@@ -1,22 +1,38 @@
 package be.khoul.Pojo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import be.khoul.DAO.*;
+import be.khoul.DAOFactory.AbstractDAOFactory;
 
 public class Copy implements Serializable {
 	
 	
 	private static final long serialVersionUID = 484910389772802237L;
+	private static final AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
+	
+	private int id;
 	private VideoGame videoGame;
 	private Player owner;
 	private Loan loan;
 	
 	//Constructor
-	public Copy(VideoGame videoGame,Player owner) {
+	public Copy(int id, VideoGame videoGame,Player owner) {
+		this.id = id;
 		this.videoGame = videoGame;
 		this.owner = owner;
 	}
 	
 	//Getters and Setters
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public VideoGame getVideoGame() {
 		return videoGame;
 	}
@@ -51,6 +67,17 @@ public class Copy implements Serializable {
 	}
 	
 	public boolean isAvailable() {
-		return false;
+		CopyDAO copyDao = (CopyDAO)adf.getCopyDAO();
+		//Check if copy is in a loan 
+		//If copy is in a loan => check if loan is ongoing or not
+		return copyDao.isCopyAvailable(id);
+		
+	}
+	
+	
+	//Methods DAO
+	public static ArrayList<Copy> getCopiesFor(VideoGame videogame) {
+		CopyDAO copyDao = (CopyDAO)adf.getCopyDAO();
+		return copyDao.findCopiesFor(videogame);
 	}
 }

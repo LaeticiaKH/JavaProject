@@ -18,6 +18,7 @@ public class Player extends User implements Serializable{
 	private static final long serialVersionUID = -6054067668325036045L;
 	private static final AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
 	
+	private int id;
 	private int credit;
 	private LocalDate registrationDate;
 	private LocalDate dateOfBirth;
@@ -29,6 +30,18 @@ public class Player extends User implements Serializable{
 	
 	
 	//Constructor
+	public Player(int id, String username, String password, int credit, LocalDate registrationDate, LocalDate dateOfBirth, String pseudo){
+		super(username, password);
+		this.id = id;
+		this.credit = credit;
+		this.registrationDate = registrationDate;
+		this.dateOfBirth = dateOfBirth;
+		this.pseudo = pseudo;
+		this.bookings = new ArrayList<>();
+		this.loans = new ArrayList<>();
+		this.copies = new ArrayList<>();
+	}
+	
 	public Player(String username, String password, int credit, LocalDate registrationDate, LocalDate dateOfBirth, String pseudo){
 		super(username, password);
 		this.credit = credit;
@@ -45,9 +58,19 @@ public class Player extends User implements Serializable{
 	}
 
 	//Getters and Setters
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	
 	public int getCredit() {
 		return credit;
 	}
+
 
 	public void setCredit(int credit) {
 		this.credit = credit;
@@ -146,7 +169,9 @@ public class Player extends User implements Serializable{
 	}
 	
 	public void addBirthdayBonus() {
-		
+		if(dateOfBirth.equals(LocalDate.now())) {
+			credit += 2;
+		}
 	}
 	
 	

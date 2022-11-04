@@ -122,7 +122,7 @@ public class PlayerDAO extends DAO<Player> {
 				
 				LocalDate registration = result2.getDate("registration_date").toLocalDate();
 				LocalDate birth = result2.getDate("date_of_birth").toLocalDate();
-				player = new Player(username, password, result2.getInt("credit"), registration , birth , result2.getString("pseudo"));
+				player = new Player(id,username, password, result2.getInt("credit"), registration , birth , result2.getString("pseudo"));
 			}
 				
 		}

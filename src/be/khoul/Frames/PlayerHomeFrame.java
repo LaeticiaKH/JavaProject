@@ -70,5 +70,17 @@ public class PlayerHomeFrame extends JFrame {
 		btn_consultgames.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btn_consultgames.setBounds(10, 131, 142, 30);
 		contentPane.add(btn_consultgames);
+		
+		JButton btn_consult_bookings = new JButton("Mes réservations");
+		btn_consult_bookings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BookingsFrame bookingsFrame = new BookingsFrame(player);
+				bookingsFrame.setVisible(true);
+				dispose();
+			}
+		});
+		btn_consult_bookings.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_consult_bookings.setBounds(173, 132, 142, 30);
+		contentPane.add(btn_consult_bookings);
 	}
 }

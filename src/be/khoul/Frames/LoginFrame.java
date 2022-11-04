@@ -124,11 +124,7 @@ public class LoginFrame extends JFrame {
 		pf_password.setBounds(187, 169, 95, 19);
 		contentPane.add(pf_password);
 		
-		JCheckBox chckbox_admin = new JCheckBox("Admin");
-		chckbox_admin.setBounds(383, 168, 93, 21);
-		contentPane.add(chckbox_admin);
-		
-		
+
 		JButton btn_login = new JButton("Se connecter");
 		btn_login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -141,6 +137,7 @@ public class LoginFrame extends JFrame {
 						if(u instanceof Player) {
 							//Send player to the Home frame	
 							Player player = (Player)u;
+							
 							PlayerHomeFrame playerHomeFrame = new PlayerHomeFrame(player);
 							playerHomeFrame.setVisible(true);
 							dispose();
