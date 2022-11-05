@@ -55,14 +55,16 @@ public class SignupFrame extends JFrame {
 	}
 
 	public void verificationDate(JDateChooser dateChooser) {
-		if(dateChooser.getDate().toString().isEmpty() || dateChooser.getDate() == null) {
+		
+		LocalDate date = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		
+		if(date.toString().isEmpty() || date == null) {
 			signupValid = false;
 	    	lbl_date_error.setText("Une date de naissance est nécessaire pour vous inscrire.");
 	    	lbl_date_error.setVisible(true);
 	    }
 	    
-	    Date today = Date.valueOf(LocalDate.now());
-	    if(dateChooser.getDate().after(today)) {
+	    if(date.isAfter(LocalDate.now())) {
 	    	signupValid = false;
 	    	lbl_date_error.setText("La date de naissance ne peut pas être une date du future.");
 	    	lbl_date_error.setVisible(true);

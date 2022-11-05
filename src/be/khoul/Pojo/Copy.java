@@ -24,6 +24,11 @@ public class Copy implements Serializable {
 		this.owner = owner;
 	}
 	
+	public Copy( VideoGame videoGame,Player owner) {
+		this.videoGame = videoGame;
+		this.owner = owner;
+	}
+	
 	//Getters and Setters
 	public int getId() {
 		return id;
@@ -59,11 +64,11 @@ public class Copy implements Serializable {
 
 	//Methods
 	public void releaseCopy() {
-		
+		loan = null;
 	}
 	
-	public void borrow() {
-		
+	public boolean borrow() {
+		return loan.createLoan();
 	}
 	
 	public boolean isAvailable() {
@@ -80,4 +85,22 @@ public class Copy implements Serializable {
 		CopyDAO copyDao = (CopyDAO)adf.getCopyDAO();
 		return copyDao.findCopiesFor(videogame);
 	}
+	
+	public static ArrayList<Copy> getCopiesFor(Player player) {
+		CopyDAO copyDao = (CopyDAO)adf.getCopyDAO();
+		return copyDao.findCopiesFor(player);
+	}
+	
+	public boolean create() {
+		DAO<Copy> copyDAO = adf.getCopyDAO();
+		
+		return copyDAO.create(this);
+	}
+
+	@Override
+	public String toString() {
+		return "Copy [id=" + id + ", videoGame=" + videoGame + ", owner=" + owner + ", loan=" + loan + "]";
+	}
+	
+	
 }

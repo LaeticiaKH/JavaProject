@@ -26,19 +26,15 @@ public class PlayerDAO extends DAO<Player> {
 			
 			ResultSet key_user = statement.getGeneratedKeys();
 			if(key_user.next()){
-				System.out.println("key : " + key_user.getInt(1));
+				statement = connect.prepareStatement("INSERT INTO Player(id_user, credit, registration_date, date_of_birth, pseudo) VALUES(?,?,?,?,?)");
+				statement.setInt(1, key_user.getInt(1));
+				statement.setInt(2, 10);
+				statement.setDate(3, Date.valueOf(obj.getRegistrationDate()));
+				statement.setDate(4, Date.valueOf(obj.getDateOfBirth()));
+				statement.setString(5, obj.getPseudo());
+				statement.executeUpdate();
 			}
 			
-			
-			statement = connect.prepareStatement("INSERT INTO Player(id_user, credit, registration_date, date_of_birth, pseudo) VALUES(?,?,?,?,?)");
-			statement.setInt(1, key_user.getInt(1));
-			statement.setInt(2, 10);
-			statement.setDate(3, obj.getRegistrationDateToDate());
-			statement.setDate(4, obj.getDateOfBirthToDate());
-			statement.setString(5, obj.getPseudo());
-			System.out.println(obj.getDateOfBirthToDate());
-			System.out.println(obj.getRegistrationDateToDate());
-			statement.executeUpdate();
 		}
 		catch(Exception e){
 			e.printStackTrace();

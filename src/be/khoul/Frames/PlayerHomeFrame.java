@@ -40,9 +40,14 @@ public class PlayerHomeFrame extends JFrame {
 	 */
 	public PlayerHomeFrame(Player player) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 539, 406);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
+		player.getOwnCopies();
+		player.getOwnBookings();
+		player.getOwnLoans();
+		
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -82,5 +87,15 @@ public class PlayerHomeFrame extends JFrame {
 		btn_consult_bookings.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btn_consult_bookings.setBounds(173, 132, 142, 30);
 		contentPane.add(btn_consult_bookings);
+		
+		JButton btn_consult_copies = new JButton("Mes copies");
+		btn_consult_copies.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btn_consult_copies.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_consult_copies.setBounds(346, 131, 142, 30);
+		contentPane.add(btn_consult_copies);
 	}
 }

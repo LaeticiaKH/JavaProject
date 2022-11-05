@@ -3,7 +3,6 @@ package be.khoul.Pojo;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.sql.Date;
 import be.khoul.DAO.BookingDAO;
 import be.khoul.DAO.DAO;
 import be.khoul.DAOFactory.AbstractDAOFactory;
@@ -14,12 +13,21 @@ public class Booking implements Serializable {
 	private static final long serialVersionUID = 8934435103788942302L;
 	private static final AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
 	
+	private int id;
 	private LocalDate bookingDate;
 	private int duration;
 	private Player borrower;
 	private VideoGame videoGame;
 
 	//Constructors
+	public Booking(int id, LocalDate bookingDate, int duration , Player borrower, VideoGame videoGame) {
+		this.id = id;
+		this.bookingDate = bookingDate;
+		this.duration= duration;
+		this.borrower = borrower;
+		this.videoGame = videoGame;
+	}
+	
 	public Booking(LocalDate bookingDate, int duration , Player borrower, VideoGame videoGame) {
 		this.bookingDate = bookingDate;
 		this.duration= duration;
@@ -29,6 +37,17 @@ public class Booking implements Serializable {
 
 	
 	//Getters and Setters
+	
+	public int getId() {
+		return this.id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	
 	public LocalDate getBookingDate() {
 		return bookingDate;
 	}
@@ -75,11 +94,6 @@ public class Booking implements Serializable {
 		
 	}
 	
-	public Date getBookingDateToDate() {
-		
-		return Date.valueOf(bookingDate);
-	}
-	
 	
 	//Methods DAO
 	public boolean createBooking() {
@@ -88,10 +102,10 @@ public class Booking implements Serializable {
 		return bookingDao.create(this);
 	}
 	
-	public static ArrayList<Booking> getBookings(Player p) {
+	public static ArrayList<Booking> getBookings(Player player) {
 		BookingDAO bookingDao = (BookingDAO)adf.getBookingDAO();
 		
-		return bookingDao.findBookingsFor(p);
+		return bookingDao.findBookingsFor(player);
 	}
 	
 	public static ArrayList<Booking> getBookings(VideoGame v) {
@@ -100,11 +114,13 @@ public class Booking implements Serializable {
 		return bookingDao.findBookingsFor(v);
 	}
 
-
 	@Override
 	public String toString() {
-		return "Booking [bookingDate=" + bookingDate + ", borrower=" + borrower + ", videoGame=" + videoGame + "]";
+		return "Booking [id=" + id + ", bookingDate=" + bookingDate + ", duration=" + duration + ", borrower="
+				+ borrower + ", videoGame=" + videoGame + "]";
 	}
+
+
 	
 	
 	

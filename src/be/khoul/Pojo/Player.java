@@ -1,16 +1,12 @@
 package be.khoul.Pojo;
-import be.khoul.Connection.VideoGameConnection;
+import be.khoul.DAO.CopyDAO;
 import be.khoul.DAO.DAO;
 import be.khoul.DAO.PlayerDAO;
 import be.khoul.DAOFactory.AbstractDAOFactory;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
-
-import java.sql.*;
 
 public class Player extends User implements Serializable{
 	
@@ -119,6 +115,15 @@ public class Player extends User implements Serializable{
 		this.loans = loans;
 	}
 	
+	public ArrayList<Copy> getCopies() {
+		return copies;
+	}
+
+
+	public void setCopies(ArrayList<Copy> copies) {
+		this.copies = copies;
+	}
+	
 
 
 	@Override
@@ -148,16 +153,6 @@ public class Player extends User implements Serializable{
 	
 	public void removeCopy(Copy c) {
 		copies.remove(c);
-	}
-	
-	public java.sql.Date getDateOfBirthToDate() {
-		
-		return java.sql.Date.valueOf(this.dateOfBirth);
-	}
-	
-    public java.sql.Date getRegistrationDateToDate() {
-		
-		return java.sql.Date.valueOf(this.registrationDate);
 	}
 	
 	public boolean loanAllowed() {
@@ -192,5 +187,19 @@ public class Player extends User implements Serializable{
 		PlayerDAO playerDAO = (PlayerDAO) adf.getPlayerDAO();
 		return playerDAO.usernameExist(username);
 	}
+	
+	public void getOwnLoans(){
+		loans = Loan.getLoansFor(this);
+	}
+	
+	public void getOwnCopies(){
+		copies = Copy.getCopiesFor(this);
+	}
+	
+	public void getOwnBookings(){
+		bookings = Booking.getBookings(this);
+	}
+	
+	
 	
 }

@@ -93,14 +93,15 @@ public class VideoGame implements Serializable {
 		this.copies = copies;
 	}
 	
-	public int getNumberOfAvailableCopies() {
-		int num_available = 0;
+	
+	public ArrayList<Copy> getAvailableCopies(){
+		ArrayList<Copy> availableCopies = new ArrayList<>();
 		for(Copy c: copies) {
 			if(c.isAvailable()) {
-				num_available++;
+				availableCopies.add(c);
 			}
 		}
-		return num_available;
+		return availableCopies;
 	}
 	
 
@@ -119,6 +120,7 @@ public class VideoGame implements Serializable {
 	
 	private ArrayList<Booking> selectMostCredits(){
 		ArrayList<Booking> mostCredits = new ArrayList<>();
+		
 		
 		mostCredits.add(bookings.get(0));
 		//Get the player who got the most credit
@@ -205,6 +207,7 @@ public class VideoGame implements Serializable {
 		5. Aléatoire.*/
 		ArrayList<Booking> mostCredits = new ArrayList<>();
 		
+		this.setBookings(Booking.getBookings(this));
 		if(bookings.size() > 0) {
 			
 			mostCredits = selectMostCredits();
@@ -222,7 +225,7 @@ public class VideoGame implements Serializable {
 						 ArrayList<Booking> oldestBirthDate = new ArrayList<>();
 						 oldestBirthDate = selectOldestBirthDate(oldestRegistrationDate);
 						 for(Booking b:oldestBirthDate) {
-							 System.out.println(b);
+							 //System.out.println(b);
 						 }
 						
 						 if(oldestBirthDate.size() > 1) {
@@ -246,26 +249,67 @@ public class VideoGame implements Serializable {
 				
 			}
 			else {
-				System.out.println(mostCredits.get(0));
+				//System.out.println(mostCredits.get(0));
 				return mostCredits.get(0);
 			}
 			
 		}
 				
-		
-		
-		
 		return null;
 
 	}
 	
+	public void getBookingIntoLoan() {
+		
+		setCopies(Copy.getCopiesFor(this));
+		int available_copies = getAvailableCopies().size();
+		//while there are at least one available copy and a booking
+		System.out.println("copies : "+ copies.size());
+		System.out.println("Available copies : "+ available_copies);
+		System.out.println("Bookings : "+ Booking.getBookings(this).size());
+		getVideoGameBookings();
+		while(available_copies > 0 && getBookings().size() > 0) {
+			System.out.println("In bookingIntoLoan : ");
+			
+			Booking booking = selectBooking();
+			System.out.println("Booking after selectBooking :" + booking);
+			
+			//Get one available copy
+			/*if(copyAvailable() != null) {
+				Copy copy = copyAvailable();
+				
+		    	//Calculate end date 
+		    	LocalDate endDate = LocalDate.now().plusWeeks(booking.getDuration());
+		    	//Create Loan
+		    	Loan loan = new Loan(LocalDate.now(), endDate, true, copy, copy.getOwner(), booking.getBorrower());
+		    	System.out.println("Booking id :" + booking);
+		    	System.out.println("Booking id 2 :" + booking.getId());
+		    	System.out.println("Loan copy :" + copy.getId() + " prêteur : " + copy.getOwner().getUsername() + " emprunteur" + booking.getBorrower().getUsername() + "booking id:" + booking.getId());
+		    	copy.setLoan(loan);
+		    	//If the loan got created without problems the booking can be deleted
+		    	if(copy.borrow()) {
+		    		System.out.println("Booking deleted : " + booking.getId());
+		    		booking.delete();
+		    	}
+			}*/
+			
+		}
+	}
 	//Methods for DAO
 	public static ArrayList<VideoGame> getAllVideoGames() {
 		DAO<VideoGame> videoGameDao= adf.getVideoGameDAO();
 
 		return  videoGameDao.findAll();
 	}
-
+    
+	public void getVideoGameCopies() {
+		 copies = Copy.getCopiesFor(this);
+	}
+	
+	public void getVideoGameBookings() {
+		 bookings = Booking.getBookings(this);
+	}
+	
 
 	@Override
 	public String toString() {

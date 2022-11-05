@@ -1,6 +1,7 @@
 package be.khoul.DAO;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,11 +20,9 @@ public class BookingDAO extends DAO<Booking> {
 		
 		try {
 			PreparedStatement statement = connect.prepareStatement("INSERT INTO Booking(booking_date, duration, id_user_borrower, id_videogame) VALUES(?,?,?,?)");
-			statement.setDate(1, obj.getBookingDateToDate());
-			System.out.println(obj.getBorrower().getId());
+			statement.setDate(1, Date.valueOf(obj.getBookingDate()));
 			statement.setInt(2, obj.getDuration());
 			statement.setInt(3, obj.getBorrower().getId());
-			System.out.println(obj.getVideoGame().getId());
 			statement.setInt(4, obj.getVideoGame().getId());
 			statement.executeUpdate();
 			
@@ -38,8 +37,18 @@ public class BookingDAO extends DAO<Booking> {
 	}
 	
 	public boolean delete(Booking obj){
-		
-		return false;
+		boolean success = true;
+		try {
+			PreparedStatement statement = connect.prepareStatement("DELETE FROM Booking WHERE id_booking = ?");
+			statement.setInt(1, obj.getId());
+			statement.executeUpdate();
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			success = false;
+		}
+		return success;
 	}
 	
 	public boolean update(Booking obj){
@@ -67,10 +76,9 @@ public class BookingDAO extends DAO<Booking> {
 			ResultSet result = statement.executeQuery();
 			while(result.next()) {
 				VideoGameDAO videoGameDao = new VideoGameDAO(this.connect);
-				System.out.println(result.getInt("id_videogame"));
 				VideoGame videoGame = videoGameDao.find(result.getInt("id_videogame"));
 				
-				listBookings.add(new Booking(result.getDate("booking_date").toLocalDate(), result.getInt("duration"), player, videoGame));
+				listBookings.add(new Booking(result.getInt("id_booking"),result.getDate("booking_date").toLocalDate(), result.getInt("duration"), player, videoGame));
 			}
 			
 		}
@@ -92,7 +100,8 @@ public class BookingDAO extends DAO<Booking> {
 			while(result.next()) {
 				PlayerDAO playerDao = new PlayerDAO(this.connect);
 				Player player = playerDao.find(result.getInt("id_user_borrower"));
-				listBookings.add(new Booking(result.getDate("booking_date").toLocalDate(), result.getInt("duration"), player, videoGame));
+				System.out.println("id booking in DAO" + result.getInt("id_booking"));
+				listBookings.add(new Booking(result.getInt("id_booking"),result.getDate("booking_date").toLocalDate(), result.getInt("duration"), player, videoGame));
 			}
 			
 		}

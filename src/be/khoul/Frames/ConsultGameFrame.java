@@ -9,10 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
-import be.khoul.Pojo.Booking;
-import be.khoul.Pojo.Copy;
-import be.khoul.Pojo.Player;
-import be.khoul.Pojo.VideoGame;
+import be.khoul.Pojo.*;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -54,8 +51,8 @@ public class ConsultGameFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		v.setCopies(Copy.getCopiesFor(v));
-		int available_copies = v.getNumberOfAvailableCopies();
+		v.getVideoGameCopies();
+		v.getVideoGameBookings();
 		
 		JLabel lbl_videogame = new JLabel(v.getName());
 		lbl_videogame.setHorizontalAlignment(SwingConstants.CENTER);
@@ -73,7 +70,7 @@ public class ConsultGameFrame extends JFrame {
 		lbl_credits.setBounds(28, 173, 126, 21);
 		contentPane.add(lbl_credits);
 		
-		JLabel lbl_available = new JLabel("Exemplaire disponible : " + available_copies);
+		JLabel lbl_available = new JLabel("Exemplaire disponible : " + v.getAvailableCopies().size());
 		lbl_available.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lbl_available.setBounds(28, 220, 270, 13);
 		contentPane.add(lbl_available);
@@ -109,14 +106,34 @@ public class ConsultGameFrame extends JFrame {
 		btn_book.setBounds(202, 255, 96, 26);
 		contentPane.add(btn_book);
 		
-		
-		
 		JButton btn_lend = new JButton("Prêter");
+		btn_lend.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Copy copy = new Copy(v, player);
+				if(copy.create()) {
+					lbl_message.setText("Prêt réussi");
+				   	lbl_message.setForeground(Color.GREEN);
+				   	v.getBookingIntoLoan();
+				}
+				else {
+					lbl_message.setText("Le prêt de votre jeu à échoué");
+				   	lbl_message.setForeground(Color.RED);
+				}
+				
+			}
+		});
 		btn_lend.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btn_lend.setBounds(393, 255, 96, 26);
 		contentPane.add(btn_lend);
 		
 		JButton btn_rent = new JButton("Louer");
+		btn_rent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LoanFrame loanFrame = new LoanFrame(player, v);
+				loanFrame.setVisible(true);
+				dispose();
+			}
+		});
 		btn_rent.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btn_rent.setBounds(28, 255, 90, 26);
 		contentPane.add(btn_rent);
@@ -129,11 +146,10 @@ public class ConsultGameFrame extends JFrame {
 		   	lbl_message.setForeground(Color.RED);
 		}
 		
-		if(available_copies > 0) {
+		if(v.getAvailableCopies().size() > 0) {
 			//Loan can happen directly
 			btn_book.setEnabled(false);
 			btn_rent.setEnabled(true);
-			
 			
 		}
 		else {
@@ -142,21 +158,10 @@ public class ConsultGameFrame extends JFrame {
 			btn_rent.setEnabled(false);
 		}
 		
-		while(available_copies > 0) {
-			//Booking with the best priority become a loan
-			v.setBookings(Booking.getBookings(v));
-		    Booking b = v.selectBooking();
-		    
-		    //Get copy available
-		    if(v.copyAvailable() != null) {
-		    	Copy c = v.copyAvailable();
-		    }
-		    //Create Loan
-		    
-		    
-		}
+		v.getBookingIntoLoan();
 		
 		
+
 	    
 		
 		

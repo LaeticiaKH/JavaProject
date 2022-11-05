@@ -1,6 +1,7 @@
 package be.khoul.DAO;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,8 +15,23 @@ public class CopyDAO extends DAO<Copy> {
 		super(conn);
 	}
 	
-	public boolean create(Copy obj){		
-		return false;
+	public boolean create(Copy obj){	
+		boolean success = true;
+		
+		try {
+			PreparedStatement statement = connect.prepareStatement("INSERT INTO Copy(id_videogame, id_user_lender) VALUES(?,?)");
+			statement.setInt(1, obj.getVideoGame().getId());
+			statement.setInt(2, obj.getOwner().getId());
+			
+			statement.executeUpdate();
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			success = false;
+		}
+		
+		return success;
 	}
 	
 	public boolean delete(Copy obj){
@@ -39,9 +55,29 @@ public class CopyDAO extends DAO<Copy> {
 			statement.setInt(1, videoGame.getId());
 			ResultSet result = statement.executeQuery();
 			while(result.next()) {
-				System.out.println(result.getObject(1) + " " + result.getObject(2));
 				PlayerDAO playerDao = new PlayerDAO(this.connect);
 				Copy c = new Copy(result.getInt("id_copy"), videoGame, playerDao.find(result.getInt("id_user_lender")));
+				list.add(c);
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return list;
+		
+	}
+	
+	public ArrayList<Copy> findCopiesFor(Player player) {
+		ArrayList<Copy> list = new ArrayList<>();
+		try{
+			
+			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy c INNER JOIN Player p ON c.id_user_lender = p.id_user WHERE p.id_user = ?");
+			statement.setInt(1, player.getId());
+			ResultSet result = statement.executeQuery();
+			while(result.next()) {
+				VideoGameDAO videoGameDao = new VideoGameDAO(this.connect);
+				Copy c = new Copy(result.getInt("id_copy"), videoGameDao.find(result.getInt("id_videogame")), player);
 				list.add(c);
 			}
 		}
@@ -55,8 +91,22 @@ public class CopyDAO extends DAO<Copy> {
 
 	@Override
 	public Copy find(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Copy copy = null;
+		try{
+			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy WHERE id_copy = ?");
+			statement.setInt(1, id);
+			ResultSet result =  statement.executeQuery();
+			if(result.next()) {
+				VideoGameDAO videoGameDao = new VideoGameDAO(this.connect);
+				PlayerDAO playerDao = new PlayerDAO(this.connect);
+				copy = new Copy(result.getInt("id_copy"), videoGameDao.find(result.getInt("id_videogame")), playerDao.find(result.getInt("id_user_lender")) );
+				
+			}	
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return copy;
 	}
 	
 	public boolean isCopyAvailable(int id) {
@@ -69,10 +119,9 @@ public class CopyDAO extends DAO<Copy> {
 				if(result.getBoolean("ongoing")) {
 					available = false;
 				}
-			}
-			
-			
-			
+	
+				
+			}	
 		}
 		catch(SQLException e){
 			e.printStackTrace();
