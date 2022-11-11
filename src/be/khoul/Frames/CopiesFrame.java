@@ -33,6 +33,9 @@ public class CopiesFrame extends JFrame {
 	private final JLabel lbl_copies = new JLabel("Mes copies");
 	private ArrayList<Copy> listCopies;
 	private JTable table;
+	private DefaultTableModel model;
+	private JLabel lbl_no_copy;
+	private JLabel lbl_message;
 
 	/**
 	 * Launch the application.
@@ -50,6 +53,48 @@ public class CopiesFrame extends JFrame {
 		});
 	}
 
+	
+	public void showCopies(Player player) {
+		listCopies = player.getCopies();
+		System.out.println("Nombre de copies : " + listCopies.size());
+		if(listCopies.size() > 0) {
+			String[] nomCol = { "Jeu", "Console", "Emprunteur", "Crédits", "Date de début", "Date de fin", "En cours"};
+			
+			 JScrollPane scrollPane = new JScrollPane();
+			    scrollPane.setSize(625, 280);
+			    scrollPane.setLocation(10, 78);
+				contentPane.add(scrollPane);
+			    
+			    table = new JTable();
+			    scrollPane.setViewportView(table);
+			    table.setDefaultEditor(Object.class, null);
+			    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			    
+			    model = (DefaultTableModel) table.getModel();
+			
+				model.setColumnIdentifiers(nomCol);
+				for(Copy c: listCopies) {
+					System.out.println(c);
+					VideoGame videoGame = c.getVideoGame();
+					Loan loan = c.getLoan();
+					
+					if(loan != null) {
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+						Object[] data ={ videoGame.getName(), videoGame.getConsole(), loan.getBorrower().getPseudo(), videoGame.getCreditCost(), loan.getStartDate().format(formatter), loan.getEndDate().format(formatter), loan.isOngoing()};
+						model.addRow(data);
+					}
+					else {
+						Object[] data ={videoGame.getName(), videoGame.getConsole(), "", videoGame.getCreditCost(), "", "", "",  ""};
+						model.addRow(data);
+					}		
+					
+				}
+			    
+		} else {
+			lbl_no_copy.setVisible(true);
+		}
+		
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -66,14 +111,14 @@ public class CopiesFrame extends JFrame {
 		lbl_copies.setBounds(222, 23, 172, 36);
 		contentPane.add(lbl_copies);
 		
-		JLabel lbl_no_copy = new JLabel("Vous n'avez pas encore prêté une copie");
+		lbl_no_copy = new JLabel("Vous n'avez pas encore prêté une copie");
 		lbl_no_copy.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_no_copy.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lbl_no_copy.setBounds(175, 130, 291, 36);
 		lbl_no_copy.setVisible(false);
 		contentPane.add(lbl_no_copy);
 		
-		JLabel lbl_message = new JLabel("Veuillez sélectionner une copie.");
+		lbl_message = new JLabel("Veuillez sélectionner une copie.");
 		lbl_message.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_message.setForeground(new Color(239, 37, 68));
 		lbl_message.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -134,50 +179,47 @@ public class CopiesFrame extends JFrame {
 		contentPane.add(btn_back);
 		
 		JButton btn_remove_copy = new JButton("Retirer copie");
+		btn_remove_copy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lbl_message.setVisible(false);
+				//Get selected copy
+				Copy copy;
+				ListSelectionModel selectModel= table.getSelectionModel();
+				if(selectModel.getMinSelectionIndex() >= 0) {
+					int selectedRow = selectModel.getMinSelectionIndex();
+	                copy = listCopies.get(selectedRow);
+	              //If the copy doesn't have a ongoing loan it can be removed
+	                if(copy.isAvailable()) {
+	                	if(copy.delete()) {
+	                		listCopies.remove(copy);
+	                		player.removeCopy(copy);
+	                		table = null;
+	                		model.removeRow(selectedRow);
+	                		lbl_message.setVisible(true);
+		                	lbl_message.setText("Copie retiré");
+		                	
+	                	}
+	                
+	                }
+	                else {
+	                	lbl_message.setVisible(true);
+	                	lbl_message.setText("La copie est emprunté. Vous ne pouvez pas la reprendre.");
+	                }
+				
+			    }
+				else {
+					lbl_message.setVisible(true);
+					lbl_message.setText("Veuillez sélectionner une copie.");
+				}
+		   }
+		});
 		btn_remove_copy.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btn_remove_copy.setBounds(257, 368, 114, 28);
 		contentPane.add(btn_remove_copy);
 		
+		showCopies(player);
 		
 		
-		listCopies = player.getCopies();
-		
-		if(listCopies.size() > 0) {
-			String[] nomCol = { "Jeu", "Console", "Emprunteur", "Crédits", "Date de début", "Date de fin", "En cours"};
-			
-			 JScrollPane scrollPane = new JScrollPane();
-			    scrollPane.setSize(625, 280);
-			    scrollPane.setLocation(10, 78);
-				contentPane.add(scrollPane);
-			    
-			    table = new JTable();
-			    scrollPane.setViewportView(table);
-			    table.setDefaultEditor(Object.class, null);
-			    table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			    
-			    DefaultTableModel model = (DefaultTableModel) table.getModel();
-			
-				model.setColumnIdentifiers(nomCol);
-				for(Copy c: listCopies) {
-					System.out.println(c);
-					VideoGame videoGame = c.getVideoGame();
-					Loan loan = c.getLoan();
-					
-					if(loan != null) {
-						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-						Object[] data ={ videoGame.getName(), videoGame.getConsole(), loan.getBorrower().getPseudo(), videoGame.getCreditCost(), loan.getStartDate().format(formatter), loan.getEndDate().format(formatter), loan.isOngoing()};
-						model.addRow(data);
-					}
-					else {
-						Object[] data ={videoGame.getName(), videoGame.getConsole(), "", videoGame.getCreditCost(), "", "", "",  ""};
-						model.addRow(data);
-					}		
-					
-				}
-			    
-		} else {
-			lbl_no_copy.setVisible(true);
-		}
 		
 	
 		

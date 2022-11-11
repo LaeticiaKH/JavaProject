@@ -97,6 +97,12 @@ public class Copy implements Serializable {
 		
 		return copyDAO.create(this);
 	}
+	
+	public boolean delete() {
+		DAO<Copy> copyDAO = adf.getCopyDAO();
+		
+		return copyDAO.delete(this);
+	}
 
 	@Override
 	public String toString() {

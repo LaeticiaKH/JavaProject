@@ -99,6 +99,7 @@ public class BookingFrame extends JFrame {
 				
 				Booking booking = new Booking(LocalDate.now(), Integer.parseInt(choice.getSelectedItem()) , player, videoGame);
 				if(booking.createBooking()) {
+					//Go back to game frame
 					ConsultGameFrame consultGameFrame = new ConsultGameFrame(player, videoGame);
     				consultGameFrame.setVisible(true);
     				dispose();

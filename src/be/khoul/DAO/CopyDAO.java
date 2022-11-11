@@ -35,7 +35,21 @@ public class CopyDAO extends DAO<Copy> {
 	}
 	
 	public boolean delete(Copy obj){
-		return false;
+		boolean success = true;
+		
+		try {
+			PreparedStatement statement = connect.prepareStatement("DELETE FROM Copy WHERE id_copy = ?");
+			statement.setInt(1, obj.getId());
+			statement.executeUpdate();
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			success = false;
+		}
+		
+		return success;
+		
 	}
 	
 	public boolean update(Copy obj){

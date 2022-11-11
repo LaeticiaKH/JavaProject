@@ -109,7 +109,7 @@ public class LoanFrame extends JFrame {
 	    			LocalDate end_date = LocalDate.now().plusWeeks(Integer.parseInt(choice.getSelectedItem()));
 	    			copy.setLoan(new Loan(LocalDate.now(), end_date, true, copy, copy.getOwner(), player));
 	    			if(copy.borrow()) {
-	    				//Show confirmation message
+	    				//go back to the game frame
 	    				ConsultGameFrame consultGameFrame = new ConsultGameFrame(player, videoGame);
 	    				consultGameFrame.setVisible(true);
 	    				dispose();

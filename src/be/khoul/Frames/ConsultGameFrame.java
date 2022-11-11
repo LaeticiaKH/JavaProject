@@ -112,6 +112,7 @@ public class ConsultGameFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Copy copy = new Copy(v, player);
 				if(copy.create()) {
+					player.addCopy(copy);
 					lbl_message.setText("Prêt réussi");
 				   	lbl_message.setForeground(Color.GREEN);
 				   	v.getBookingIntoLoan();
