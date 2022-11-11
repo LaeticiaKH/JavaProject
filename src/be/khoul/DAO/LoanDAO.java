@@ -83,6 +83,30 @@ public class LoanDAO extends DAO<Loan> {
 		return list;
 	}
 
+	public Loan getLoanForCopy(Copy copy) {
+		Loan loan = null;
+		
+		try {
+			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Loan WHERE id_copy = ? and ongoing = ?");
+			statement.setInt(1, copy.getId());
+			statement.setBoolean(2, true);
+			ResultSet result;
+			result = statement.executeQuery();
+		
+			if(result.next()) {
+				PlayerDAO playerDao = new PlayerDAO(this.connect);
+				Player player = playerDao.find(result.getInt("id_user_borrower"));
+				loan = new Loan(result.getInt("id_loan"), result.getDate("start_date").toLocalDate(), result.getDate("end_date").toLocalDate(), result.getBoolean("ongoing"), copy, copy.getOwner(), player);
+				
+			}
+		}
+		 catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return loan;
+	}
 	@Override
 	public Loan find(int id) {
 		// TODO Auto-generated method stub

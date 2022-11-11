@@ -14,18 +14,18 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Choice;
 
 public class LoanFrame extends JFrame {
 
 	private JPanel contentPane;
-	private boolean dateValid;
-	private JLabel lbl_date_error;
 	private JLabel lbl_message;
 
 	/**
@@ -44,33 +44,6 @@ public class LoanFrame extends JFrame {
 		});
 	}
 	
-	public void validationDate(JDateChooser dateChooser) {
-		dateValid = true;
-
-		LocalDate date = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		if(date.toString().isEmpty() || date == null) {
-			dateValid = false;
-	    	lbl_date_error.setText("Une date de naissance est nécessaire pour vous inscrire.");
-	    	lbl_date_error.setVisible(true);
-	    }
-	    
-	    
-	    if(date.isBefore(LocalDate.now())) {
-	    	dateValid = false;
-	    	lbl_date_error.setText("La date de fin de location ne peut pas être une date du passé.");
-	    	lbl_date_error.setVisible(true);
-	    }
-	    
-	    if(date.isAfter(LocalDate.now().plusMonths(6))) {
-	    	dateValid = false;
-	    	lbl_date_error.setText("La date de fin de location ne peut pas dépassé plus de 6 mois");
-	    	lbl_date_error.setVisible(true);
-	    }
-	    
-	    
-	}
-		
-		
 	
 
 	/**
@@ -101,25 +74,25 @@ public class LoanFrame extends JFrame {
 		lbl_cost.setBounds(41, 116, 273, 13);
 		contentPane.add(lbl_cost);
 		
-		JLabel lbl_start_date = new JLabel("Date de début: " + LocalDate.now());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		JLabel lbl_start_date = new JLabel("Date de début: " + LocalDate.now().format(formatter));
 		lbl_start_date.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lbl_start_date.setBounds(25, 169, 190, 13);
 		contentPane.add(lbl_start_date);
 		
-		JLabel lbl_end_date = new JLabel("Date de fin :");
-		lbl_end_date.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lbl_end_date.setBounds(25, 216, 93, 13);
-		contentPane.add(lbl_end_date);
+		JLabel lbl_duration = new JLabel("Durée en semaines :");
+		lbl_duration.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_duration.setBounds(25, 216, 116, 18);
+		contentPane.add(lbl_duration);
 		
-		JDateChooser dateChooser = new JDateChooser();
-		dateChooser.setBounds(123, 209, 121, 20);
-	    getContentPane().add(dateChooser);
-	    
-	    lbl_date_error = new JLabel("");
-	    lbl_date_error.setForeground(new Color(232, 49, 81));
-	    lbl_date_error.setBounds(110, 254, 395, 13);
-	    lbl_date_error.setVisible(false);
-	    contentPane.add(lbl_date_error);
+		 Choice choice = new Choice();
+		 choice.setBounds(147, 216, 46, 18);
+		 contentPane.add(choice);
+		 
+		 for(int i=1; i <=12; i++) {
+				choice.add("" + i);
+		 }
+		 
 	    
 	    JTextArea ta_warning = new JTextArea("Attention : Si vous ne rendez pas le jeu à la date convenue,\n une pénalité de 5 crédits/jour vous sera demandé.");
 	    ta_warning.setBounds(25, 289, 491, 53);
@@ -128,36 +101,35 @@ public class LoanFrame extends JFrame {
 	    JButton btn_confirm = new JButton("Confirmer");
 	    btn_confirm.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-	    		lbl_date_error.setVisible(false);
 	    		lbl_message.setVisible(false);
-	    		validationDate(dateChooser);
-	    		if(dateValid) {
-	    
-	    			 Copy copy  = videoGame.copyAvailable();
-	    			 if(copy != null) {
-	    				 LocalDate end_date = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-	    				 copy.setLoan(new Loan(LocalDate.now(), end_date, dateValid, copy, copy.getOwner(), player));
-	    				 if(copy.borrow()) {
-	    					 //Show confirmation message
-	    					 lbl_message.setVisible(true);
-	    					 lbl_message.setText("Location réussite");
-	    					 lbl_message.setForeground(Color.GREEN);
-	    				 }
-	    				 else {
-	    					 //Show error message :
-	    					 lbl_message.setVisible(true);
-	 	    				 lbl_message.setText("Il semble qu'une erreur s'est produite lors de la location.");
-	 	    				 lbl_message.setForeground(Color.RED);
-	    				 }
-	    			 }
-	    			 else {
-	    				 //Show error message : no more available copies
-	    				 lbl_message.setVisible(true);
- 	    				 lbl_message.setText("La location n'a pas pu se dérouler car il n'y a plus de copies disponbles.");
- 	    				 lbl_message.setForeground(Color.RED);
-	    			 }
-	    			 	    			
+	    		
+	  
+	    		Copy copy  = videoGame.copyAvailable();
+	    		if(copy != null) {
+	    			LocalDate end_date = LocalDate.now().plusWeeks(Integer.parseInt(choice.getSelectedItem()));
+	    			copy.setLoan(new Loan(LocalDate.now(), end_date, true, copy, copy.getOwner(), player));
+	    			if(copy.borrow()) {
+	    				//Show confirmation message
+	    				ConsultGameFrame consultGameFrame = new ConsultGameFrame(player, videoGame);
+	    				consultGameFrame.setVisible(true);
+	    				dispose();
+	    				
+	    			}
+	    		    else {
+	    				//Show error message :
+	    				lbl_message.setVisible(true);
+	 	    			lbl_message.setText("Il semble qu'une erreur s'est produite lors de la location.");
+	 	    			lbl_message.setForeground(Color.RED);
+	    			}
 	    		}
+	    		else {
+	    			//Show error message : no more available copies
+	    			lbl_message.setVisible(true);
+ 	    			lbl_message.setText("La location n'a pas pu se dérouler car il n'y a plus de copies disponbles.");
+ 	    			lbl_message.setForeground(Color.RED);
+	    		}
+	    			 	    			
+	    		
 	    	}
 	    });
 	    btn_confirm.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -181,6 +153,8 @@ public class LoanFrame extends JFrame {
 	    lbl_message.setBounds(48, 416, 500, 20);
 	    lbl_message.setVisible(false);
 	    contentPane.add(lbl_message);
+	    
+	   
 	    
 	  
 		

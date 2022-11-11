@@ -49,7 +49,23 @@ public class PlayerDAO extends DAO<Player> {
 	}
 	
 	public boolean update(Player obj){
-		return false;
+		boolean success = true;
+		
+		try{
+			
+			PreparedStatement statement = connect.prepareStatement("UPDATE Player SET credit = ? WHERE id_user = ?");
+			statement.setInt(1, obj.getCredit());
+			statement.setInt(2, obj.getId());
+			statement.executeUpdate();
+			
+				
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			success = false;
+		}
+		
+		return success;
 	}
 	
 	

@@ -100,7 +100,6 @@ public class BookingDAO extends DAO<Booking> {
 			while(result.next()) {
 				PlayerDAO playerDao = new PlayerDAO(this.connect);
 				Player player = playerDao.find(result.getInt("id_user_borrower"));
-				System.out.println("id booking in DAO" + result.getInt("id_booking"));
 				listBookings.add(new Booking(result.getInt("id_booking"),result.getDate("booking_date").toLocalDate(), result.getInt("duration"), player, videoGame));
 			}
 			

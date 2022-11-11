@@ -237,7 +237,7 @@ public class SignupFrame extends JFrame {
 	    			maskErrorMessage();
 	    			LocalDate birth_date = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	    			Player player = new Player(tf_username.getText(), new String(pf_password.getPassword()), 10, LocalDate.now(), birth_date, tf_pseudo.getText());
-	    			if(player.addPlayer()) {
+	    			if(player.login()) {
 	    				lbl_message.setText("Inscription réussite");
 	    				lbl_message.setVisible(true);
 	    				lbl_message.setForeground(Color.GREEN);

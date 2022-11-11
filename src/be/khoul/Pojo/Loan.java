@@ -3,6 +3,7 @@ package be.khoul.Pojo;
 import java.io.Serializable;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 import be.khoul.DAO.DAO;
@@ -104,15 +105,29 @@ public class Loan implements Serializable{
 
 	//Methods
 	
-	public void calculateBalance() {
-		int weeks; 
+	public int calculateBalance() {
+		int weeks = (int) ChronoUnit.WEEKS.between(startDate, endDate);
 		
-		//return weeks * copy.getVideoGame().getCreditCost();
+		return (weeks * copy.getVideoGame().getCreditCost()) + calculatePenality();
+	}
+	
+	public int calculatePenality() {
+		int penality = 0;
+		
+		//If the loan is still ongoing after the end_date
+		if(LocalDate.now().isAfter(endDate) && ongoing == true) {
+			int days = (int) ChronoUnit.DAYS.between(endDate, LocalDate.now());
+			penality += days * 5;
+		}		
+		return penality;
+		
 	}
 	
 	public boolean endLoan() {
 		DAO<Loan> loanDao = adf.getLoanDAO();
 		ongoing = false;
+		borrower.removeCredits(calculateBalance());
+		lender.addCredits(calculateBalance());
 		
 		return loanDao.update(this);
 
@@ -128,6 +143,12 @@ public class Loan implements Serializable{
 		LoanDAO loanDao = (LoanDAO) adf.getLoanDAO();
 		
 		return loanDao.getLoansForPlayer(player);
+	}
+	
+	public static Loan getLoanForCopy(Copy c) {
+		LoanDAO loanDao = (LoanDAO) adf.getLoanDAO();
+		
+		return loanDao.getLoanForCopy(c);
 	}
 	
 	

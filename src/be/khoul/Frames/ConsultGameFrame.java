@@ -53,6 +53,7 @@ public class ConsultGameFrame extends JFrame {
 		
 		v.getVideoGameCopies();
 		v.getVideoGameBookings();
+		v.getBookingIntoLoan();
 		
 		JLabel lbl_videogame = new JLabel(v.getName());
 		lbl_videogame.setHorizontalAlignment(SwingConstants.CENTER);
@@ -158,7 +159,7 @@ public class ConsultGameFrame extends JFrame {
 			btn_rent.setEnabled(false);
 		}
 		
-		v.getBookingIntoLoan();
+		
 		
 		
 

@@ -91,11 +91,26 @@ public class PlayerHomeFrame extends JFrame {
 		JButton btn_consult_copies = new JButton("Mes copies");
 		btn_consult_copies.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				CopiesFrame copiesFrame = new CopiesFrame(player);
+				copiesFrame.setVisible(true);
+				dispose();
 				
 			}
 		});
 		btn_consult_copies.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btn_consult_copies.setBounds(346, 131, 142, 30);
 		contentPane.add(btn_consult_copies);
+		
+		JButton btn_consult_loans = new JButton("Mes emprunts");
+		btn_consult_loans.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LoansFrame loansFrame = new LoansFrame(player);
+				loansFrame.setVisible(true);
+				dispose();
+			}
+		});
+		btn_consult_loans.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_consult_loans.setBounds(10, 201, 142, 30);
+		contentPane.add(btn_consult_loans);
 	}
 }

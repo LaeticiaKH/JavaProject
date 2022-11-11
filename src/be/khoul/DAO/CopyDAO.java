@@ -83,7 +83,7 @@ public class CopyDAO extends DAO<Copy> {
 		}
 		catch(SQLException e){
 			e.printStackTrace();
-		}
+		} 
 		
 		return list;
 		
@@ -112,10 +112,10 @@ public class CopyDAO extends DAO<Copy> {
 	public boolean isCopyAvailable(int id) {
 		boolean available = true;
 		try{
-			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy c INNER JOIN Loan l ON c.id_copy = l.id_copy WHERE id_copy = ?");
+			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy c INNER JOIN Loan l ON c.id_copy = l.id_copy WHERE c.id_copy = ?");
 			statement.setInt(1, id);
 			ResultSet result =  statement.executeQuery();
-			if(result.next()) {
+			while(result.next()) {
 				if(result.getBoolean("ongoing")) {
 					available = false;
 				}

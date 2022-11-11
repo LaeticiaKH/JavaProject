@@ -95,6 +95,7 @@ public class VideoGame implements Serializable {
 	
 	
 	public ArrayList<Copy> getAvailableCopies(){
+		getVideoGameCopies();
 		ArrayList<Copy> availableCopies = new ArrayList<>();
 		for(Copy c: copies) {
 			if(c.isAvailable()) {
@@ -107,6 +108,7 @@ public class VideoGame implements Serializable {
 
 	//Methods
 	public Copy copyAvailable() {
+		getVideoGameCopies();
 		Copy copy = null;
 		if(copies.size() > 0) {
 			for(Copy c: copies) {
@@ -171,7 +173,7 @@ public class VideoGame implements Serializable {
 		}
 		//Check if others players got the oldest booking
 		for(int i=1; i < oldestBookings.size(); i++) {
-			if(oldestBookings.get(i).getBorrower().getRegistrationDate().isBefore(oldestRegistrationDate.get(0).getBookingDate()) && oldestBookings.get(i) != oldestRegistrationDate.get(0)) {
+			if(oldestBookings.get(i).getBorrower().getRegistrationDate().equals(oldestRegistrationDate.get(0).getBorrower().getRegistrationDate()) && oldestBookings.get(i) != oldestRegistrationDate.get(0)) {
 				oldestRegistrationDate.add(oldestBookings.get(i));
 			}
 		}
@@ -190,7 +192,7 @@ public class VideoGame implements Serializable {
 		}
 		//Check if others players got the oldest booking
 		for(int i=1; i < oldestRegistrationDate.size(); i++) {
-			if(oldestRegistrationDate.get(i).getBorrower().getDateOfBirth().isBefore(oldestBirthDate.get(0).getBorrower().getDateOfBirth()) && oldestRegistrationDate.get(i) != oldestBirthDate.get(0)) {
+			if(oldestRegistrationDate.get(i).getBorrower().getDateOfBirth().equals(oldestBirthDate.get(0).getBorrower().getDateOfBirth()) && oldestRegistrationDate.get(i) != oldestBirthDate.get(0)) {
 				oldestBirthDate.add(oldestRegistrationDate.get(i));
 			}
 		}
@@ -244,6 +246,7 @@ public class VideoGame implements Serializable {
 					 
 				}
 				else {
+				
 					return oldestBookings.get(0);
 				}
 				
@@ -261,38 +264,29 @@ public class VideoGame implements Serializable {
 	
 	public void getBookingIntoLoan() {
 		
-		setCopies(Copy.getCopiesFor(this));
-		int available_copies = getAvailableCopies().size();
 		//while there are at least one available copy and a booking
-		System.out.println("copies : "+ copies.size());
-		System.out.println("Available copies : "+ available_copies);
-		System.out.println("Bookings : "+ Booking.getBookings(this).size());
-		getVideoGameBookings();
-		while(available_copies > 0 && getBookings().size() > 0) {
-			System.out.println("In bookingIntoLoan : ");
-			
+		
+		while(copyAvailable() != null && getVideoGameBookings().size() > 0) {
+		
 			Booking booking = selectBooking();
-			System.out.println("Booking after selectBooking :" + booking);
-			
+			System.out.println("Booking prioritaire : " + booking);
+			System.out.println("nombre de copies dispo : " + getAvailableCopies().size() );
+			System.out.println("Nombre de réservations : " + bookings.size());
 			//Get one available copy
-			/*if(copyAvailable() != null) {
-				Copy copy = copyAvailable();
-				
-		    	//Calculate end date 
-		    	LocalDate endDate = LocalDate.now().plusWeeks(booking.getDuration());
-		    	//Create Loan
-		    	Loan loan = new Loan(LocalDate.now(), endDate, true, copy, copy.getOwner(), booking.getBorrower());
-		    	System.out.println("Booking id :" + booking);
-		    	System.out.println("Booking id 2 :" + booking.getId());
-		    	System.out.println("Loan copy :" + copy.getId() + " prêteur : " + copy.getOwner().getUsername() + " emprunteur" + booking.getBorrower().getUsername() + "booking id:" + booking.getId());
-		    	copy.setLoan(loan);
-		    	//If the loan got created without problems the booking can be deleted
-		    	if(copy.borrow()) {
-		    		System.out.println("Booking deleted : " + booking.getId());
-		    		booking.delete();
-		    	}
-			}*/
 			
+			Copy copy = copyAvailable();
+				
+		    //Calculate end date 
+		    LocalDate endDate = LocalDate.now().plusWeeks(booking.getDuration());
+		    //Create Loan
+		    Loan loan = new Loan(LocalDate.now(), endDate, true, copy, copy.getOwner(), booking.getBorrower());
+		    copy.setLoan(loan);
+		    //If the loan got created without problems the booking can be deleted
+		    if(copy.borrow()) {
+		    	bookings.remove(booking);
+		    	booking.delete();
+		    		
+		    }	
 		}
 	}
 	//Methods for DAO
@@ -306,8 +300,11 @@ public class VideoGame implements Serializable {
 		 copies = Copy.getCopiesFor(this);
 	}
 	
-	public void getVideoGameBookings() {
+	public ArrayList<Booking> getVideoGameBookings() {
 		 bookings = Booking.getBookings(this);
+		 
+		 return bookings;
+		 
 	}
 	
 

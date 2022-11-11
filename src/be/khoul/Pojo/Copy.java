@@ -24,7 +24,7 @@ public class Copy implements Serializable {
 		this.owner = owner;
 	}
 	
-	public Copy( VideoGame videoGame,Player owner) {
+	public Copy(VideoGame videoGame,Player owner) {
 		this.videoGame = videoGame;
 		this.owner = owner;
 	}
@@ -64,6 +64,7 @@ public class Copy implements Serializable {
 
 	//Methods
 	public void releaseCopy() {
+		loan.endLoan();
 		loan = null;
 	}
 	
@@ -99,7 +100,7 @@ public class Copy implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Copy [id=" + id + ", videoGame=" + videoGame + ", owner=" + owner + ", loan=" + loan + "]";
+		return "Copy [id=" + id + ", videoGame=" + videoGame.getId() + ", owner=" + owner.getId() + ", loan=" + loan + "]";
 	}
 	
 	

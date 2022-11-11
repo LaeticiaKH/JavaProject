@@ -70,7 +70,7 @@ public class BookingFrame extends JFrame {
 		lbl_game.setBounds(45, 112, 487, 17);
 		contentPane.add(lbl_game);
 		
-		JLabel lbl_duration = new JLabel("Duration de la location : ");
+		JLabel lbl_duration = new JLabel("Durée en semaines: ");
 		lbl_duration.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lbl_duration.setBounds(45, 161, 157, 17);
 		contentPane.add(lbl_duration);
@@ -79,7 +79,7 @@ public class BookingFrame extends JFrame {
 		choice.setBounds(208, 160, 46, 18);
 		contentPane.add(choice);
 	    
-		for(int i=1; i <= 24; i++) {
+		for(int i=1; i <=12; i++) {
 			choice.add("" + i);
 		}
 		
@@ -99,8 +99,9 @@ public class BookingFrame extends JFrame {
 				
 				Booking booking = new Booking(LocalDate.now(), Integer.parseInt(choice.getSelectedItem()) , player, videoGame);
 				if(booking.createBooking()) {
-					 lbl_message.setText("Réservation effectuée");
-					 lbl_message.setForeground(Color.GREEN);
+					ConsultGameFrame consultGameFrame = new ConsultGameFrame(player, videoGame);
+    				consultGameFrame.setVisible(true);
+    				dispose();
 				}
 				else {
 					lbl_message.setText("Un problème est survenu lors de la réservation");

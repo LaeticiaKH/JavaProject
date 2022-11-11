@@ -81,8 +81,10 @@ public class BookingsFrame extends JFrame {
 	    lbl_no_bookings.setVisible(false);
 	    contentPane.add(lbl_no_bookings);
 		
-		listBookings = Booking.getBookings(player);
-		if(listBookings.size() != 0) {
+		//listBookings = Booking.getBookings(player);
+	    player.getOwnBookings();
+	    listBookings = player.getBookings();
+		if(listBookings.size() > 0) {
 			System.out.println(listBookings.size());
 		    String[] nomCol = {"Date de la réservation", "Nom du jeu", "Console"};
 			

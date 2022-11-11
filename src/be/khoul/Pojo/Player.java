@@ -169,10 +169,23 @@ public class Player extends User implements Serializable{
 		}
 	}
 	
+	public void addCredits(int credits) {
+		credit += credits;
+		DAO<Player> playerDao = adf.getPlayerDAO();
+		playerDao.update(this);
+	}
+	
+	public void removeCredits(int credits) {
+		credit -= credits;
+		DAO<Player> playerDao = adf.getPlayerDAO();
+		playerDao.update(this);
+		
+	}
+	
 	
 	//Methods for playerDAO
 	
-	public boolean addPlayer() {
+	public boolean login() {
 		DAO<Player> playerDAO = adf.getPlayerDAO();
 	
 		return playerDAO.create(this);
@@ -194,6 +207,13 @@ public class Player extends User implements Serializable{
 	
 	public void getOwnCopies(){
 		copies = Copy.getCopiesFor(this);
+		for(Copy c : copies) {
+			if(!c.isAvailable()) {
+				//if copy is already in a loan
+				c.setLoan(Loan.getLoanForCopy(c));
+			}
+			
+		}
 	}
 	
 	public void getOwnBookings(){
