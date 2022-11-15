@@ -38,6 +38,10 @@ public class DAOFactory extends AbstractDAOFactory{
 	public DAO<Loan> getLoanDAO(){
 		return new LoanDAO(conn);
 	}
+	
+	public DAO<HistoryCredits> getHistoryCreditsDAO(){
+		return new HistoryCreditsDAO(conn);
+	}
 
 	
 

@@ -207,13 +207,7 @@ public class Player extends User implements Serializable{
 	
 	public void getOwnCopies(){
 		copies = Copy.getCopiesFor(this);
-		for(Copy c : copies) {
-			if(!c.isAvailable()) {
-				//if copy is already in a loan
-				c.setLoan(Loan.getLoanForCopy(c));
-			}
-			
-		}
+		
 	}
 	
 	public void getOwnBookings(){

@@ -18,8 +18,8 @@ public class LoanDAO extends DAO<Loan> {
 	public boolean create(Loan obj){
 		boolean success = true;
 		
-		try {
-			PreparedStatement statement = connect.prepareStatement("INSERT INTO Loan(start_date, end_date, ongoing, id_copy, id_user_borrower) VALUES(?,?,?,?,?)");
+		try(PreparedStatement statement = connect.prepareStatement("INSERT INTO Loan(start_date, end_date, ongoing, id_copy, id_user_borrower) VALUES(?,?,?,?,?)");) {
+			
 			statement.setDate(1, Date.valueOf(obj.getStartDate()));
 			statement.setDate(2, Date.valueOf(obj.getEndDate()));
 			statement.setBoolean(3, obj.isOngoing());
@@ -44,8 +44,7 @@ public class LoanDAO extends DAO<Loan> {
 	public boolean update(Loan obj){
 		boolean success = true;
 		
-		try {
-			PreparedStatement statement = connect.prepareStatement("Update Loan SET ongoing = ? WHERE id_loan = ?");
+		try(PreparedStatement statement = connect.prepareStatement("Update Loan SET ongoing = ? WHERE id_loan = ?");) {
 			statement.setBoolean(1,obj.isOngoing());
 			statement.setInt(2, obj.getId());
 			statement.executeUpdate();
@@ -64,9 +63,8 @@ public class LoanDAO extends DAO<Loan> {
 	
 	public ArrayList<Loan> getLoansForPlayer(Player player) {
 		ArrayList<Loan> list = new ArrayList<>();
-		try{
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Loan l INNER JOIN Player p ON l.id_user_borrower = p.id_user WHERE p.id_user = ?");){
 			
-			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Loan l INNER JOIN Player p ON l.id_user_borrower = p.id_user WHERE p.id_user = ?");
 			statement.setInt(1, player.getId());
 			ResultSet result = statement.executeQuery();
 			while(result.next()) {
@@ -86,8 +84,8 @@ public class LoanDAO extends DAO<Loan> {
 	public Loan getLoanForCopy(Copy copy) {
 		Loan loan = null;
 		
-		try {
-			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Loan WHERE id_copy = ? and ongoing = ?");
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Loan WHERE id_copy = ? and ongoing = ?");) {
+			
 			statement.setInt(1, copy.getId());
 			statement.setBoolean(2, true);
 			ResultSet result;

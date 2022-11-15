@@ -18,8 +18,8 @@ public class CopyDAO extends DAO<Copy> {
 	public boolean create(Copy obj){	
 		boolean success = true;
 		
-		try {
-			PreparedStatement statement = connect.prepareStatement("INSERT INTO Copy(id_videogame, id_user_lender) VALUES(?,?)");
+		try(PreparedStatement statement = connect.prepareStatement("INSERT INTO Copy(id_videogame, id_user_lender) VALUES(?,?)");) {
+			
 			statement.setInt(1, obj.getVideoGame().getId());
 			statement.setInt(2, obj.getOwner().getId());
 			
@@ -37,8 +37,8 @@ public class CopyDAO extends DAO<Copy> {
 	public boolean delete(Copy obj){
 		boolean success = true;
 		
-		try {
-			PreparedStatement statement = connect.prepareStatement("DELETE FROM Copy WHERE id_copy = ?");
+		try(PreparedStatement statement = connect.prepareStatement("DELETE FROM Copy WHERE id_copy = ?");){
+			
 			statement.setInt(1, obj.getId());
 			statement.executeUpdate();
 			
@@ -63,9 +63,9 @@ public class CopyDAO extends DAO<Copy> {
 	
 	public ArrayList<Copy> findCopiesFor(VideoGame videoGame) {
 		ArrayList<Copy> list = new ArrayList<>();
-		try{
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy c INNER JOIN VideoGame v ON c.id_videogame = v.id_videogame WHERE v.id_videogame = ?");){
 			
-			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy c INNER JOIN VideoGame v ON c.id_videogame = v.id_videogame WHERE v.id_videogame = ?");
+			
 			statement.setInt(1, videoGame.getId());
 			ResultSet result = statement.executeQuery();
 			while(result.next()) {
@@ -84,9 +84,8 @@ public class CopyDAO extends DAO<Copy> {
 	
 	public ArrayList<Copy> findCopiesFor(Player player) {
 		ArrayList<Copy> list = new ArrayList<>();
-		try{
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy c INNER JOIN VideoGame v ON c.id_videogame = v.id_videogame WHERE v.id_videogame = ?");){
 			
-			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy c INNER JOIN Player p ON c.id_user_lender = p.id_user WHERE p.id_user = ?");
 			statement.setInt(1, player.getId());
 			ResultSet result = statement.executeQuery();
 			while(result.next()) {
@@ -106,8 +105,7 @@ public class CopyDAO extends DAO<Copy> {
 	@Override
 	public Copy find(int id) {
 		Copy copy = null;
-		try{
-			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy WHERE id_copy = ?");
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy WHERE id_copy = ?");){
 			statement.setInt(1, id);
 			ResultSet result =  statement.executeQuery();
 			if(result.next()) {
@@ -125,8 +123,7 @@ public class CopyDAO extends DAO<Copy> {
 	
 	public boolean isCopyAvailable(int id) {
 		boolean available = true;
-		try{
-			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy c INNER JOIN Loan l ON c.id_copy = l.id_copy WHERE c.id_copy = ?");
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy c INNER JOIN Loan l ON c.id_copy = l.id_copy WHERE c.id_copy = ?");){
 			statement.setInt(1, id);
 			ResultSet result =  statement.executeQuery();
 			while(result.next()) {

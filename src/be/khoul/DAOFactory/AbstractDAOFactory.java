@@ -22,6 +22,8 @@ public abstract class AbstractDAOFactory {
 	
 	public abstract DAO<Loan> getLoanDAO();
 	
+	public abstract DAO<HistoryCredits> getHistoryCreditsDAO();
+	
 	
 	public static AbstractDAOFactory getFactory(int type){
 		switch(type){

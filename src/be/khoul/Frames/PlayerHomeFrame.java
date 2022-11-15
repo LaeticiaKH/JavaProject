@@ -24,8 +24,6 @@ public class PlayerHomeFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//PlayerHomeFrame frame = new PlayerHomeFrame();
-					//frame.setVisible(true);
 					LoginFrame loginFrame = new LoginFrame();
 					loginFrame.setVisible(true);
 				} catch (Exception e) {
@@ -112,5 +110,10 @@ public class PlayerHomeFrame extends JFrame {
 		btn_consult_loans.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btn_consult_loans.setBounds(10, 201, 142, 30);
 		contentPane.add(btn_consult_loans);
+		
+		JButton btn_log_out = new JButton("Déconnexion");
+		btn_log_out.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_log_out.setBounds(346, 312, 142, 30);
+		contentPane.add(btn_log_out);
 	}
 }

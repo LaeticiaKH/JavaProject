@@ -84,12 +84,29 @@ public class Copy implements Serializable {
 	//Methods DAO
 	public static ArrayList<Copy> getCopiesFor(VideoGame videogame) {
 		CopyDAO copyDao = (CopyDAO)adf.getCopyDAO();
-		return copyDao.findCopiesFor(videogame);
+		ArrayList<Copy> listCopies = copyDao.findCopiesFor(videogame);
+		for(Copy c : listCopies) {
+			if(!c.isAvailable()) {
+				//if copy is already in a loan
+				c.setLoan(Loan.getLoanForCopy(c));
+			}
+			
+		}
+		return listCopies;
 	}
 	
 	public static ArrayList<Copy> getCopiesFor(Player player) {
 		CopyDAO copyDao = (CopyDAO)adf.getCopyDAO();
-		return copyDao.findCopiesFor(player);
+		ArrayList<Copy> listCopies = copyDao.findCopiesFor(player);
+		for(Copy c : listCopies) {
+			if(!c.isAvailable()) {
+				//if copy is already in a loan
+				c.setLoan(Loan.getLoanForCopy(c));
+			}
+			
+		}
+		return listCopies;
+		
 	}
 	
 	public boolean create() {

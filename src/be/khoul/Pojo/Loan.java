@@ -1,7 +1,7 @@
 package be.khoul.Pojo;
 
 import java.io.Serializable;
-
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -105,10 +105,76 @@ public class Loan implements Serializable{
 
 	//Methods
 	
-	public int calculateBalance() {
-		int weeks = (int) ChronoUnit.WEEKS.between(startDate, endDate);
+	public int calculateCredit() {
+		int balance = 0;
+		LocalDate startDate = getStartDate();
+		VideoGame videoGame = copy.getVideoGame();
+		LocalDate endDate = getEndDate();
+		int weeks =  (int) ChronoUnit.WEEKS.between(startDate, endDate);
+		System.out.println("DEBUT :" + startDate + " FIN : " + endDate);
+		System.out.println("Nombre de semaines :" + weeks);
+		int previousWeeks;
 		
-		return (weeks * copy.getVideoGame().getCreditCost()) + calculatePenality();
+		//Get all histories for the video game
+		videoGame.setHistoriesCredits(HistoryCredits.findHistoryCreditsFor(this.copy));
+		ArrayList<HistoryCredits> histories = videoGame.getHistoriesCredits();
+		System.out.println(histories.size());
+		for(HistoryCredits h: histories) {
+			System.out.println(h);
+			
+		}
+		
+		if(histories.size() == 0) {
+			//if no credit change happened 
+			System.out.println("no credit change");
+			balance = weeks * videoGame.getCreditCost();
+			
+			return balance;
+		}
+		
+		
+		if(ChronoUnit.WEEKS.between(getStartDate(), histories.get(histories.size()-1).getChangeDate()) == 0) {
+			//if it's the first week => weeks between start date and end date * newCredit
+			System.out.println("first week");
+			balance = weeks * videoGame.getCreditCost();
+		}
+		
+		else {
+			HistoryCredits latestChange = histories.get(0);
+			for(int i = 1; i <= weeks; i++) {
+				boolean change = false;
+				for(int j=0; j < histories.size() && change == false; j++) {
+					
+					HistoryCredits h = histories.get(j);
+					//Check if a change happened during the week
+					if((h.getChangeDate().isAfter(startDate.plusWeeks(i-1)) ||  h.getChangeDate().isEqual(startDate.plusWeeks(i-1))) && (h.getChangeDate().isBefore(startDate.plusWeeks(i)) || h.getChangeDate().isEqual(startDate.plusWeeks(i)))) {
+						balance += histories.get(j).getNewCredit();
+					    //Save the change as latest change 
+						latestChange = h;
+						change = true;
+						
+						
+					}
+					else {
+						change = false;
+					}
+				}
+				if(!change) {
+					//no change, take the latest change to get the credit
+					balance += latestChange.getOldCredit();
+					System.out.println("No change happened during the week : " + balance);
+				}
+				System.out.println("Balance semaine " + i + "  : " + balance);
+			}
+			System.out.println("Balance final" + balance);
+		}
+
+		return balance;
+	}
+	
+	public int calculateBalance() {
+		
+		return calculateCredit() + calculatePenality();
 	}
 	
 	public int calculatePenality() {

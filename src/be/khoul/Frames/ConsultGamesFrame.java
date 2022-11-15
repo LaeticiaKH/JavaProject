@@ -33,8 +33,8 @@ public class ConsultGamesFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//ConsultGamesFrame frame = new ConsultGamesFrame();
-					//frame.setVisible(true);
+					LoginFrame loginFrame = new LoginFrame();
+					loginFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -64,7 +64,7 @@ public class ConsultGamesFrame extends JFrame {
 		contentPane.add(lbl_consultGames);
 		
 		listGames = VideoGame.getAllVideoGames();
-		System.out.println(listGames.size());
+		
 	    String[] nomCol = {"Nom", "Crédits", "Console"};
 		
 	    JScrollPane scrollPane = new JScrollPane();

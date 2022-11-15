@@ -20,6 +20,7 @@ public class VideoGame implements Serializable {
 	
 	private ArrayList<Booking> bookings;
 	private ArrayList<Copy> copies;
+	private ArrayList<HistoryCredits> historiesCredits;
 	
 	//Constructor
 	public VideoGame(String name, int creditCost, String console) {
@@ -75,14 +76,6 @@ public class VideoGame implements Serializable {
 	public void setConsole(String console) {
 		this.console = console;
 	}
-	
-	public ArrayList<Booking> getBookings() {
-		return bookings;
-	}
-
-	public void setBookings(ArrayList<Booking> bookings) {
-		this.bookings = bookings;
-	}
 
 	
 	public ArrayList<Copy> getCopies() {
@@ -94,6 +87,23 @@ public class VideoGame implements Serializable {
 	}
 	
 	
+
+	public ArrayList<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(ArrayList<Booking> bookings) {
+		this.bookings = bookings;
+	}
+	
+	public ArrayList<HistoryCredits> getHistoriesCredits() {
+		return historiesCredits;
+	}
+
+	public void setHistoriesCredits(ArrayList<HistoryCredits> historiesCredits) {
+		this.historiesCredits = historiesCredits;
+	}
+	//Methods
 	public ArrayList<Copy> getAvailableCopies(){
 		getVideoGameCopies();
 		ArrayList<Copy> availableCopies = new ArrayList<>();
@@ -296,6 +306,13 @@ public class VideoGame implements Serializable {
 		return  videoGameDao.findAll();
 	}
     
+	public boolean create() {
+		DAO<VideoGame> videoGameDao= adf.getVideoGameDAO();
+
+		return videoGameDao.create(this);
+	}
+	
+	
 	public void getVideoGameCopies() {
 		 copies = Copy.getCopiesFor(this);
 	}
@@ -304,10 +321,16 @@ public class VideoGame implements Serializable {
 		 bookings = Booking.getBookings(this);
 		 
 		 return bookings;
-		 
 	}
 	
+	
+	public boolean updateCredit() {
+		DAO<VideoGame> videoGameDao= adf.getVideoGameDAO();
 
+		return videoGameDao.update(this);
+	}
+	
+		
 	@Override
 	public String toString() {
 		return "VideoGame [id=" + id + ", name=" + name + ", creditCost=" + creditCost + ", console=" + console + "]";

@@ -14,24 +14,55 @@ public class VideoGameDAO extends DAO<VideoGame> {
 		super(conn);
 	}
 
-	public boolean create(VideoGame obj){		
-		return false;
+	public boolean create(VideoGame obj){
+		boolean success = true;
+		
+		try(PreparedStatement statement = connect.prepareStatement("INSERT INTO VideoGame(name, credit_cost, console) VALUES(?,?,?)")) {
+			
+			statement.setString(1, obj.getName());
+			statement.setInt(2, obj.getCreditCost());
+			statement.setString(3, obj.getConsole());
+			
+			statement.executeUpdate();
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			success = false;
+		}
+		
+		return success;
 	}
+	
 	
 	public boolean delete(VideoGame obj){
 		return false;
 	}
 	
 	public boolean update(VideoGame obj){
-		return false;
+		boolean success = true;
+		
+		try(
+			PreparedStatement statement = connect.prepareStatement("Update VideoGame SET credit_cost = ? WHERE id_videogame = ?");){
+		
+			statement.setInt(1, obj.getCreditCost());
+			statement.setInt(2, obj.getId());
+			statement.executeUpdate();
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			success = false;
+		}
+		
+		return success;
 	}
 
 	public ArrayList<VideoGame> findAll() {
 		ArrayList<VideoGame> list = new ArrayList<>();
-		try{
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM VideoGame");
+				ResultSet result = statement.executeQuery();){
 			
-			PreparedStatement statement = connect.prepareStatement("SELECT * FROM VideoGame");
-			ResultSet result = statement.executeQuery();
 			while(result.next()) {
 				list.add(new VideoGame(result.getInt("id_videogame"), result.getString("name"), result.getInt("credit_cost"), result.getString("console")));
 			}
