@@ -68,9 +68,11 @@ public class HistoryCredits implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "HistoryCredits [changeDate=" + changeDate + ", oldCredit=" + oldCredit + ", videoGame=" + videoGame.getId()
-				+ "]";
+		return "HistoryCredits [changeDate=" + changeDate + ", oldCredit=" + oldCredit + ", newCredit=" + newCredit
+				+ ", videoGame=" + videoGame + "]";
 	}
+	
+	
 	
 	
 	

@@ -130,6 +130,24 @@ public class VideoGame implements Serializable {
 		return copy;
 	}
 	
+	
+	public ArrayList<Copy> getAvailableCopiesForPlayer(Player player){
+		getVideoGameCopies();
+		//Get available copies excluding the copies of the player
+		ArrayList<Copy> availableCopiesForPlayer = new ArrayList<>();
+		for(Copy c: copies) {
+			if(c.isAvailable()) {
+				if(c.getOwner().getId() != player.getId()) {
+					availableCopiesForPlayer.add(c);
+				}
+				
+			}
+		}
+		
+		return availableCopiesForPlayer;
+		
+	}
+	
 	private ArrayList<Booking> selectMostCredits(){
 		ArrayList<Booking> mostCredits = new ArrayList<>();
 		
@@ -313,8 +331,10 @@ public class VideoGame implements Serializable {
 	}
 	
 	
-	public void getVideoGameCopies() {
+	public ArrayList<Copy> getVideoGameCopies() {
 		 copies = Copy.getCopiesFor(this);
+		 
+		 return copies;
 	}
 	
 	public ArrayList<Booking> getVideoGameBookings() {

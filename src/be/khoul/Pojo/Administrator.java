@@ -38,8 +38,8 @@ public class Administrator extends User implements Serializable {
 				//Calculate credit of each loan for a copy of the video game
 				Loan loan = c.getLoan();
 				//Update balance with new credit
-				if(loan.getEndDate().isAfter(LocalDate.now())) {
-					loan.calculateCredit();
+				if(loan.isOngoing()) {
+					loan.calculateBalance();
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 package be.khoul.Frames;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ public class BookingsFrame extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private ArrayList<Booking> listBookings;
+	private JLabel lbl_message;
 	
 
 	/**
@@ -35,8 +37,8 @@ public class BookingsFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//BookingsFrame frame = new BookingsFrame();
-					//frame.setVisible(true);
+					LoginFrame loginFrame = new LoginFrame();
+					loginFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -71,7 +73,7 @@ public class BookingsFrame extends JFrame {
 	    	}
 	    });
 	    btn_back.setFont(new Font("Tahoma", Font.PLAIN, 12));
-	    btn_back.setBounds(31, 409, 85, 31);
+	    btn_back.setBounds(31, 409, 98, 31);
 	    contentPane.add(btn_back);
 	    
 	    JLabel lbl_no_bookings = new JLabel("Vous n'avez fait aucune réservations pour l'instant.");
@@ -80,6 +82,34 @@ public class BookingsFrame extends JFrame {
 	    lbl_no_bookings.setBounds(98, 122, 428, 21);
 	    lbl_no_bookings.setVisible(false);
 	    contentPane.add(lbl_no_bookings);
+	    
+	    JButton btn_cancel = new JButton("Annuler réservation");
+	    btn_cancel.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		ListSelectionModel selectModel= table.getSelectionModel();
+				if(selectModel.getMinSelectionIndex() >= 0) {
+					int selectedRow = selectModel.getMinSelectionIndex();
+					Booking booking = listBookings.get(selectedRow);
+					CancelBookingFrame cancelBookingFrame = new CancelBookingFrame(player,booking);
+					cancelBookingFrame.setVisible(true);
+					dispose();
+				}
+				else{
+					lbl_message.setForeground(Color.RED);
+					lbl_message.setText("Veuillez sélectionner une réservation");
+				}
+	    		
+	    	}
+	    });
+	    btn_cancel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    btn_cancel.setBounds(426, 409, 141, 31);
+	    contentPane.add(btn_cancel);
+	    
+	    lbl_message = new JLabel("");
+	    lbl_message.setHorizontalAlignment(SwingConstants.CENTER);
+	    lbl_message.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    lbl_message.setBounds(170, 419, 246, 13);
+	    contentPane.add(lbl_message);
 		
 		//listBookings = Booking.getBookings(player);
 	    player.getOwnBookings();

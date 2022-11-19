@@ -67,11 +67,11 @@ public class HistoryCreditsDAO extends DAO<HistoryCredits> {
 		try(PreparedStatement statement = connect.prepareStatement("SELECT h.change_date, h.old_credit, h.new_credit FROM "
 				+ "((( HistoryCredits h INNER JOIN VideoGame v ON h.id_videogame = v.id_videogame) "
 				+ "INNER JOIN Copy c ON c.id_videogame = v.id_videogame) "
-				+ "INNER JOIN Loan l ON l.id_copy = c.id_copy) WHERE v.id_videogame = ? AND h.change_date >= ? AND h.change_date <= ?  GROUP BY h.change_date, h.old_credit, h.new_credit ORDER BY change_date");){
+				+ "INNER JOIN Loan l ON l.id_copy = c.id_copy) WHERE v.id_videogame = ? AND h.change_date >= ? GROUP BY h.change_date, h.old_credit, h.new_credit ORDER BY h.change_date");){
 			
 			statement.setInt(1, c.getVideoGame().getId());
 			statement.setDate(2, Date.valueOf(c.getLoan().getStartDate()));
-			statement.setDate(3, Date.valueOf(c.getLoan().getEndDate()));
+			
 			ResultSet result = statement.executeQuery();
 			while(result.next()) {
 				HistoryCredits h = new HistoryCredits(result.getDate("change_date").toLocalDate(), result.getInt("old_credit"), result.getInt("new_credit"),c.getVideoGame());

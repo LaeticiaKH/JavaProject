@@ -74,6 +74,7 @@ public class Copy implements Serializable {
 	
 	public boolean isAvailable() {
 		CopyDAO copyDao = (CopyDAO)adf.getCopyDAO();
+
 		//Check if copy is in a loan 
 		//If copy is in a loan => check if loan is ongoing or not
 		return copyDao.isCopyAvailable(id);

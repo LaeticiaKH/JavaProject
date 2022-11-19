@@ -60,6 +60,9 @@ public class ConsultGamesAdminFrame extends JFrame {
 		contentPane.setLayout(null);
 		
 		listGames = VideoGame.getAllVideoGames();
+		for(VideoGame v :listGames) {
+			v.getVideoGameCopies();
+		}
 		
 		
 	    String[] nomCol = {"Nom", "Crédits", "Console"};

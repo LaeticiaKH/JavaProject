@@ -71,7 +71,7 @@ public class ConsultGameFrame extends JFrame {
 		lbl_credits.setBounds(28, 173, 126, 21);
 		contentPane.add(lbl_credits);
 		
-		JLabel lbl_available = new JLabel("Exemplaire disponible : " + v.getAvailableCopies().size());
+		JLabel lbl_available = new JLabel("Exemplaire disponible : " + v.getAvailableCopiesForPlayer(player).size());
 		lbl_available.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lbl_available.setBounds(28, 220, 270, 13);
 		contentPane.add(lbl_available);
@@ -148,7 +148,7 @@ public class ConsultGameFrame extends JFrame {
 		   	lbl_message.setForeground(Color.RED);
 		}
 		
-		if(v.getAvailableCopies().size() > 0) {
+		if(v.getAvailableCopiesForPlayer(player).size() > 0) {
 			//Loan can happen directly
 			btn_book.setEnabled(false);
 			btn_rent.setEnabled(true);
