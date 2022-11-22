@@ -7,11 +7,14 @@ import be.khoul.Pojo.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
+import javax.swing.SwingConstants;
 
 public class PlayerHomeFrame extends JFrame {
 
@@ -33,6 +36,10 @@ public class PlayerHomeFrame extends JFrame {
 		});
 	}
 
+	public void design_buttons(JButton btn) {
+		btn.setBackground(Color.pink);
+		btn.setForeground(Color.white);
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -51,13 +58,19 @@ public class PlayerHomeFrame extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lbl_welcome = new JLabel("Bonjour " + player.getPseudo() + "!");
-		lbl_welcome.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lbl_welcome.setBounds(35, 36, 244, 22);
+		lbl_welcome.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_welcome.setFont(new Font("Yu Gothic UI", Font.PLAIN, 18));
+		lbl_welcome.setBounds(10, 28, 478, 44);
+		lbl_welcome.setForeground(Color.white);
+		lbl_welcome.setBorder(new LineBorder(Color.white));
+		lbl_welcome.setOpaque(true);
+		lbl_welcome.setBackground(Color.darkGray);
+		
 		contentPane.add(lbl_welcome);
 		
 		JLabel lbl_credit = new JLabel("Vous disposez de " + player.getCredit() + " crédits");
-		lbl_credit.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lbl_credit.setBounds(31, 71, 248, 13);
+		lbl_credit.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		lbl_credit.setBounds(41, 89, 248, 13);
 		contentPane.add(lbl_credit);
 		
 		JButton btn_consultgames = new JButton("Voir Jeux Vidéos");
@@ -70,7 +83,7 @@ public class PlayerHomeFrame extends JFrame {
 				
 			}
 		});
-		btn_consultgames.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_consultgames.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_consultgames.setBounds(10, 131, 142, 30);
 		contentPane.add(btn_consultgames);
 		
@@ -82,7 +95,7 @@ public class PlayerHomeFrame extends JFrame {
 				dispose();
 			}
 		});
-		btn_consult_bookings.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_consult_bookings.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_consult_bookings.setBounds(173, 132, 142, 30);
 		contentPane.add(btn_consult_bookings);
 		
@@ -95,7 +108,7 @@ public class PlayerHomeFrame extends JFrame {
 				
 			}
 		});
-		btn_consult_copies.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_consult_copies.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_consult_copies.setBounds(346, 131, 142, 30);
 		contentPane.add(btn_consult_copies);
 		
@@ -107,13 +120,32 @@ public class PlayerHomeFrame extends JFrame {
 				dispose();
 			}
 		});
-		btn_consult_loans.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_consult_loans.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_consult_loans.setBounds(10, 201, 142, 30);
 		contentPane.add(btn_consult_loans);
 		
 		JButton btn_log_out = new JButton("Déconnexion");
-		btn_log_out.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_log_out.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LoginFrame loginFrame = new LoginFrame();
+				loginFrame.setVisible(true);
+				dispose();
+				
+			}
+		});
+		btn_log_out.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_log_out.setBounds(346, 312, 142, 30);
 		contentPane.add(btn_log_out);
+		
+		JLabel lbl_birthday = new JLabel("Bonne anniversaire ! Vous recevez 2 crédits bonus");
+		lbl_birthday.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD | Font.ITALIC, 13));
+		lbl_birthday.setForeground(new Color(147, 47, 49));
+		lbl_birthday.setBounds(14, 305, 322, 44);
+		lbl_birthday.setVisible(false);
+		contentPane.add(lbl_birthday);
+		
+		if(player.isBirthday()) {
+			lbl_birthday.setVisible(true);
+		}
 	}
 }

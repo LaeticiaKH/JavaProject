@@ -48,7 +48,7 @@ public class CancelBookingFrame extends JFrame {
 		
 		JLabel lbl_title = new JLabel("Annulation de réservation");
 		lbl_title.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_title.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lbl_title.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
 		lbl_title.setBounds(154, 39, 257, 33);
 		contentPane.add(lbl_title);
 		
@@ -60,7 +60,7 @@ public class CancelBookingFrame extends JFrame {
 				dispose();
 			}
 		});
-		btn_back.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_back.setBounds(59, 330, 108, 33);
 		contentPane.add(btn_back);
 		
@@ -74,27 +74,27 @@ public class CancelBookingFrame extends JFrame {
 				
 			}
 		});
-		btn_confirm.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_confirm.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_confirm.setBounds(414, 330, 108, 33);
 		contentPane.add(btn_confirm);
 		
 		JLabel lbl_video_game = new JLabel("Jeu :" + booking.getVideoGame().getName());
-		lbl_video_game.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_video_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_video_game.setBounds(59, 118, 170, 20);
 		contentPane.add(lbl_video_game);
 		
 		JLabel lbl_console = new JLabel("Console : " + booking.getVideoGame().getConsole());
-		lbl_console.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_console.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_console.setBounds(59, 167, 170, 20);
 		contentPane.add(lbl_console);
 		
 		JLabel lbl_credit = new JLabel("Crédit : " + booking.getVideoGame().getCreditCost());
-		lbl_credit.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_credit.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_credit.setBounds(59, 221, 170, 20);
 		contentPane.add(lbl_credit);
 		
 		JLabel lbl_date = new JLabel("Date de réservation : " + booking.getBookingDate());
-		lbl_date.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_date.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_date.setBounds(59, 273, 170, 20);
 		contentPane.add(lbl_date);
 	}

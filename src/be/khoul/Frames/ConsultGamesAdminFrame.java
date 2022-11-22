@@ -19,6 +19,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -28,6 +29,7 @@ public class ConsultGamesAdminFrame extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private ArrayList<VideoGame> listGames;
+	private DefaultTableModel model;
 	private JLabel lbl_message;
 
 	/**
@@ -52,7 +54,7 @@ public class ConsultGamesAdminFrame extends JFrame {
 	 */
 	public ConsultGamesAdminFrame(Administrator admin) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 614, 459);
+		setBounds(100, 100, 658, 479);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -68,7 +70,7 @@ public class ConsultGamesAdminFrame extends JFrame {
 	    String[] nomCol = {"Nom", "Crédits", "Console"};
 		
 	    JScrollPane scrollPane = new JScrollPane();
-	    scrollPane.setSize(550, 252);
+	    scrollPane.setSize(593, 252);
 	    scrollPane.setLocation(25, 48);
 		contentPane.add(scrollPane);
 	    
@@ -86,12 +88,12 @@ public class ConsultGamesAdminFrame extends JFrame {
 				dispose();
 			}
 		});
-		btn_retour.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btn_retour.setBounds(37, 332, 93, 29);
+		btn_retour.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		btn_retour.setBounds(34, 397, 112, 29);
 		contentPane.add(btn_retour);
 		
-		JButton btn_changeCredit = new JButton("Changer crédit");
-		btn_changeCredit.addActionListener(new ActionListener() {
+		JButton btn_change_credit = new JButton("Changer crédit");
+		btn_change_credit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				lbl_message.setVisible(false);
 				ListSelectionModel selectModel= table.getSelectionModel();
@@ -109,9 +111,9 @@ public class ConsultGamesAdminFrame extends JFrame {
 				}
 			}
 		});
-		btn_changeCredit.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btn_changeCredit.setBounds(426, 332, 113, 29);
-		contentPane.add(btn_changeCredit);
+		btn_change_credit.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		btn_change_credit.setBounds(426, 332, 134, 29);
+		contentPane.add(btn_change_credit);
 		
 		JButton btn_add_game = new JButton("Ajouter un jeu");
 		btn_add_game.addActionListener(new ActionListener() {
@@ -121,23 +123,63 @@ public class ConsultGamesAdminFrame extends JFrame {
 				dispose();
 			}
 		});
-		btn_add_game.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btn_add_game.setBounds(220, 332, 113, 29);
+		btn_add_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		btn_add_game.setBounds(248, 332, 128, 29);
 		contentPane.add(btn_add_game);
 		
 		lbl_message = new JLabel("");
 		lbl_message.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_message.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lbl_message.setBounds(37, 388, 502, 24);
+		lbl_message.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		lbl_message.setBounds(34, 371, 526, 24);
 		contentPane.add(lbl_message);
 		
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		JButton btn_delete_game = new JButton("Supprimer un jeu");
+		btn_delete_game.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lbl_message.setVisible(false);
+				ListSelectionModel selectModel= table.getSelectionModel();
+				if(selectModel.getMinSelectionIndex() >= 0) {
+					int selectedRow = selectModel.getMinSelectionIndex();
+	                VideoGame videoGame = listGames.get(selectedRow);
+	                if(videoGame.getVideoGameCopies().size() == 0 && videoGame.getBookings().size() == 0) {
+	                	int dialogResult = JOptionPane.showConfirmDialog (null ,"Etes-vous sur de vouloir supprimer ce jeu vidéo ?"," Attention" , JOptionPane.YES_NO_OPTION);
+	                	if(dialogResult == JOptionPane.YES_OPTION){
+	                		videoGame.delete();
+	                	    model.removeRow(selectedRow);
+	                	    lbl_message.setVisible(true);
+						    lbl_message.setForeground(Color.GREEN);
+							lbl_message.setText("Jeu supprimé.");
+	                	}
+	                }
+	                else {
+	                	lbl_message.setVisible(true);
+						lbl_message.setForeground(Color.RED);
+						lbl_message.setText("Ce jeu ne peux pas être supprimé car il possède encore des copies ou des résevations.");
+	                }
+	                
+				}else {
+					lbl_message.setVisible(true);
+					lbl_message.setForeground(Color.RED);
+					lbl_message.setText("Veuillez sélectionner un jeu à supprimer.");
+				}
+			}
+			
+		});
+		btn_delete_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		btn_delete_game.setBounds(30, 332, 158, 29);
+		contentPane.add(btn_delete_game);
+		
+	    model = (DefaultTableModel) table.getModel();
 		model.setColumnIdentifiers(nomCol);
 		for(VideoGame v: listGames) {
 			Object[] data = {v.getName(), v.getCreditCost(), v.getConsole()};
 			model.addRow(data);
 		}
 		
+		if(listGames.size() == 0) {
+			btn_delete_game.setEnabled(false);
+			btn_change_credit.setEnabled(false);
+		}
 		
 	}
 

@@ -60,7 +60,7 @@ public class BookingsFrame extends JFrame {
 		
 		JLabel lbl_bookings = new JLabel("Mes réservations");
 	    lbl_bookings.setHorizontalAlignment(SwingConstants.CENTER);
-	    lbl_bookings.setFont(new Font("Tahoma", Font.PLAIN, 18));
+	    lbl_bookings.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
 	    lbl_bookings.setBounds(223, 20, 161, 38);
 	    contentPane.add(lbl_bookings);
 	    
@@ -72,13 +72,13 @@ public class BookingsFrame extends JFrame {
 	    		dispose();
 	    	}
 	    });
-	    btn_back.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 	    btn_back.setBounds(31, 409, 98, 31);
 	    contentPane.add(btn_back);
 	    
 	    JLabel lbl_no_bookings = new JLabel("Vous n'avez fait aucune réservations pour l'instant.");
 	    lbl_no_bookings.setHorizontalAlignment(SwingConstants.CENTER);
-	    lbl_no_bookings.setFont(new Font("Tahoma", Font.PLAIN, 15));
+	    lbl_no_bookings.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 15));
 	    lbl_no_bookings.setBounds(98, 122, 428, 21);
 	    lbl_no_bookings.setVisible(false);
 	    contentPane.add(lbl_no_bookings);
@@ -101,13 +101,13 @@ public class BookingsFrame extends JFrame {
 	    		
 	    	}
 	    });
-	    btn_cancel.setFont(new Font("Tahoma", Font.PLAIN, 12));
-	    btn_cancel.setBounds(426, 409, 141, 31);
+	    btn_cancel.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+	    btn_cancel.setBounds(426, 409, 161, 31);
 	    contentPane.add(btn_cancel);
 	    
 	    lbl_message = new JLabel("");
 	    lbl_message.setHorizontalAlignment(SwingConstants.CENTER);
-	    lbl_message.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    lbl_message.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 	    lbl_message.setBounds(170, 419, 246, 13);
 	    contentPane.add(lbl_message);
 		
@@ -116,7 +116,7 @@ public class BookingsFrame extends JFrame {
 	    listBookings = player.getBookings();
 		if(listBookings.size() > 0) {
 			System.out.println(listBookings.size());
-		    String[] nomCol = {"Date de la réservation", "Nom du jeu", "Console"};
+		    String[] nomCol = {"Date", "Nom du jeu", "Console", "Durée"};
 			
 		    JScrollPane scrollPane = new JScrollPane();
 		    scrollPane.setSize(527, 323);
@@ -132,12 +132,13 @@ public class BookingsFrame extends JFrame {
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
 			model.setColumnIdentifiers(nomCol);
 			for(Booking b: listBookings) {
-				Object[] data ={b.getBookingDate(), b.getVideoGame().getName(), b.getVideoGame().getConsole()};
+				Object[] data ={b.getBookingDate(), b.getVideoGame().getName(), b.getVideoGame().getConsole(), b.getDuration()};
 				model.addRow(data);
 			}
 		}
 		else {
 			lbl_no_bookings.setVisible(true);
+			btn_cancel.setEnabled(false);
 		}
 		
 		

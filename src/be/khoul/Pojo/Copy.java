@@ -11,6 +11,7 @@ public class Copy implements Serializable {
 	
 	private static final long serialVersionUID = 484910389772802237L;
 	private static final AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
+	private static final DAO<Copy> copyDao = adf.getCopyDAO();
 	
 	private int id;
 	private VideoGame videoGame;
@@ -68,24 +69,22 @@ public class Copy implements Serializable {
 		loan = null;
 	}
 	
-	public boolean borrow() {
+	public boolean borrow(Loan l) {
+		loan = l;
 		return loan.createLoan();
 	}
 	
 	public boolean isAvailable() {
-		CopyDAO copyDao = (CopyDAO)adf.getCopyDAO();
-
 		//Check if copy is in a loan 
 		//If copy is in a loan => check if loan is ongoing or not
-		return copyDao.isCopyAvailable(id);
+		return ((CopyDAO) copyDao).isCopyAvailable(id);
 		
 	}
 	
 	
 	//Methods DAO
 	public static ArrayList<Copy> getCopiesFor(VideoGame videogame) {
-		CopyDAO copyDao = (CopyDAO)adf.getCopyDAO();
-		ArrayList<Copy> listCopies = copyDao.findCopiesFor(videogame);
+		ArrayList<Copy> listCopies = ((CopyDAO) copyDao).findCopiesFor(videogame);
 		for(Copy c : listCopies) {
 			if(!c.isAvailable()) {
 				//if copy is already in a loan
@@ -97,8 +96,7 @@ public class Copy implements Serializable {
 	}
 	
 	public static ArrayList<Copy> getCopiesFor(Player player) {
-		CopyDAO copyDao = (CopyDAO)adf.getCopyDAO();
-		ArrayList<Copy> listCopies = copyDao.findCopiesFor(player);
+		ArrayList<Copy> listCopies = ((CopyDAO) copyDao).findCopiesFor(player);
 		for(Copy c : listCopies) {
 			if(!c.isAvailable()) {
 				//if copy is already in a loan
@@ -111,15 +109,23 @@ public class Copy implements Serializable {
 	}
 	
 	public boolean create() {
-		DAO<Copy> copyDAO = adf.getCopyDAO();
-		
-		return copyDAO.create(this);
+		boolean success = copyDao.create(this);
+		if(success) {
+			videoGame.addCopy(this);
+			owner.addCopy(this);
+		}
+		return success;
 	}
 	
 	public boolean delete() {
-		DAO<Copy> copyDAO = adf.getCopyDAO();
+		boolean success = copyDao.delete(this);
+		if(success) {
+			videoGame.removeCopy(this);
+			owner.removeCopy(this);
+		}
 		
-		return copyDAO.delete(this);
+		return success;
+	
 	}
 
 	@Override

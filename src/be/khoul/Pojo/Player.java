@@ -13,12 +13,14 @@ public class Player extends User implements Serializable{
 	
 	private static final long serialVersionUID = -6054067668325036045L;
 	private static final AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
+	private static final DAO<Player> playerDao = adf.getPlayerDAO();
 	
 	private int id;
 	private int credit;
 	private LocalDate registrationDate;
 	private LocalDate dateOfBirth;
 	private String pseudo;
+	private boolean isBonusGiven;
 	
 	private ArrayList<Booking> bookings;
 	private ArrayList<Loan> loans;
@@ -26,24 +28,26 @@ public class Player extends User implements Serializable{
 	
 	
 	//Constructor
-	public Player(int id, String username, String password, int credit, LocalDate registrationDate, LocalDate dateOfBirth, String pseudo){
+	public Player(int id, String username, String password, int credit, LocalDate registrationDate, LocalDate dateOfBirth, String pseudo, boolean isBonusGiven){
 		super(username, password);
 		this.id = id;
 		this.credit = credit;
 		this.registrationDate = registrationDate;
 		this.dateOfBirth = dateOfBirth;
 		this.pseudo = pseudo;
+		this.isBonusGiven = isBonusGiven;
 		this.bookings = new ArrayList<>();
 		this.loans = new ArrayList<>();
 		this.copies = new ArrayList<>();
 	}
 	
-	public Player(String username, String password, int credit, LocalDate registrationDate, LocalDate dateOfBirth, String pseudo){
+	public Player(String username, String password, int credit, LocalDate registrationDate, LocalDate dateOfBirth, String pseudo, boolean isBonusGiven){
 		super(username, password);
 		this.credit = credit;
 		this.registrationDate = registrationDate;
 		this.dateOfBirth = dateOfBirth;
 		this.pseudo = pseudo;
+		this.isBonusGiven = isBonusGiven;
 		this.bookings = new ArrayList<>();
 		this.loans = new ArrayList<>();
 		this.copies = new ArrayList<>();
@@ -96,6 +100,15 @@ public class Player extends User implements Serializable{
 		this.pseudo = pseudo;
 	}
 	
+
+	public boolean isBonusGiven() {
+		return isBonusGiven;
+	}
+
+	public void setBonusGiven(boolean isBonusGiven) {
+		this.isBonusGiven = isBonusGiven;
+	}
+
 	public ArrayList<Booking> getBookings() {
 		return bookings;
 	}
@@ -164,41 +177,47 @@ public class Player extends User implements Serializable{
 	}
 	
 	public void addBirthdayBonus() {
-		if(dateOfBirth.equals(LocalDate.now())) {
-			credit += 2;
+		//if the bonus was not given this year
+	    if(!isBonusGiven) {
+	    	if(dateOfBirth.getDayOfMonth() == LocalDate.now().getDayOfMonth() && dateOfBirth.getMonth() ==  LocalDate.now().getMonth()) {
+				credit += 2;
+				isBonusGiven = true;
+				playerDao.update(this);
+				
+				
+			}
+	    } else {
+	    	//isBonusGiven back to false if today is the next day after the birthday
+	    	if(dateOfBirth.plusDays(1).getDayOfMonth() == LocalDate.now().getDayOfMonth() && dateOfBirth.plusDays(1).getMonth() ==  LocalDate.now().getMonth()) {
+	    		isBonusGiven = false;
+	    		playerDao.update(this);
+	    	}
+	    }
+		
+		
+	}
+	
+	public boolean isBirthday() {
+		boolean birthday = false;
+		if(dateOfBirth.getDayOfMonth() ==  LocalDate.now().getDayOfMonth() && dateOfBirth.getMonth() ==  LocalDate.now().getMonth()) {
+			birthday = true;
+			
 		}
+		
+		return birthday;
 	}
 	
 	public void addCredits(int credits) {
 		credit += credits;
-		DAO<Player> playerDao = adf.getPlayerDAO();
+		//DAO<Player> playerDao = adf.getPlayerDAO();
 		playerDao.update(this);
 	}
 	
 	public void removeCredits(int credits) {
 		credit -= credits;
-		DAO<Player> playerDao = adf.getPlayerDAO();
+		//DAO<Player> playerDao = adf.getPlayerDAO();
 		playerDao.update(this);
 		
-	}
-	
-	
-	//Methods for playerDAO
-	
-	public boolean login() {
-		DAO<Player> playerDAO = adf.getPlayerDAO();
-	
-		return playerDAO.create(this);
-	}
-	
-	public static boolean pseudoExist(String pseudo) {
-		PlayerDAO playerDAO = (PlayerDAO) adf.getPlayerDAO();
-		return playerDAO.pseudoExist(pseudo);
-	}
-	
-	public static boolean usernameExist(String username) {
-		PlayerDAO playerDAO = (PlayerDAO) adf.getPlayerDAO();
-		return playerDAO.usernameExist(username);
 	}
 	
 	public void getOwnLoans(){
@@ -212,6 +231,28 @@ public class Player extends User implements Serializable{
 	
 	public void getOwnBookings(){
 		bookings = Booking.getBookings(this);
+	}
+	
+	
+	//Methods for playerDAO
+	
+	public boolean signUp() {
+	
+		return playerDao.create(this);
+	}
+	
+	public static boolean pseudoExist(String pseudo) {
+		
+		return ((PlayerDAO) playerDao).pseudoExist(pseudo);
+	}
+	
+	public static boolean usernameExist(String username) {
+		
+		return ((PlayerDAO) playerDao).usernameExist(username);
+	}
+	
+	public static ArrayList<Player> findAllPlayers(){
+		return playerDao.findAll();
 	}
 	
 	

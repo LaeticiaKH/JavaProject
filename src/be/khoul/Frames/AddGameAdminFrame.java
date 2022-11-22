@@ -57,12 +57,12 @@ public class AddGameAdminFrame extends JFrame {
 		
 		JLabel lbl_add_game = new JLabel("Ajout d'un jeu");
 		lbl_add_game.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_add_game.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lbl_add_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
 		lbl_add_game.setBounds(188, 45, 245, 22);
 		contentPane.add(lbl_add_game);
 		
 		JLabel lbl_name_game = new JLabel("Nom du jeu :");
-		lbl_name_game.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_name_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_name_game.setBounds(76, 136, 85, 22);
 		contentPane.add(lbl_name_game);
 		
@@ -87,7 +87,7 @@ public class AddGameAdminFrame extends JFrame {
 		}
 		
 		JLabel lbl_credit = new JLabel("Credit");
-		lbl_credit.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_credit.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_credit.setBounds(76, 276, 85, 22);
 		contentPane.add(lbl_credit);
 		
@@ -101,7 +101,7 @@ public class AddGameAdminFrame extends JFrame {
 		
 
 		lbl_message = new JLabel("");
-		lbl_message.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_message.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_message.setBounds(146, 405, 381, 19);
 		contentPane.add(lbl_message);
 		
@@ -146,7 +146,7 @@ public class AddGameAdminFrame extends JFrame {
 				}
 			}
 		});
-		btn_confirm.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_confirm.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_confirm.setBounds(457, 357, 107, 31);
 		contentPane.add(btn_confirm);
 		
@@ -158,7 +158,7 @@ public class AddGameAdminFrame extends JFrame {
 				dispose();
 			}
 		});
-		btn_back.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_back.setBounds(54, 356, 107, 32);
 		contentPane.add(btn_back);
 		

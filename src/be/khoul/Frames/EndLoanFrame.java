@@ -50,7 +50,7 @@ public class EndLoanFrame extends JFrame {
 		
 		JLabel lbl_end_loan = new JLabel("Cloture de l'emprunt");
 		lbl_end_loan.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_end_loan.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lbl_end_loan.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
 		lbl_end_loan.setBounds(156, 34, 224, 22);
 		contentPane.add(lbl_end_loan);
 		
@@ -66,7 +66,7 @@ public class EndLoanFrame extends JFrame {
 				
 			}
 		});
-		btn_confirm.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_confirm.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_confirm.setBounds(411, 290, 109, 30);
 		contentPane.add(btn_confirm);
 		
@@ -78,7 +78,7 @@ public class EndLoanFrame extends JFrame {
 				dispose();
 			}
 		});
-		btn_back.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_back.setBounds(40, 290, 109, 30);
 		contentPane.add(btn_back);
 		
@@ -87,27 +87,27 @@ public class EndLoanFrame extends JFrame {
 		String end_date = copy.getLoan().getEndDate().format(formatter);
 		
 		JLabel lbl_date_loan = new JLabel("Date de l'emprunt : " + start_date + " au " + end_date);
-		lbl_date_loan.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_date_loan.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_date_loan.setBounds(42, 80, 393, 22);
 		contentPane.add(lbl_date_loan);
 		
 		JLabel lbl_game = new JLabel("Jeu : " + copy.getVideoGame().getName());
-		lbl_game.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_game.setBounds(40, 121, 268, 22);
 		contentPane.add(lbl_game);
 		
 		JLabel lbl_credit = new JLabel("Crédit : " + copy.getVideoGame().getCreditCost() + "/semaine");
-		lbl_credit.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_credit.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_credit.setBounds(40, 161, 239, 22);
 		contentPane.add(lbl_credit);
 		
 		JLabel lblNewLabel = new JLabel("Total : " + copy.getLoan().calculateBalance() + " crédits");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lblNewLabel.setBounds(328, 223, 178, 27);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lbl_penality = new JLabel("Pénalité : " + copy.getLoan().calculatePenality());
-		lbl_penality.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_penality.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_penality.setBounds(40, 205, 239, 22);
 		contentPane.add(lbl_penality);
 		

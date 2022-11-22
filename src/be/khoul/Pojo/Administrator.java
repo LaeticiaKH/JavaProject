@@ -29,8 +29,8 @@ public class Administrator extends User implements Serializable {
 		HistoryCredits historyCredits = new HistoryCredits(LocalDate.now(), videoGame.getCreditCost(), newCredit, videoGame);
 		historyCredits.create();
 		//Update new credit
-		videoGame.setCreditCost(newCredit);
-		videoGame.updateCredit();
+		
+		videoGame.updateCredit(newCredit);
 		//Get all the copies for the video game
 		ArrayList<Copy> listCopies= videoGame.getCopies();
 		for(Copy c: listCopies) {
@@ -45,6 +45,7 @@ public class Administrator extends User implements Serializable {
 		}
 		
 	}
+	
 	@Override
 	public String toString() {
 		return super.toString();

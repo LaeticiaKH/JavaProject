@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import be.khoul.Pojo.*;
@@ -62,19 +63,19 @@ public class HistoryCreditsDAO extends DAO<HistoryCredits> {
 		return null;
 	}
 	
-	public ArrayList<HistoryCredits> findHistoriesCreditsFor(Copy c) {
+	public ArrayList<HistoryCredits> findHistoriesCreditsFor(Loan l) {
 		ArrayList<HistoryCredits> list = new ArrayList<>();
 		try(PreparedStatement statement = connect.prepareStatement("SELECT h.change_date, h.old_credit, h.new_credit FROM "
 				+ "((( HistoryCredits h INNER JOIN VideoGame v ON h.id_videogame = v.id_videogame) "
 				+ "INNER JOIN Copy c ON c.id_videogame = v.id_videogame) "
 				+ "INNER JOIN Loan l ON l.id_copy = c.id_copy) WHERE v.id_videogame = ? AND h.change_date >= ? GROUP BY h.change_date, h.old_credit, h.new_credit ORDER BY h.change_date");){
 			
-			statement.setInt(1, c.getVideoGame().getId());
-			statement.setDate(2, Date.valueOf(c.getLoan().getStartDate()));
+			statement.setInt(1, l.getCopy().getVideoGame().getId());
+			statement.setDate(2, Date.valueOf(l.getStartDate()));
 			
 			ResultSet result = statement.executeQuery();
 			while(result.next()) {
-				HistoryCredits h = new HistoryCredits(result.getDate("change_date").toLocalDate(), result.getInt("old_credit"), result.getInt("new_credit"),c.getVideoGame());
+				HistoryCredits h = new HistoryCredits(result.getDate("change_date").toLocalDate(), result.getInt("old_credit"), result.getInt("new_credit"), l.getCopy().getVideoGame());
 				list.add(h);
 			}
 		}

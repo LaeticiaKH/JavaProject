@@ -12,6 +12,7 @@ public class VideoGame implements Serializable {
 	 
 	private static final long serialVersionUID = -6793786723230122631L;
 	private static final AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
+	private static final DAO<VideoGame> videoGameDao = adf.getVideoGameDAO();
 	
 	private int id;
 	private String name;
@@ -104,6 +105,31 @@ public class VideoGame implements Serializable {
 		this.historiesCredits = historiesCredits;
 	}
 	//Methods
+	
+	public void addBooking(Booking b) {
+		bookings.add(b);
+	}
+	
+	public void removeBooking(Booking b) {
+		bookings.remove(b);
+	}
+	
+	public void addCopy(Copy c) {
+		copies.add(c);
+	}
+	
+	public void removeCopy(Copy c) {
+		copies.remove(c);
+	}
+	
+	public void addHistoryCredit(HistoryCredits hc) {
+		historiesCredits.add(hc);
+	}
+	
+	public void removeHistoryCredit(HistoryCredits hc) {
+		historiesCredits.remove(hc);
+	}
+	
 	public ArrayList<Copy> getAvailableCopies(){
 		getVideoGameCopies();
 		ArrayList<Copy> availableCopies = new ArrayList<>();
@@ -139,6 +165,7 @@ public class VideoGame implements Serializable {
 			if(c.isAvailable()) {
 				if(c.getOwner().getId() != player.getId()) {
 					availableCopiesForPlayer.add(c);
+					
 				}
 				
 			}
@@ -307,29 +334,13 @@ public class VideoGame implements Serializable {
 		    //Calculate end date 
 		    LocalDate endDate = LocalDate.now().plusWeeks(booking.getDuration());
 		    //Create Loan
-		    Loan loan = new Loan(LocalDate.now(), endDate, true, copy, copy.getOwner(), booking.getBorrower());
-		    copy.setLoan(loan);
+		    Loan loan = new Loan(LocalDate.now(), endDate, true, copy, copy.getOwner(),booking.getBorrower());
 		    //If the loan got created without problems the booking can be deleted
-		    if(copy.borrow()) {
-		    	bookings.remove(booking);
-		    	booking.delete();
-		    		
+		    if(copy.borrow(loan)) {
+		    	booking.delete();	
 		    }	
 		}
 	}
-	//Methods for DAO
-	public static ArrayList<VideoGame> getAllVideoGames() {
-		DAO<VideoGame> videoGameDao= adf.getVideoGameDAO();
-
-		return  videoGameDao.findAll();
-	}
-    
-	public boolean create() {
-		DAO<VideoGame> videoGameDao= adf.getVideoGameDAO();
-
-		return videoGameDao.create(this);
-	}
-	
 	
 	public ArrayList<Copy> getVideoGameCopies() {
 		 copies = Copy.getCopiesFor(this);
@@ -343,13 +354,30 @@ public class VideoGame implements Serializable {
 		 return bookings;
 	}
 	
-	
-	public boolean updateCredit() {
-		DAO<VideoGame> videoGameDao= adf.getVideoGameDAO();
-
-		return videoGameDao.update(this);
+	//Methods for DAO
+	public static ArrayList<VideoGame> getAllVideoGames() {
+		return  videoGameDao.findAll();
+	}
+    
+	public boolean create() {
+		
+		return videoGameDao.create(this);
 	}
 	
+	
+	public boolean updateCredit(int newCredit) {
+		boolean success = videoGameDao.update(this);
+		if(success) {
+			creditCost = newCredit;
+		}
+		
+		return success;
+	}
+	
+	public boolean delete() {
+		
+		return videoGameDao.delete(this);
+	}
 		
 	@Override
 	public String toString() {

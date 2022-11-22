@@ -12,6 +12,7 @@ import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 public class AdminHomeFrame extends JFrame {
 
@@ -46,8 +47,9 @@ public class AdminHomeFrame extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lbl_welcome = new JLabel("Bienvenue admin " + admin.getUsername() + "!");
-		lbl_welcome.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lbl_welcome.setBounds(23, 43, 483, 38);
+		lbl_welcome.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_welcome.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		lbl_welcome.setBounds(47, 42, 483, 38);
 		getContentPane().add(lbl_welcome);
 		
 		JButton btn_change_credit = new JButton("Voir jeux");
@@ -59,14 +61,21 @@ public class AdminHomeFrame extends JFrame {
 				
 			}
 		});
-		btn_change_credit.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btn_change_credit.setBounds(23, 134, 153, 32);
+		btn_change_credit.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 14));
+		btn_change_credit.setBounds(187, 149, 202, 45);
 		contentPane.add(btn_change_credit);
 		
 		
 		JButton btn_log_out = new JButton("Déconnexion");
-		btn_log_out.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btn_log_out.setBounds(385, 325, 153, 32);
+		btn_log_out.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LoginFrame loginFrame = new LoginFrame();
+				loginFrame.setVisible(true);
+				dispose();
+			}
+		});
+		btn_log_out.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 14));
+		btn_log_out.setBounds(187, 244, 202, 45);
 		contentPane.add(btn_log_out);
 		
 	}

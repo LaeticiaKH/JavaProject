@@ -50,7 +50,7 @@ public class LoansFrame extends JFrame {
 	 */
 	public LoansFrame(Player player) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 636, 450);
+		setBounds(100, 100, 698, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -59,13 +59,13 @@ public class LoansFrame extends JFrame {
 		
 		JLabel lbl_loans = new JLabel("Mes emprunts");
 		lbl_loans.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_loans.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lbl_loans.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
 		lbl_loans.setBounds(247, 10, 135, 44);
 		contentPane.add(lbl_loans);
 		
 		JLabel lbl_no_loan= new JLabel("Vous n'avez pas encore loué de jeu");
 		lbl_no_loan.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_no_loan.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lbl_no_loan.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 16));
 		lbl_no_loan.setBounds(173, 105, 291, 36);
 		lbl_no_loan.setVisible(false);
 		contentPane.add(lbl_no_loan);
@@ -78,18 +78,18 @@ public class LoansFrame extends JFrame {
 				dispose();
 			}
 		});
-		btn_back.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btn_back.setBounds(34, 345, 92, 23);
+		btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		btn_back.setBounds(34, 360, 89, 31);
 		contentPane.add(btn_back);
 		
 		player.getOwnLoans();
 		listLoans = player.getLoans();
 		if(listLoans.size() > 0) {
-			String[] nomCol = {"Jeu","Console","Date de début", "Date de fin", "Prêteur", "En cours"};
+			String[] nomCol = {"Jeu","Console","Date de début", "Date de fin", "Prêteur", "En cours", "Prix total"};
 			
 			JScrollPane scrollPane = new JScrollPane();
-		    scrollPane.setSize(620, 280);
-		    scrollPane.setLocation(10, 78);
+		    scrollPane.setSize(620, 262);
+		    scrollPane.setLocation(30, 78);
 			contentPane.add(scrollPane);
 		    
 		    table = new JTable();
@@ -102,9 +102,9 @@ public class LoansFrame extends JFrame {
 			for(Loan loan: listLoans) {
 				loan.calculateBalance();
 				VideoGame videoGame = loan.getCopy().getVideoGame();
-				Player lender = loan.getCopy().getOwner();
+				Player lender = loan.getLender();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-				Object[] data ={videoGame.getName(), videoGame.getConsole(), loan.getStartDate().format(formatter), loan.getEndDate().format(formatter), lender.getPseudo(), loan.isOngoing()};
+				Object[] data ={videoGame.getName(), videoGame.getConsole(), loan.getStartDate().format(formatter), loan.getEndDate().format(formatter), lender.getPseudo(), loan.isOngoing(), loan.calculateBalance()};
 				model.addRow(data);
 			}
 		} 

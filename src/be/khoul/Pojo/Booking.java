@@ -12,6 +12,7 @@ public class Booking implements Serializable {
 	
 	private static final long serialVersionUID = 8934435103788942302L;
 	private static final AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
+	private static final DAO<Booking> bookingDao = adf.getBookingDAO();
 	
 	private int id;
 	private LocalDate bookingDate;
@@ -88,30 +89,35 @@ public class Booking implements Serializable {
 
 	//Methods
 	public boolean delete() {
-		DAO<Booking> bookingDao = adf.getBookingDAO();
+		Boolean success = bookingDao.delete(this);
+		if(success) {
+			borrower.removeBooking(this);
+			videoGame.removeBooking(this);
+		}
 		
-		return bookingDao.delete(this);
-		
+		return success;
 	}
 	
 	
 	//Methods DAO
 	public boolean createBooking() {
-		DAO<Booking> bookingDao = adf.getBookingDAO();
-		
-		return bookingDao.create(this);
+		Boolean success = bookingDao.create(this);
+		if(success) {
+			borrower.addBooking(this);
+			videoGame.addBooking(this);
+		}
+
+		return success;
 	}
 	
 	public static ArrayList<Booking> getBookings(Player player) {
-		BookingDAO bookingDao = (BookingDAO)adf.getBookingDAO();
 		
-		return bookingDao.findBookingsFor(player);
+		return ((BookingDAO) bookingDao).findBookingsFor(player);
 	}
 	
 	public static ArrayList<Booking> getBookings(VideoGame v) {
-		BookingDAO bookingDao = (BookingDAO)adf.getBookingDAO();
 		
-		return bookingDao.findBookingsFor(v);
+		return ((BookingDAO) bookingDao).findBookingsFor(v);
 	}
 
 	@Override

@@ -62,16 +62,16 @@ public class BookingFrame extends JFrame {
 		JLabel lbl_booking = new JLabel("Réservation");
 		lbl_booking.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_booking.setBounds(222, 27, 125, 34);
-		lbl_booking.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lbl_booking.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
 		contentPane.add(lbl_booking);
 		
 		JLabel lbl_game = new JLabel("Jeu : " + videoGame.getName());
-		lbl_game.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lbl_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 14));
 		lbl_game.setBounds(45, 112, 487, 17);
 		contentPane.add(lbl_game);
 		
 		JLabel lbl_duration = new JLabel("Durée en semaines: ");
-		lbl_duration.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lbl_duration.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 14));
 		lbl_duration.setBounds(45, 161, 157, 17);
 		contentPane.add(lbl_duration);
 		
@@ -83,13 +83,14 @@ public class BookingFrame extends JFrame {
 			choice.add("" + i);
 		}
 		
-		JTextArea ta_warning = new JTextArea("Attention : Si vous ne rendez pas le jeu à la date convenue,\n une pénalité de 5 crédits/jour vous sera demandé.");
+		JTextArea ta_warning = new JTextArea("Attention : Si vous ne rendez pas le jeu à la date convenue, une pénalité de 5 crédits \n par jour vous sera demandé.");
+		ta_warning.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
 		ta_warning.setBounds(27, 223, 519, 50);
 		ta_warning.setEditable(false);
 		contentPane.add(ta_warning);
 		
 		JLabel lbl_message = new JLabel("");
-		lbl_message.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_message.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_message.setBounds(133, 344, 311, 29);
 		contentPane.add(lbl_message);
 		
@@ -112,8 +113,8 @@ public class BookingFrame extends JFrame {
 				
 			}
 		});
-		btn_confirm.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btn_confirm.setBounds(433, 302, 86, 34);
+		btn_confirm.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		btn_confirm.setBounds(404, 302, 115, 34);
 		contentPane.add(btn_confirm);
 		
 		JButton btn_back = new JButton("Retour");
@@ -124,7 +125,7 @@ public class BookingFrame extends JFrame {
 				dispose();
 			}
 		});
-		btn_back.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_back.setBounds(27, 302, 86, 34);
 		contentPane.add(btn_back);
 		

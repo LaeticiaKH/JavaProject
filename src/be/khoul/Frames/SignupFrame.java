@@ -56,19 +56,27 @@ public class SignupFrame extends JFrame {
 
 	public void verificationDate(JDateChooser dateChooser) {
 		
-		LocalDate date = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		
-		if(date.toString().isEmpty() || date == null) {
+		try {
+			LocalDate date = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			
+			if(date.toString().isEmpty()) {
+				signupValid = false;
+		    	lbl_date_error.setText("Une date de naissance est nécessaire pour vous inscrire.");
+		    	lbl_date_error.setVisible(true);
+		    }
+		    
+		    if(date.isAfter(LocalDate.now())) {
+		    	signupValid = false;
+		    	lbl_date_error.setText("La date de naissance ne peut pas être une date du future.");
+		    	lbl_date_error.setVisible(true);
+		    }
+			
+		} catch(NullPointerException e) {
 			signupValid = false;
 	    	lbl_date_error.setText("Une date de naissance est nécessaire pour vous inscrire.");
-	    	lbl_date_error.setVisible(true);
-	    }
-	    
-	    if(date.isAfter(LocalDate.now())) {
-	    	signupValid = false;
-	    	lbl_date_error.setText("La date de naissance ne peut pas être une date du future.");
-	    	lbl_date_error.setVisible(true);
-	    }
+	        lbl_date_error.setVisible(true);
+		}
+		
 	}
 	
 	public void verificationUsernamePassword(JTextField tf_username, JTextField tf_password) {
@@ -143,12 +151,12 @@ public class SignupFrame extends JFrame {
 		JLabel lbl_inscription = new JLabel("Inscription");
 		lbl_inscription.setBounds(183, 26, 137, 29);
 		lbl_inscription.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_inscription.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lbl_inscription.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 20));
 		contentPane.add(lbl_inscription);
 		
 		JLabel lbl_username = new JLabel("Username:");
 		lbl_username.setBounds(37, 88, 64, 13);
-		lbl_username.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_username.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_username.setHorizontalAlignment(SwingConstants.LEFT);
 		contentPane.add(lbl_username);
 		
@@ -160,7 +168,7 @@ public class SignupFrame extends JFrame {
 		JLabel lbl_password = new JLabel("Mot de passe:");
 		lbl_password.setBounds(37, 152, 79, 13);
 		lbl_password.setHorizontalAlignment(SwingConstants.LEFT);
-		lbl_password.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_password.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		contentPane.add(lbl_password);
 		
 		pf_password = new JPasswordField();
@@ -171,7 +179,7 @@ public class SignupFrame extends JFrame {
 		JLabel lbl_dateofbirth = new JLabel("Date de naissance:");
 		lbl_dateofbirth.setBounds(40, 221, 101, 13);
 		lbl_dateofbirth.setHorizontalAlignment(SwingConstants.LEFT);
-		lbl_dateofbirth.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_dateofbirth.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		contentPane.add(lbl_dateofbirth);
 		
 		JDateChooser dateChooser = new JDateChooser();
@@ -179,7 +187,7 @@ public class SignupFrame extends JFrame {
 	    getContentPane().add(dateChooser);
 	    
 	    JLabel lbl_pseudo = new JLabel("Pseudo:");
-	    lbl_pseudo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    lbl_pseudo.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 	    lbl_pseudo.setBounds(37, 275, 64, 13);
 	    contentPane.add(lbl_pseudo);
 	    
@@ -187,21 +195,21 @@ public class SignupFrame extends JFrame {
 	    
 	    lbl_date_error = new JLabel("");
 	    lbl_date_error.setForeground(new Color(234, 58, 21));
-	    lbl_date_error.setFont(new Font("Tahoma", Font.BOLD, 12));
+	    lbl_date_error.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
 	    lbl_date_error.setBounds(39, 244, 410, 19);
 	    lbl_date_error.setVisible(false);
 	    contentPane.add(lbl_date_error);
 	    
 	    lbl_username_error = new JLabel("");
 	    lbl_username_error.setForeground(new Color(234, 58, 21));
-	    lbl_username_error.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    lbl_username_error.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
 	    lbl_username_error.setBounds(37, 115, 431, 27);
 	    lbl_username_error.setVisible(false);
 	    contentPane.add(lbl_username_error);
 	    
 	    lbl_password_error = new JLabel("");
 	    lbl_password_error.setForeground(new Color(234, 58, 21));
-	    lbl_password_error.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    lbl_password_error.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
 	    lbl_password_error.setBounds(37, 177, 431, 27);
 	    lbl_password_error.setVisible(false);
 	    contentPane.add(lbl_password_error);
@@ -214,13 +222,13 @@ public class SignupFrame extends JFrame {
 	    
 	    lbl_pseudo_error = new JLabel("");
 	    lbl_pseudo_error.setForeground(new Color(234, 58, 21));
-	    lbl_pseudo_error.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    lbl_pseudo_error.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
 	    lbl_pseudo_error.setBounds(37, 298, 431, 27);
 	    lbl_pseudo_error.setVisible(false);
 	    contentPane.add(lbl_pseudo_error);
 	    
 	    lbl_message = new JLabel("");
-	    lbl_message.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    lbl_message.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
 	    lbl_message.setBounds(133, 396, 283, 29);
 	    lbl_message.setVisible(false);
 	    contentPane.add(lbl_message);
@@ -236,8 +244,8 @@ public class SignupFrame extends JFrame {
 	    		if(signupValid) {
 	    			maskErrorMessage();
 	    			LocalDate birth_date = dateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-	    			Player player = new Player(tf_username.getText(), new String(pf_password.getPassword()), 10, LocalDate.now(), birth_date, tf_pseudo.getText());
-	    			if(player.login()) {
+	    			Player player = new Player(tf_username.getText(), new String(pf_password.getPassword()), 10, LocalDate.now(), birth_date, tf_pseudo.getText(), false);
+	    			if(player.signUp()) {
 	    				lbl_message.setText("Inscription réussite");
 	    				lbl_message.setVisible(true);
 	    				lbl_message.setForeground(Color.GREEN);
@@ -250,7 +258,7 @@ public class SignupFrame extends JFrame {
 	    		}
 	    	}
 	    });
-	    btn_confirm.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    btn_confirm.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 	    btn_confirm.setBounds(439, 366, 100, 29);
 	    contentPane.add(btn_confirm);
 	    
@@ -262,7 +270,7 @@ public class SignupFrame extends JFrame {
 	    		loginFrame.setVisible(true);
 	    	}
 	    });
-	    btn_back.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 	    btn_back.setBounds(10, 366, 106, 29);
 	    contentPane.add(btn_back);
 	    

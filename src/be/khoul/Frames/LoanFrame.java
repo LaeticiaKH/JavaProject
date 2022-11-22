@@ -59,29 +59,29 @@ public class LoanFrame extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lbl_loan = new JLabel("Emprunt");
-		lbl_loan.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lbl_loan.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
 		lbl_loan.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_loan.setBounds(181, 32, 161, 25);
 		contentPane.add(lbl_loan);
 		
 		JLabel lbl_video_game = new JLabel("Vous souhaitez emprunter une copie de " + videoGame.getName());
-		lbl_video_game.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_video_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_video_game.setBounds(25, 89, 480, 13);
 		contentPane.add(lbl_video_game);
 		
 		JLabel lbl_cost = new JLabel("Crédits par semaine : " + videoGame.getCreditCost());
-		lbl_cost.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_cost.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_cost.setBounds(41, 116, 273, 13);
 		contentPane.add(lbl_cost);
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		JLabel lbl_start_date = new JLabel("Date de début: " + LocalDate.now().format(formatter));
-		lbl_start_date.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_start_date.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_start_date.setBounds(25, 169, 190, 13);
 		contentPane.add(lbl_start_date);
 		
 		JLabel lbl_duration = new JLabel("Durée en semaines :");
-		lbl_duration.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_duration.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_duration.setBounds(25, 216, 116, 18);
 		contentPane.add(lbl_duration);
 		
@@ -107,8 +107,8 @@ public class LoanFrame extends JFrame {
 	    		Copy copy  = videoGame.copyAvailable();
 	    		if(copy != null) {
 	    			LocalDate end_date = LocalDate.now().plusWeeks(Integer.parseInt(choice.getSelectedItem()));
-	    			copy.setLoan(new Loan(LocalDate.now(), end_date, true, copy, copy.getOwner(), player));
-	    			if(copy.borrow()) {
+	    			Loan l = new Loan(LocalDate.now(), end_date, true, copy, copy.getOwner(), player);
+	    			if(copy.borrow(l)) {
 	    				//go back to the game frame
 	    				ConsultGameFrame consultGameFrame = new ConsultGameFrame(player, videoGame);
 	    				consultGameFrame.setVisible(true);
@@ -132,7 +132,7 @@ public class LoanFrame extends JFrame {
 	    		
 	    	}
 	    });
-	    btn_confirm.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    btn_confirm.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 	    btn_confirm.setBounds(472, 370, 98, 25);
 	    contentPane.add(btn_confirm);
 	    
@@ -144,12 +144,12 @@ public class LoanFrame extends JFrame {
 	    		dispose();
 	    	}
 	    });
-	    btn_back.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 	    btn_back.setBounds(48, 370, 93, 25);
 	    contentPane.add(btn_back);
 	    
 	    lbl_message = new JLabel("");
-	    lbl_message.setFont(new Font("Tahoma", Font.PLAIN, 12));
+	    lbl_message.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 	    lbl_message.setBounds(48, 416, 500, 20);
 	    lbl_message.setVisible(false);
 	    contentPane.add(lbl_message);

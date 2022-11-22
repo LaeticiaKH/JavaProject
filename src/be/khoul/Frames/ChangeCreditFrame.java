@@ -61,7 +61,7 @@ public class ChangeCreditFrame extends JFrame {
 				dispose();
 			}
 		});
-		btn_back.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_back.setBounds(51, 366, 107, 29);
 		contentPane.add(btn_back);
 		
@@ -79,18 +79,18 @@ public class ChangeCreditFrame extends JFrame {
 			
 			}
 		});
-		btn_confirm.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_confirm.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_confirm.setBounds(472, 366, 115, 29);
 		contentPane.add(btn_confirm);
 		
 		JLabel lbl_title = new JLabel(videoGame.getName());
 		lbl_title.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_title.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lbl_title.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
 		lbl_title.setBounds(82, 43, 483, 29);
 		contentPane.add(lbl_title);
 		
 		JLabel lbl_console = new JLabel("Console : " + videoGame.getConsole());
-		lbl_console.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_console.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_console.setBounds(64, 116, 384, 20);
 		contentPane.add(lbl_console);
 		
@@ -100,7 +100,7 @@ public class ChangeCreditFrame extends JFrame {
 		contentPane.add(lbl_current_credit);
 		
 		JLabel lbl_new_credit = new JLabel("Nouveau crédit : ");
-		lbl_new_credit.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_new_credit.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_new_credit.setBounds(64, 226, 107, 20);
 		contentPane.add(lbl_new_credit);
 		
@@ -114,7 +114,7 @@ public class ChangeCreditFrame extends JFrame {
 		
 		lbl_message = new JLabel("");
 		lbl_message.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_message.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_message.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_message.setBounds(108, 416, 433, 29);
 		contentPane.add(lbl_message);
 		

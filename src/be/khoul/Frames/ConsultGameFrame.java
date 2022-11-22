@@ -57,27 +57,27 @@ public class ConsultGameFrame extends JFrame {
 		
 		JLabel lbl_videogame = new JLabel(v.getName());
 		lbl_videogame.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_videogame.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lbl_videogame.setBounds(113, 29, 281, 59);
+		lbl_videogame.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		lbl_videogame.setBounds(28, 29, 472, 59);
 		contentPane.add(lbl_videogame);
 		
 		JLabel lbl_console = new JLabel("Console: " + v.getConsole());
-		lbl_console.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lbl_console.setBounds(28, 132, 186, 21);
+		lbl_console.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		lbl_console.setBounds(28, 98, 186, 21);
 		contentPane.add(lbl_console);
 		
 		JLabel lbl_credits = new JLabel("Crédits: " + v.getCreditCost());
-		lbl_credits.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lbl_credits.setBounds(28, 173, 126, 21);
+		lbl_credits.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		lbl_credits.setBounds(28, 141, 126, 21);
 		contentPane.add(lbl_credits);
 		
 		JLabel lbl_available = new JLabel("Exemplaire disponible : " + v.getAvailableCopiesForPlayer(player).size());
-		lbl_available.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lbl_available.setBounds(28, 220, 270, 13);
+		lbl_available.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		lbl_available.setBounds(28, 187, 270, 13);
 		contentPane.add(lbl_available);
 		
 		JButton btn_back = new JButton("Retour");
-		btn_back.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ConsultGamesFrame consultGamesFrame = new ConsultGamesFrame(player);
@@ -89,22 +89,39 @@ public class ConsultGameFrame extends JFrame {
 		contentPane.add(btn_back);
 		
 		JLabel lbl_message = new JLabel("");
-		lbl_message.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lbl_message.setBounds(189, 313, 311, 29);
+		lbl_message.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_message.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		lbl_message.setBounds(28, 304, 472, 29);
 		contentPane.add(lbl_message);
 		
 		
 		JButton btn_book = new JButton("Réserver");
-		btn_book.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_book.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_book.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BookingFrame bookingFrame = new BookingFrame(player, v);
-				bookingFrame.setVisible(true);
-				dispose();
+				ArrayList<Booking> bookings = player.getBookings();
+				boolean canBook = true;
+				for(Booking b: bookings) {
+					if(b.getVideoGame().getId() == v.getId()) {
+						canBook = false;
+					}
+					
+				}
+				if(canBook) {
+					BookingFrame bookingFrame = new BookingFrame(player, v);
+					bookingFrame.setVisible(true);
+					dispose();
+				}
+				else {
+					lbl_message.setText("Vous avez déjà une réservation en cours.");
+				   	lbl_message.setForeground(Color.RED);
+				}
+				
+				
 				
 			}
 		});
-		btn_book.setBounds(202, 255, 96, 26);
+		btn_book.setBounds(202, 252, 96, 29);
 		contentPane.add(btn_book);
 		
 		JButton btn_lend = new JButton("Prêter");
@@ -112,32 +129,46 @@ public class ConsultGameFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Copy copy = new Copy(v, player);
 				if(copy.create()) {
-					player.addCopy(copy);
-					lbl_message.setText("Prêt réussi");
+					lbl_message.setText("Prêt réussi.");
 				   	lbl_message.setForeground(Color.GREEN);
 				   	v.getBookingIntoLoan();
 				}
 				else {
-					lbl_message.setText("Le prêt de votre jeu à échoué");
+					lbl_message.setText("Le prêt de votre jeu à échoué.");
 				   	lbl_message.setForeground(Color.RED);
 				}
 				
 			}
 		});
-		btn_lend.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btn_lend.setBounds(393, 255, 96, 26);
+		btn_lend.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		btn_lend.setBounds(393, 252, 96, 29);
 		contentPane.add(btn_lend);
 		
 		JButton btn_rent = new JButton("Louer");
 		btn_rent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				LoanFrame loanFrame = new LoanFrame(player, v);
-				loanFrame.setVisible(true);
-				dispose();
+				ArrayList<Loan> loans  = player.getLoans();
+				Boolean canRent = true;
+				for(Loan l: loans) {
+					if(l.getCopy().getVideoGame().getId() == v.getId() && l.isOngoing()) {
+						//If a ongoing loan is found for this game
+						canRent = false;
+					}
+				}
+				if(canRent) {
+					LoanFrame loanFrame = new LoanFrame(player, v);
+					loanFrame.setVisible(true);
+					dispose();
+				}
+				else {
+					lbl_message.setText("Vous avez déjà une location en cours.");
+				   	lbl_message.setForeground(Color.RED);
+				}
+				
 			}
 		});
-		btn_rent.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		btn_rent.setBounds(28, 255, 90, 26);
+		btn_rent.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		btn_rent.setBounds(28, 252, 90, 29);
 		contentPane.add(btn_rent);
 		
 		

@@ -14,6 +14,7 @@ public class Loan implements Serializable{
 	
 	private static final long serialVersionUID = 5642696465117845192L;
 	private static final AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
+	private static final DAO<Loan> loanDao = adf.getLoanDAO();
 	
 	private int id;
 	private LocalDate startDate;
@@ -24,7 +25,7 @@ public class Loan implements Serializable{
 	private Player borrower;
 	
 	//Constructor
-	public Loan(int id, LocalDate startDate, LocalDate endDate, boolean ongoing, Copy copy, Player lender, Player borrower) {
+	public Loan(int id, LocalDate startDate, LocalDate endDate, boolean ongoing, Copy copy, Player lender , Player borrower) {
 		this.id = id;
 		this.startDate = startDate;
 		this.endDate = endDate;
@@ -89,7 +90,7 @@ public class Loan implements Serializable{
 	public Player getLender() {
 		return lender;
 	}
-
+	
 	public void setLender(Player lender) {
 		this.lender = lender;
 	}
@@ -133,7 +134,7 @@ public class Loan implements Serializable{
 		
 		
 		//Get all histories for the video game
-		videoGame.setHistoriesCredits(HistoryCredits.findHistoryCreditsFor(this.copy));
+		videoGame.setHistoriesCredits(HistoryCredits.findHistoryCreditsFor(this));
 		ArrayList<HistoryCredits> histories = videoGame.getHistoriesCredits();
 		System.out.println(histories.size());
 		for(HistoryCredits h: histories) {
@@ -231,20 +232,21 @@ public class Loan implements Serializable{
 	
 	//Method DAO
 	public boolean createLoan() {
-		DAO<Loan> loanDao = adf.getLoanDAO();
-		return loanDao.create(this);
+		boolean success = loanDao.create(this);
+		if(success) {
+			borrower.addLoan(this);
+		}
+		return success;
 	}
 	
 	public static ArrayList<Loan> getLoansFor(Player player) {
-		LoanDAO loanDao = (LoanDAO) adf.getLoanDAO();
 		
-		return loanDao.getLoansForPlayer(player);
+		return ((LoanDAO) loanDao).getLoansForPlayer(player);
 	}
 	
 	public static Loan getLoanForCopy(Copy c) {
-		LoanDAO loanDao = (LoanDAO) adf.getLoanDAO();
 		
-		return loanDao.getLoanForCopy(c);
+		return ((LoanDAO) loanDao).getLoanForCopy(c);
 	}
 	
 	

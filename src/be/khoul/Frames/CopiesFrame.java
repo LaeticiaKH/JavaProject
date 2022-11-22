@@ -107,13 +107,13 @@ public class CopiesFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		lbl_copies.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_copies.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lbl_copies.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
 		lbl_copies.setBounds(222, 23, 172, 36);
 		contentPane.add(lbl_copies);
 		
 		lbl_no_copy = new JLabel("Vous n'avez pas encore prêté une copie");
 		lbl_no_copy.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_no_copy.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lbl_no_copy.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 16));
 		lbl_no_copy.setBounds(175, 130, 291, 36);
 		lbl_no_copy.setVisible(false);
 		contentPane.add(lbl_no_copy);
@@ -121,7 +121,7 @@ public class CopiesFrame extends JFrame {
 		lbl_message = new JLabel("Veuillez sélectionner une copie.");
 		lbl_message.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_message.setForeground(new Color(239, 37, 68));
-		lbl_message.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_message.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_message.setBounds(39, 422, 554, 22);
 		lbl_message.setVisible(false);
 		contentPane.add(lbl_message);
@@ -162,7 +162,7 @@ public class CopiesFrame extends JFrame {
 				
 			}
 		});
-		btn_end_loan.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_end_loan.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_end_loan.setBounds(479, 368, 114, 28);
 		contentPane.add(btn_end_loan);
 		
@@ -174,7 +174,7 @@ public class CopiesFrame extends JFrame {
 				dispose();
 			}
 		});
-		btn_back.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_back.setBounds(39, 368, 114, 28);
 		contentPane.add(btn_back);
 		
@@ -192,7 +192,6 @@ public class CopiesFrame extends JFrame {
 	                if(copy.isAvailable()) {
 	                	if(copy.delete()) {
 	                		listCopies.remove(copy);
-	                		player.removeCopy(copy);
 	                		table = null;
 	                		model.removeRow(selectedRow);
 	                		lbl_message.setVisible(true);
@@ -213,11 +212,16 @@ public class CopiesFrame extends JFrame {
 				}
 		   }
 		});
-		btn_remove_copy.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		btn_remove_copy.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_remove_copy.setBounds(257, 368, 114, 28);
 		contentPane.add(btn_remove_copy);
 		
 		showCopies(player);
+		
+		if(listCopies.size() == 0) {
+			btn_end_loan.setEnabled(false);
+			btn_remove_copy.setEnabled(false);
+		}
 		
 		
 		

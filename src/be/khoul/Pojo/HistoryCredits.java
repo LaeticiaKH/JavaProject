@@ -13,6 +13,7 @@ public class HistoryCredits implements Serializable{
 	
 	private static final long serialVersionUID = 7957815340729468531L;
 	private static final AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
+	private static DAO<HistoryCredits> historyCreditsDao = adf.getHistoryCreditsDAO();
 	
 	private LocalDate changeDate;
 	private int oldCredit;
@@ -56,15 +57,16 @@ public class HistoryCredits implements Serializable{
 	//Methods
 	
 	public boolean create() {
-		DAO<HistoryCredits> historyCreditsDao = adf.getHistoryCreditsDAO();
-		
-		return historyCreditsDao.create(this);
+		boolean success = historyCreditsDao.create(this);
+		if(success) {
+			videoGame.addHistoryCredit(this);
+		}
+		return success;
 	}
 	
-	public static ArrayList<HistoryCredits> findHistoryCreditsFor(Copy c) {
-		HistoryCreditsDAO historyCreditsDao = (HistoryCreditsDAO) adf.getHistoryCreditsDAO();
+	public static ArrayList<HistoryCredits> findHistoryCreditsFor(Loan loan) {
 		
-		return historyCreditsDao.findHistoriesCreditsFor(c);
+		return ((HistoryCreditsDAO) historyCreditsDao).findHistoriesCreditsFor(loan);
 	}
 	@Override
 	public String toString() {

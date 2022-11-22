@@ -57,19 +57,19 @@ public class ConsultGamesFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lbl_consultGames = new JLabel("Jeux Vidéos");
-		lbl_consultGames.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lbl_consultGames.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_consultGames.setBounds(193, 10, 150, 35);
-		contentPane.add(lbl_consultGames);
+		JLabel lbl_title = new JLabel("Jeux Vidéos");
+		lbl_title.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		lbl_title.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_title.setBounds(193, 10, 150, 35);
+		contentPane.add(lbl_title);
 		
 		listGames = VideoGame.getAllVideoGames();
 		
 	    String[] nomCol = {"Nom", "Crédits", "Console"};
 		
 	    JScrollPane scrollPane = new JScrollPane();
-	    scrollPane.setSize(527, 323);
-	    scrollPane.setLocation(25, 48);
+	    scrollPane.setSize(527, 252);
+	    scrollPane.setLocation(25, 91);
 		contentPane.add(scrollPane);
 	    
 	    table = new JTable();
@@ -85,9 +85,15 @@ public class ConsultGamesFrame extends JFrame {
 	    		dispose();
 	    	}
 	    });
-	    btn_back.setFont(new Font("Tahoma", Font.PLAIN, 12));
-	    btn_back.setBounds(67, 381, 87, 33);
+	    btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+	    btn_back.setBounds(25, 380, 87, 33);
 	    contentPane.add(btn_back);
+	    
+	    JLabel lbl_title2 = new JLabel("Veuillez sélectionner le jeu vidéo qui vous intéresse.");
+	    lbl_title2.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+	    lbl_title2.setHorizontalAlignment(SwingConstants.CENTER);
+	    lbl_title2.setBounds(25, 68, 527, 13);
+	    contentPane.add(lbl_title2);
         
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.setColumnIdentifiers(nomCol);
@@ -111,21 +117,7 @@ public class ConsultGamesFrame extends JFrame {
             }
         });
         
-        
-        
-        
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+       
 			
 	}
 }
