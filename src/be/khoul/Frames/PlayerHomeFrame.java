@@ -19,6 +19,9 @@ import javax.swing.SwingConstants;
 public class PlayerHomeFrame extends JFrame {
 
 	private JPanel contentPane;
+	private static Color color_background_label = Color.darkGray;
+	private static Color color_background_btn= Color.darkGray;
+	private static Color color_text = Color.white;
 
 	/**
 	 * Launch the application.
@@ -36,9 +39,9 @@ public class PlayerHomeFrame extends JFrame {
 		});
 	}
 
-	public void design_buttons(JButton btn) {
-		btn.setBackground(Color.pink);
-		btn.setForeground(Color.white);
+	public void designButton(JButton btn) {
+		btn.setBackground(color_background_btn);
+		btn.setForeground(color_text);
 	}
 	/**
 	 * Create the frame.
@@ -73,7 +76,7 @@ public class PlayerHomeFrame extends JFrame {
 		lbl_credit.setBounds(41, 89, 248, 13);
 		contentPane.add(lbl_credit);
 		
-		JButton btn_consultgames = new JButton("Voir Jeux Vidéos");
+		JButton btn_consultgames = new JButton("Voir Jeux Vidéo");
 		btn_consultgames.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ConsultGamesFrame consultGamesFrame = new ConsultGamesFrame(player);
@@ -85,6 +88,7 @@ public class PlayerHomeFrame extends JFrame {
 		});
 		btn_consultgames.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_consultgames.setBounds(10, 131, 142, 30);
+	    designButton(btn_consultgames);
 		contentPane.add(btn_consultgames);
 		
 		JButton btn_consult_bookings = new JButton("Mes réservations");
@@ -97,6 +101,7 @@ public class PlayerHomeFrame extends JFrame {
 		});
 		btn_consult_bookings.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_consult_bookings.setBounds(173, 132, 142, 30);
+		designButton(btn_consult_bookings);
 		contentPane.add(btn_consult_bookings);
 		
 		JButton btn_consult_copies = new JButton("Mes copies");
@@ -110,6 +115,7 @@ public class PlayerHomeFrame extends JFrame {
 		});
 		btn_consult_copies.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_consult_copies.setBounds(346, 131, 142, 30);
+		designButton(btn_consult_copies);
 		contentPane.add(btn_consult_copies);
 		
 		JButton btn_consult_loans = new JButton("Mes emprunts");
@@ -122,6 +128,7 @@ public class PlayerHomeFrame extends JFrame {
 		});
 		btn_consult_loans.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_consult_loans.setBounds(10, 201, 142, 30);
+		designButton(btn_consult_loans);
 		contentPane.add(btn_consult_loans);
 		
 		JButton btn_log_out = new JButton("Déconnexion");
@@ -135,6 +142,7 @@ public class PlayerHomeFrame extends JFrame {
 		});
 		btn_log_out.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_log_out.setBounds(346, 312, 142, 30);
+		designButton(btn_log_out);
 		contentPane.add(btn_log_out);
 		
 		JLabel lbl_birthday = new JLabel("Bonne anniversaire ! Vous recevez 2 crédits bonus");
@@ -144,7 +152,7 @@ public class PlayerHomeFrame extends JFrame {
 		lbl_birthday.setVisible(false);
 		contentPane.add(lbl_birthday);
 		
-		if(player.isBirthday()) {
+		if(player.isBirthdayToday()) {
 			lbl_birthday.setVisible(true);
 		}
 	}

@@ -1,10 +1,10 @@
 package be.khoul.Frames;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -13,7 +13,7 @@ import be.khoul.Pojo.Player;
 import be.khoul.Pojo.VideoGame;
 
 import javax.swing.*;
-import javax.swing.SwingConstants;
+
 import java.awt.Font;
 import java.util.ArrayList;
 import java.awt.event.ActionListener;
@@ -25,6 +25,9 @@ public class ConsultGamesFrame extends JFrame {
 	private JTable table;
 	private ArrayList<VideoGame> listGames;
 	private JButton btn_back;
+	private static Color color_background_label = Color.darkGray;
+	private static Color color_background_btn= Color.darkGray;
+	private static Color color_text = Color.white;
 	
 	/**
 	 * Launch the application.
@@ -42,7 +45,17 @@ public class ConsultGamesFrame extends JFrame {
 		});
 	}
 
-
+	public void designTitle(JLabel lbl_title) {
+		lbl_title.setForeground(color_text);
+		lbl_title.setBorder(new LineBorder(Color.white));
+		lbl_title.setOpaque(true);
+		lbl_title.setBackground(color_background_label);
+	}
+	
+	public void designButton(JButton btn) {
+		btn.setBackground(color_background_btn);
+		btn.setForeground(color_text);
+	}
 
 		
 	/**
@@ -60,9 +73,12 @@ public class ConsultGamesFrame extends JFrame {
 		JLabel lbl_title = new JLabel("Jeux Vidéos");
 		lbl_title.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
 		lbl_title.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_title.setBounds(193, 10, 150, 35);
+		lbl_title.setBounds(0, 10, 562, 35);
+		designTitle(lbl_title);
 		contentPane.add(lbl_title);
 		
+		
+		//Get video games
 		listGames = VideoGame.getAllVideoGames();
 		
 	    String[] nomCol = {"Nom", "Crédits", "Console"};
@@ -87,6 +103,7 @@ public class ConsultGamesFrame extends JFrame {
 	    });
 	    btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 	    btn_back.setBounds(25, 380, 87, 33);
+	    designButton(btn_back);
 	    contentPane.add(btn_back);
 	    
 	    JLabel lbl_title2 = new JLabel("Veuillez sélectionner le jeu vidéo qui vous intéresse.");

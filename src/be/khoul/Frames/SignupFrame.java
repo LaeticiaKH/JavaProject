@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -37,6 +38,9 @@ public class SignupFrame extends JFrame {
 	private JLabel lbl_pseudo_error;
 	private boolean signupValid;
 	private JLabel lbl_message;
+	private static Color color_background_label = Color.darkGray;
+	private static Color color_background_btn= Color.darkGray;
+	private static Color color_text = Color.white;
 
 	/**
 	 * Launch the application.
@@ -148,47 +152,51 @@ public class SignupFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lbl_inscription = new JLabel("Inscription");
-		lbl_inscription.setBounds(183, 26, 137, 29);
-		lbl_inscription.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_inscription.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 20));
-		contentPane.add(lbl_inscription);
+		JLabel lbl_title = new JLabel("Inscription");
+		lbl_title.setBounds(0, 10, 604, 41);
+		lbl_title.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_title.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 20));
+		lbl_title.setForeground(color_text);
+		lbl_title.setBorder(new LineBorder(Color.white));
+		lbl_title.setOpaque(true);
+		lbl_title.setBackground(color_background_label);
+		contentPane.add(lbl_title);
 		
 		JLabel lbl_username = new JLabel("Username:");
-		lbl_username.setBounds(37, 88, 64, 13);
-		lbl_username.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		lbl_username.setBounds(37, 88, 101, 13);
+		lbl_username.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
 		lbl_username.setHorizontalAlignment(SwingConstants.LEFT);
 		contentPane.add(lbl_username);
 		
 		tf_username = new JTextField();
-		tf_username.setBounds(111, 86, 96, 19);
+		tf_username.setBounds(153, 86, 144, 19);
 		contentPane.add(tf_username);
 		tf_username.setColumns(10);
 		
 		JLabel lbl_password = new JLabel("Mot de passe:");
-		lbl_password.setBounds(37, 152, 79, 13);
+		lbl_password.setBounds(37, 152, 101, 13);
 		lbl_password.setHorizontalAlignment(SwingConstants.LEFT);
-		lbl_password.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		lbl_password.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
 		contentPane.add(lbl_password);
 		
 		pf_password = new JPasswordField();
-		pf_password.setBounds(133, 150, 96, 19);
+		pf_password.setBounds(155, 150, 144, 19);
 		contentPane.add(pf_password);
 		pf_password.setColumns(10);
 		
 		JLabel lbl_dateofbirth = new JLabel("Date de naissance:");
-		lbl_dateofbirth.setBounds(40, 221, 101, 13);
+		lbl_dateofbirth.setBounds(39, 214, 121, 20);
 		lbl_dateofbirth.setHorizontalAlignment(SwingConstants.LEFT);
-		lbl_dateofbirth.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
+		lbl_dateofbirth.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
 		contentPane.add(lbl_dateofbirth);
 		
 		JDateChooser dateChooser = new JDateChooser();
-		dateChooser.setBounds(161, 214, 200, 20);
+		dateChooser.setBounds(161, 214, 138, 20);
 	    getContentPane().add(dateChooser);
 	    
 	    JLabel lbl_pseudo = new JLabel("Pseudo:");
-	    lbl_pseudo.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-	    lbl_pseudo.setBounds(37, 275, 64, 13);
+	    lbl_pseudo.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
+	    lbl_pseudo.setBounds(37, 283, 86, 13);
 	    contentPane.add(lbl_pseudo);
 	    
 	    
@@ -196,27 +204,27 @@ public class SignupFrame extends JFrame {
 	    lbl_date_error = new JLabel("");
 	    lbl_date_error.setForeground(new Color(234, 58, 21));
 	    lbl_date_error.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-	    lbl_date_error.setBounds(39, 244, 410, 19);
+	    lbl_date_error.setBounds(39, 244, 410, 29);
 	    lbl_date_error.setVisible(false);
 	    contentPane.add(lbl_date_error);
 	    
 	    lbl_username_error = new JLabel("");
 	    lbl_username_error.setForeground(new Color(234, 58, 21));
 	    lbl_username_error.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-	    lbl_username_error.setBounds(37, 115, 431, 27);
+	    lbl_username_error.setBounds(56, 115, 431, 27);
 	    lbl_username_error.setVisible(false);
 	    contentPane.add(lbl_username_error);
 	    
 	    lbl_password_error = new JLabel("");
 	    lbl_password_error.setForeground(new Color(234, 58, 21));
 	    lbl_password_error.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-	    lbl_password_error.setBounds(37, 177, 431, 27);
+	    lbl_password_error.setBounds(56, 175, 431, 27);
 	    lbl_password_error.setVisible(false);
 	    contentPane.add(lbl_password_error);
 	    
 	    
 	    tf_pseudo = new JTextField();
-	    tf_pseudo.setBounds(98, 273, 96, 19);
+	    tf_pseudo.setBounds(155, 281, 142, 19);
 	    contentPane.add(tf_pseudo);
 	    tf_pseudo.setColumns(10);
 	    
@@ -259,7 +267,9 @@ public class SignupFrame extends JFrame {
 	    	}
 	    });
 	    btn_confirm.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-	    btn_confirm.setBounds(439, 366, 100, 29);
+	    btn_confirm.setBounds(447, 366, 106, 29);
+	    btn_confirm.setBackground(color_background_btn);
+		btn_confirm.setForeground(color_text);
 	    contentPane.add(btn_confirm);
 	    
 	    JButton btn_back = new JButton("Retour");
@@ -271,7 +281,9 @@ public class SignupFrame extends JFrame {
 	    	}
 	    });
 	    btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-	    btn_back.setBounds(10, 366, 106, 29);
+	    btn_back.setBounds(32, 366, 106, 29);
+	    btn_back.setBackground(color_background_btn);
+		btn_back.setForeground(color_text);
 	    contentPane.add(btn_back);
 	    
 	    

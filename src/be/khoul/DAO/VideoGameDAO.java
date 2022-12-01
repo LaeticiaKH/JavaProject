@@ -55,7 +55,6 @@ public class VideoGameDAO extends DAO<VideoGame> {
 		
 		try(
 			PreparedStatement statement = connect.prepareStatement("Update VideoGame SET credit_cost = ? WHERE id_videogame = ?")){
-		
 			statement.setInt(1, obj.getCreditCost());
 			statement.setInt(2, obj.getId());
 			statement.executeUpdate();
@@ -88,7 +87,6 @@ public class VideoGameDAO extends DAO<VideoGame> {
 	public VideoGame find(int id) {
 		VideoGame videoGame = null;
 		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM VideoGame WHERE id_videogame = ?")){
-			
 			
 			statement.setInt(1, id);
 		    try(ResultSet result = statement.executeQuery()){

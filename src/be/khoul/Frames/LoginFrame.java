@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import be.khoul.Pojo.*;
 
@@ -29,6 +30,10 @@ public class LoginFrame extends JFrame {
 	private JLabel lbl_username_error;
 	private JLabel lbl_login_error;
 	private boolean loginValid;
+	private static Color color_background_label = Color.darkGray;
+	private static Color color_background_btn= Color.darkGray;
+	private static Color color_text = Color.white;
+	
 
 	/**
 	 * Launch the application.
@@ -98,9 +103,13 @@ public class LoginFrame extends JFrame {
 		
 		
 		JLabel lbl_welcome = new JLabel("Bienvenue");
-		lbl_welcome.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 20));
+		lbl_welcome.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 21));
 		lbl_welcome.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_welcome.setBounds(171, 24, 160, 39);
+		lbl_welcome.setBounds(0, 32, 525, 39);
+		lbl_welcome.setForeground(color_text);
+		lbl_welcome.setBorder(new LineBorder(Color.white));
+		lbl_welcome.setOpaque(true);
+		lbl_welcome.setBackground(color_background_label);
 		contentPane.add(lbl_welcome);
 		
 		JButton btn_signup = new JButton("S'inscrire");
@@ -112,26 +121,30 @@ public class LoginFrame extends JFrame {
 			}
 		});
 		btn_signup.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-		btn_signup.setBounds(69, 249, 96, 33);
+		btn_signup.setBounds(32, 279, 111, 33);
+		btn_signup.setBackground(color_background_btn);
+		btn_signup.setForeground(color_text);
 		contentPane.add(btn_signup);
 		
 		JLabel lbl_username = new JLabel("Nom d'utilisateur :");
-		lbl_username.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-		lbl_username.setBounds(69, 110, 108, 15);
+		lbl_username.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
+		lbl_username.setBounds(47, 122, 130, 25);
 		contentPane.add(lbl_username);
 		
 		JLabel lbl_password = new JLabel("Mot de passe :");
-		lbl_password.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-		lbl_password.setBounds(92, 170, 85, 15);
+		lbl_password.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
+		lbl_password.setBounds(66, 191, 111, 18);
 		contentPane.add(lbl_password);
 		
 		tf_username = new JTextField();
-		tf_username.setBounds(186, 109, 145, 19);
+		tf_username.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
+		tf_username.setBounds(186, 124, 145, 23);
 		contentPane.add(tf_username);
 		tf_username.setColumns(10);
 		
 		pf_password = new JPasswordField();
-		pf_password.setBounds(187, 169, 144, 19);
+		pf_password.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
+		pf_password.setBounds(187, 188, 144, 25);
 		contentPane.add(pf_password);
 		
 
@@ -174,20 +187,22 @@ public class LoginFrame extends JFrame {
 			
 		});
 		btn_login.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-		btn_login.setBounds(333, 249, 108, 33);
+		btn_login.setBounds(377, 279, 111, 33);
+		btn_login.setBackground(color_background_btn);
+		btn_login.setForeground(color_text);
 		contentPane.add(btn_login);
 		
 		lbl_password_error = new JLabel("");
 		lbl_password_error.setForeground(new Color(240, 60, 78));
 		lbl_password_error.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lbl_password_error.setBounds(108, 200, 333, 25);
+		lbl_password_error.setBounds(46, 219, 344, 25);
 		lbl_password_error.setVisible(false);
 		contentPane.add(lbl_password_error);
 		
 		lbl_username_error = new JLabel("");
 		lbl_username_error.setForeground(new Color(240, 60, 78));
 		lbl_username_error.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-		lbl_username_error.setBounds(108, 135, 333, 25);
+		lbl_username_error.setBounds(46, 157, 344, 25);
 		lbl_username_error.setVisible(false);
 		contentPane.add(lbl_username_error);
 		
@@ -195,7 +210,7 @@ public class LoginFrame extends JFrame {
 		lbl_login_error.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_login_error.setForeground(new Color(240, 60, 78));
 		lbl_login_error.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
-		lbl_login_error.setBounds(61, 291, 380, 33);
+		lbl_login_error.setBounds(44, 326, 444, 33);
 		lbl_login_error.setVisible(false);
 		contentPane.add(lbl_login_error);
 		

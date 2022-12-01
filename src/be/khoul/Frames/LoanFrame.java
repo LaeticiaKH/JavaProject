@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -27,6 +28,9 @@ public class LoanFrame extends JFrame {
 
 	private JPanel contentPane;
 	private JLabel lbl_message;
+	private static Color color_background_label = Color.darkGray;
+	private static Color color_background_btn= Color.darkGray;
+	private static Color color_text = Color.white;
 
 	/**
 	 * Launch the application.
@@ -45,6 +49,18 @@ public class LoanFrame extends JFrame {
 	}
 	
 	
+	public void designTitle(JLabel lbl_title) {
+		lbl_title.setForeground(color_text);
+		lbl_title.setBorder(new LineBorder(Color.white));
+		lbl_title.setOpaque(true);
+		lbl_title.setBackground(color_background_label);
+	}
+	
+	public void designButton(JButton btn) {
+		btn.setBackground(color_background_btn);
+		btn.setForeground(color_text);
+	}
+	
 
 	/**
 	 * Create the frame.
@@ -54,15 +70,16 @@ public class LoanFrame extends JFrame {
 		setBounds(100, 100, 634, 515);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lbl_loan = new JLabel("Emprunt");
-		lbl_loan.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		lbl_loan.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_loan.setBounds(181, 32, 161, 25);
-		contentPane.add(lbl_loan);
+		JLabel lbl_title = new JLabel("Emprunt");
+		lbl_title.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		lbl_title.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_title.setBounds(0, 22, 620, 35);
+		designTitle(lbl_title);
+		contentPane.add(lbl_title);
 		
 		JLabel lbl_video_game = new JLabel("Vous souhaitez emprunter une copie de " + videoGame.getName());
 		lbl_video_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
@@ -94,7 +111,7 @@ public class LoanFrame extends JFrame {
 		 }
 		 
 	    
-	    JTextArea ta_warning = new JTextArea("Attention : Si vous ne rendez pas le jeu à la date convenue,\n une pénalité de 5 crédits/jour vous sera demandé.");
+	    JTextArea ta_warning = new JTextArea("Attention : Si vous ne rendez pas le jeu à la date convenue,\n une pénalité de 5 crédits par jour vous sera demandé.");
 	    ta_warning.setBounds(25, 289, 491, 53);
 	    contentPane.add(ta_warning);
 	    
@@ -134,6 +151,7 @@ public class LoanFrame extends JFrame {
 	    });
 	    btn_confirm.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 	    btn_confirm.setBounds(472, 370, 98, 25);
+	    designButton(btn_confirm);
 	    contentPane.add(btn_confirm);
 	    
 	    JButton btn_back = new JButton("Retour");
@@ -146,6 +164,7 @@ public class LoanFrame extends JFrame {
 	    });
 	    btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 	    btn_back.setBounds(48, 370, 93, 25);
+	    designButton(btn_back);
 	    contentPane.add(btn_back);
 	    
 	    lbl_message = new JLabel("");

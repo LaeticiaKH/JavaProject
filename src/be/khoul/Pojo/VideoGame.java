@@ -31,6 +31,7 @@ public class VideoGame implements Serializable {
 		this.console = console;
 		bookings = new ArrayList<>();
 		copies = new ArrayList<>();
+		historiesCredits = new ArrayList<>();
 		
 	}
 	
@@ -42,6 +43,7 @@ public class VideoGame implements Serializable {
 		this.console = console;
 		bookings = new ArrayList<>();
 		copies = new ArrayList<>();
+		historiesCredits = new ArrayList<>();
 		
 	}
 	
@@ -123,6 +125,7 @@ public class VideoGame implements Serializable {
 	}
 	
 	public void addHistoryCredit(HistoryCredits hc) {
+		System.out.println(hc);
 		historiesCredits.add(hc);
 	}
 	
@@ -158,16 +161,12 @@ public class VideoGame implements Serializable {
 	
 	
 	public ArrayList<Copy> getAvailableCopiesForPlayer(Player player){
-		getVideoGameCopies();
+		ArrayList<Copy> availableCopies = getAvailableCopies();
 		//Get available copies excluding the copies of the player
 		ArrayList<Copy> availableCopiesForPlayer = new ArrayList<>();
-		for(Copy c: copies) {
-			if(c.isAvailable()) {
-				if(c.getOwner().getId() != player.getId()) {
-					availableCopiesForPlayer.add(c);
-					
-				}
-				
+		for(Copy c: availableCopies) {
+			if(c.getOwner().getId() != player.getId()) {
+				availableCopiesForPlayer.add(c);	
 			}
 		}
 		
@@ -257,18 +256,12 @@ public class VideoGame implements Serializable {
 	
 	
 	public Booking selectBooking() {
-		/*1. Le plus d’unités sur son compte
-		2. Réservation la plus ancienne
-		3. Abonné inscrit depuis le plus longtemps
-		4. Abonné le plus âgé
-		5. Aléatoire.*/
-		ArrayList<Booking> mostCredits = new ArrayList<>();
 		
-		this.setBookings(Booking.getBookings(this));
+		ArrayList<Booking> mostCredits = new ArrayList<>();
+		getVideoGameBookings();
 		if(bookings.size() > 0) {
-			
+			//Check for the most credits
 			mostCredits = selectMostCredits();
-				
 			if(mostCredits.size() > 1) {
 				//check for the oldest booking
 				ArrayList<Booking> oldestBookings = new ArrayList<>();
@@ -281,9 +274,6 @@ public class VideoGame implements Serializable {
 					 if(oldestRegistrationDate.size() > 1) {
 						 ArrayList<Booking> oldestBirthDate = new ArrayList<>();
 						 oldestBirthDate = selectOldestBirthDate(oldestRegistrationDate);
-						 for(Booking b:oldestBirthDate) {
-							 //System.out.println(b);
-						 }
 						
 						 if(oldestBirthDate.size() > 1) {
 							 //Choose random booking
@@ -301,13 +291,11 @@ public class VideoGame implements Serializable {
 					 
 				}
 				else {
-				
 					return oldestBookings.get(0);
 				}
 				
 			}
 			else {
-				//System.out.println(mostCredits.get(0));
 				return mostCredits.get(0);
 			}
 			
@@ -324,11 +312,8 @@ public class VideoGame implements Serializable {
 		while(copyAvailable() != null && getVideoGameBookings().size() > 0) {
 		
 			Booking booking = selectBooking();
-			System.out.println("Booking prioritaire : " + booking);
-			System.out.println("nombre de copies dispo : " + getAvailableCopies().size() );
-			System.out.println("Nombre de réservations : " + bookings.size());
-			//Get one available copy
 			
+			//Get one available copy
 			Copy copy = copyAvailable();
 				
 		    //Calculate end date 
@@ -349,7 +334,7 @@ public class VideoGame implements Serializable {
 	}
 	
 	public ArrayList<Booking> getVideoGameBookings() {
-		 bookings = Booking.getBookings(this);
+		 bookings = Booking.getBookingsFor(this);
 		 
 		 return bookings;
 	}
@@ -366,23 +351,21 @@ public class VideoGame implements Serializable {
 	
 	
 	public boolean updateCredit(int newCredit) {
+		int oldCredit = creditCost;
+		creditCost = newCredit;
 		boolean success = videoGameDao.update(this);
-		if(success) {
-			creditCost = newCredit;
-		}
+		if(!success) {
 		
+			creditCost = oldCredit;
+		}
 		return success;
 	}
 	
 	public boolean delete() {
-		
 		return videoGameDao.delete(this);
 	}
 		
-	@Override
-	public String toString() {
-		return "VideoGame [id=" + id + ", name=" + name + ", creditCost=" + creditCost + ", console=" + console + "]";
-	}
+	
 	
 	
 	

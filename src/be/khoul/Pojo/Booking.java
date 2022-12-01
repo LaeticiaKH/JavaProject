@@ -99,7 +99,7 @@ public class Booking implements Serializable {
 	}
 	
 	
-	//Methods DAO
+	
 	public boolean createBooking() {
 		Boolean success = bookingDao.create(this);
 		if(success) {
@@ -110,25 +110,34 @@ public class Booking implements Serializable {
 		return success;
 	}
 	
-	public static ArrayList<Booking> getBookings(Player player) {
+	public static ArrayList<Booking> getBookingsFor(Player player) {
+		ArrayList<Booking> allBookings = bookingDao.findAll();
+		ArrayList<Booking> bookingsForPlayer = new ArrayList<>();
+
+		for(Booking booking :allBookings) {
+			if(booking.borrower.getId() == player.getId()) {
+				bookingsForPlayer.add(booking);
+				
+			}
+		}
 		
-		return ((BookingDAO) bookingDao).findBookingsFor(player);
+		return bookingsForPlayer;
 	}
 	
-	public static ArrayList<Booking> getBookings(VideoGame v) {
+	public static ArrayList<Booking> getBookingsFor(VideoGame v) {
+		ArrayList<Booking> allBookings = bookingDao.findAll();
+		ArrayList<Booking> bookingsForVideoGame = new ArrayList<>();
 		
-		return ((BookingDAO) bookingDao).findBookingsFor(v);
+		for(Booking booking :allBookings) {
+			if(booking.videoGame.getId() == v.getId()) {
+				bookingsForVideoGame.add(booking);
+				
+			}
+		}
+		
+		return bookingsForVideoGame;
+		
 	}
 
-	@Override
-	public String toString() {
-		return "Booking [id=" + id + ", bookingDate=" + bookingDate + ", duration=" + duration + ", borrower="
-				+ borrower + ", videoGame=" + videoGame + "]";
-	}
-
-
-	
-	
-	
 	
 }

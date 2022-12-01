@@ -1,10 +1,12 @@
 package be.khoul.Frames;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import be.khoul.Pojo.*;
 import javax.swing.JLabel;
@@ -17,6 +19,10 @@ import java.awt.event.ActionEvent;
 public class CancelBookingFrame extends JFrame {
 
 	private JPanel contentPane;
+	private JLabel lbl_message;
+	private static Color color_background_label = Color.darkGray;
+	private static Color color_background_btn= Color.darkGray;
+	private static Color color_text = Color.white;
 
 	/**
 	 * Launch the application.
@@ -34,6 +40,18 @@ public class CancelBookingFrame extends JFrame {
 		});
 	}
 
+	public void designTitle(JLabel lbl_title) {
+		lbl_title.setForeground(color_text);
+		lbl_title.setBorder(new LineBorder(Color.white));
+		lbl_title.setOpaque(true);
+		lbl_title.setBackground(color_background_label);
+	}
+	
+	public void designButton(JButton btn) {
+		btn.setBackground(color_background_btn);
+		btn.setForeground(color_text);
+	}
+
 	/**
 	 * Create the frame.
 	 */
@@ -49,7 +67,8 @@ public class CancelBookingFrame extends JFrame {
 		JLabel lbl_title = new JLabel("Annulation de réservation");
 		lbl_title.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_title.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		lbl_title.setBounds(154, 39, 257, 33);
+		lbl_title.setBounds(0, 33, 581, 39);
+		designTitle(lbl_title);
 		contentPane.add(lbl_title);
 		
 		JButton btn_back = new JButton("Retour");
@@ -62,20 +81,28 @@ public class CancelBookingFrame extends JFrame {
 		});
 		btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_back.setBounds(59, 330, 108, 33);
+		designButton(btn_back);
 		contentPane.add(btn_back);
 		
 		JButton btn_confirm = new JButton("Confirmer");
 		btn_confirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				booking.delete();
-				BookingsFrame bookingsFrame = new BookingsFrame(player);
-				bookingsFrame.setVisible(true);
-				dispose();
+				lbl_message.setVisible(false);
+				if(booking.delete()) {
+					BookingsFrame bookingsFrame = new BookingsFrame(player);
+					bookingsFrame.setVisible(true);
+					dispose();
+				}
+				else {
+					lbl_message.setText("Il semblerait que l'annulation s'est mal déroulée.");
+					lbl_message.setVisible(true);
+				}
 				
 			}
 		});
 		btn_confirm.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_confirm.setBounds(414, 330, 108, 33);
+		designButton(btn_confirm);
 		contentPane.add(btn_confirm);
 		
 		JLabel lbl_video_game = new JLabel("Jeu :" + booking.getVideoGame().getName());
@@ -97,6 +124,13 @@ public class CancelBookingFrame extends JFrame {
 		lbl_date.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_date.setBounds(59, 273, 170, 20);
 		contentPane.add(lbl_date);
+		
+		lbl_message = new JLabel("");
+		lbl_message.setBackground(new Color(225, 60, 84));
+		lbl_message.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_message.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 11));
+		lbl_message.setBounds(59, 373, 463, 27);
+		lbl_message.setVisible(false);
+		contentPane.add(lbl_message);
 	}
-
 }

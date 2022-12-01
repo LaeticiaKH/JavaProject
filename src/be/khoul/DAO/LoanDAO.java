@@ -59,6 +59,28 @@ public class LoanDAO extends DAO<Loan> {
 		
 	}
 	
+	@Override
+	public ArrayList<Loan> findAll() {
+		ArrayList<Loan> list = new ArrayList<>();
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Loan");
+				ResultSet result = statement.executeQuery()){
+			
+			while(result.next()) {
+				CopyDAO copyDao = new CopyDAO(this.connect);
+				PlayerDAO playerDao = new PlayerDAO(this.connect);
+				Copy copy = copyDao.find(result.getInt("id_copy"));
+				Player player = playerDao.find(result.getInt("id_user_borrower"));
+				Loan loan = new Loan(result.getInt("id_loan"), result.getDate("start_date").toLocalDate(), result.getDate("end_date").toLocalDate(), result.getBoolean("ongoing"), copy, copy.getOwner(), player);
+				list.add(loan);
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return list;
+		
+	}
 	
 	
 	public ArrayList<Loan> getLoansForPlayer(Player player) {
@@ -111,10 +133,6 @@ public class LoanDAO extends DAO<Loan> {
 		return null;
 	}
 
-	@Override
-	public ArrayList<Loan> findAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 }

@@ -65,14 +65,18 @@ public class HistoryCredits implements Serializable{
 	}
 	
 	public static ArrayList<HistoryCredits> findHistoryCreditsFor(Loan loan) {
-		
-		return ((HistoryCreditsDAO) historyCreditsDao).findHistoriesCreditsFor(loan);
+		ArrayList<HistoryCredits> allHistoryCredits = historyCreditsDao.findAll();
+
+		ArrayList<HistoryCredits> historyCreditsForLoan = new ArrayList<>();
+		for(HistoryCredits hc : allHistoryCredits) {
+			if((hc.getVideoGame().getId() == loan.getCopy().getVideoGame().getId()) && (hc.changeDate.equals(loan.getStartDate()) || hc.changeDate.isAfter(loan.getStartDate()))) {
+				historyCreditsForLoan.add(hc);
+				
+			}
+		}
+		return historyCreditsForLoan;
 	}
-	@Override
-	public String toString() {
-		return "HistoryCredits [changeDate=" + changeDate + ", oldCredit=" + oldCredit + ", newCredit=" + newCredit
-				+ ", videoGame=" + videoGame + "]";
-	}
+	
 	
 	
 	

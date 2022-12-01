@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -25,6 +26,9 @@ import java.awt.Choice;
 public class BookingFrame extends JFrame {
 
 	private JPanel contentPane;
+	private static Color color_background_label = Color.darkGray;
+	private static Color color_background_btn= Color.darkGray;
+	private static Color color_text = Color.white;
 
 	/**
 	 * Launch the application.
@@ -42,7 +46,17 @@ public class BookingFrame extends JFrame {
 		});
 	}
 
+	public void designTitle(JLabel lbl_title) {
+		lbl_title.setForeground(color_text);
+		lbl_title.setBorder(new LineBorder(Color.white));
+		lbl_title.setOpaque(true);
+		lbl_title.setBackground(color_background_label);
+	}
 	
+	public void designButton(JButton btn) {
+		btn.setBackground(color_background_btn);
+		btn.setForeground(color_text);
+	}
 	
 	
 	/**
@@ -59,11 +73,12 @@ public class BookingFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lbl_booking = new JLabel("Réservation");
-		lbl_booking.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_booking.setBounds(222, 27, 125, 34);
-		lbl_booking.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
-		contentPane.add(lbl_booking);
+		JLabel lbl_title = new JLabel("Réservation");
+		lbl_title.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_title.setBounds(0, 27, 586, 34);
+		lbl_title.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
+		designTitle(lbl_title);
+		contentPane.add(lbl_title);
 		
 		JLabel lbl_game = new JLabel("Jeu : " + videoGame.getName());
 		lbl_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 14));
@@ -115,6 +130,7 @@ public class BookingFrame extends JFrame {
 		});
 		btn_confirm.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_confirm.setBounds(404, 302, 115, 34);
+		designButton(btn_confirm);
 		contentPane.add(btn_confirm);
 		
 		JButton btn_back = new JButton("Retour");
@@ -127,6 +143,7 @@ public class BookingFrame extends JFrame {
 		});
 		btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_back.setBounds(27, 302, 86, 34);
+		designButton(btn_back);
 		contentPane.add(btn_back);
 		
 		

@@ -34,28 +34,31 @@ public class UserDAO extends DAO<User> {
 	public User getUser(String username, String password) {
 		Player player = null;
 		Administrator admin = null;
-		try{
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Users WHERE username = ? AND password = ?")){
 			
-			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Users WHERE username = ? AND password = ?");
+			
 			statement.setString(1, username);
 			statement.setString(2, password);
-			ResultSet result = statement.executeQuery();
-			if(result.next()) {
-				int usertype = result.getInt("usertype");
-				int id = result.getInt("id_user");
-				
-				if(usertype == User.PLAYER) {
-					PlayerDAO playerDao = new PlayerDAO(this.connect);
-				    player = playerDao.find(id);
-					return player;
+			
+			try(ResultSet result = statement.executeQuery()){
+				if(result.next()) {
+					int usertype = result.getInt("usertype");
+					int id = result.getInt("id_user");
 					
-				}
-				else {
-					AdministratorDAO adminDao = new AdministratorDAO(this.connect);
-					admin = adminDao.find(id);
-					return admin;
+					if(usertype == User.PLAYER) {
+						PlayerDAO playerDao = new PlayerDAO(this.connect);
+					    player = playerDao.find(id);
+						return player;
+						
+					}
+					else {
+						AdministratorDAO adminDao = new AdministratorDAO(this.connect);
+						admin = adminDao.find(id);
+						return admin;
+					}
 				}
 			}
+
 		}
 		catch(SQLException e){
 			e.printStackTrace();

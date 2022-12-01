@@ -97,15 +97,15 @@ public class PlayerDAO extends DAO<Player> {
 	
 	public boolean pseudoExist(String pseudo) {
 		boolean exist = false;
-		try{
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Player WHERE pseudo = ?")){
 			
-			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Player WHERE pseudo = ?");
 			statement.setString(1, pseudo);
-			ResultSet result = statement.executeQuery();
-			if(result.next()) {
-				exist = true;
-			}
-				
+			try(ResultSet result = statement.executeQuery()){
+				if(result.next()) {
+					exist = true;
+				}
+			} 
+			
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -115,15 +115,13 @@ public class PlayerDAO extends DAO<Player> {
 	
 	public boolean usernameExist(String username) {
 		boolean exist = false;
-		try{
-			
-			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Users WHERE username = ?");
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Users WHERE username = ?")){
 			statement.setString(1, username);
-			ResultSet result = statement.executeQuery();
-			if(result.next()) {
-				exist = true;
+			try(ResultSet result = statement.executeQuery()){
+				if(result.next()) {
+					exist = true;
+				}
 			}
-				
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -137,26 +135,32 @@ public class PlayerDAO extends DAO<Player> {
 		String username = null;
 		String password = null;
 			
-		try{
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Users WHERE id_user = ?")){
 			
-			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Users WHERE id_user = ?");
 			statement.setInt(1, id);
-			ResultSet result = statement.executeQuery();
-			if(result.next()) {
-			   username = result.getString("username");
-			   password = result.getString("password");
+			try(ResultSet result = statement.executeQuery()){
+				if(result.next()) {
+					   username = result.getString("username");
+					   password = result.getString("password");
+					}
 			}
 			
-			PreparedStatement statement2 = connect.prepareStatement("SELECT * FROM Player WHERE id_user = ?");
-			statement2.setInt(1, id);
-			ResultSet result2 = statement2.executeQuery();
-			if(result2.next()) {
+			try(PreparedStatement statement2 = connect.prepareStatement("SELECT * FROM Player WHERE id_user = ?")){
+				statement2.setInt(1, id);
 				
-				LocalDate registration = result2.getDate("registration_date").toLocalDate();
-				LocalDate birth = result2.getDate("date_of_birth").toLocalDate();
-				player = new Player(id,username, password, result2.getInt("credit"), registration , birth , result2.getString("pseudo"), result2.getBoolean("is_bonus_given"));
-			}
+				try(ResultSet result2 = statement2.executeQuery()){
+					
+					if(result2.next()) {
+						
+						LocalDate registration = result2.getDate("registration_date").toLocalDate();
+						LocalDate birth = result2.getDate("date_of_birth").toLocalDate();
+						player = new Player(id,username, password, result2.getInt("credit"), registration , birth , result2.getString("pseudo"), result2.getBoolean("is_bonus_given"));
+					}
+				}
 				
+				
+			} 
+			
 		}
 		catch(SQLException e){
 			e.printStackTrace();

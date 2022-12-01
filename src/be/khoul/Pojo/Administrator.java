@@ -22,36 +22,34 @@ public class Administrator extends User implements Serializable {
 	
 	//Methods
 	
-	public void changeCredit(VideoGame videoGame, int newCredit) {
+	public boolean changeCredit(VideoGame videoGame, int newCredit) {
 		
 		int currentCredit = videoGame.getCreditCost();
 		//create a history for the new change
 		HistoryCredits historyCredits = new HistoryCredits(LocalDate.now(), videoGame.getCreditCost(), newCredit, videoGame);
-		historyCredits.create();
-		//Update new credit
 		
-		videoGame.updateCredit(newCredit);
-		//Get all the copies for the video game
-		ArrayList<Copy> listCopies= videoGame.getCopies();
-		for(Copy c: listCopies) {
-			if(!c.isAvailable()) {
-				//Calculate credit of each loan for a copy of the video game
-				Loan loan = c.getLoan();
-				//Update balance with new credit
-				if(loan.isOngoing()) {
-					loan.calculateBalance();
+		//Create historyCredits and update the credit
+		if(historyCredits.create() && videoGame.updateCredit(newCredit) ) {
+			//Get all the copies for the video game
+			ArrayList<Copy> listCopies= videoGame.getCopies();
+			for(Copy c: listCopies) {
+				if(!c.isAvailable()) {
+					//Calculate credit of each loan for a copy of the video game
+					Loan loan = c.getLoan();
+					//balance with new credit
+					if(loan.isOngoing()) {
+						loan.calculateBalance();
+					}
 				}
 			}
+			return true;
+		}
+		else {
+			return false;
 		}
 		
+		
+		
 	}
-	
-	@Override
-	public String toString() {
-		return super.toString();
-	}
-	
-	
-
 	
 }

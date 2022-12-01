@@ -64,14 +64,23 @@ public class Copy implements Serializable {
 	}
 
 	//Methods
-	public void releaseCopy() {
-		loan.endLoan();
-		loan = null;
+	public boolean releaseCopy() {
+		Boolean success = loan.endLoan();
+		if(success) {
+			owner.setCredit(loan.getLender().getCredit());
+			loan = null;
+			
+		}
+		return success;
 	}
 	
 	public boolean borrow(Loan l) {
 		loan = l;
-		return loan.createLoan();
+		Boolean success = loan.createLoan();
+		if(!success) {
+			loan = null;
+		}
+		return success;
 	}
 	
 	public boolean isAvailable() {
@@ -88,7 +97,7 @@ public class Copy implements Serializable {
 		for(Copy c : listCopies) {
 			if(!c.isAvailable()) {
 				//if copy is already in a loan
-				c.setLoan(Loan.getLoanForCopy(c));
+				c.setLoan(Loan.getLoanFor(c));
 			}
 			
 		}
@@ -100,7 +109,7 @@ public class Copy implements Serializable {
 		for(Copy c : listCopies) {
 			if(!c.isAvailable()) {
 				//if copy is already in a loan
-				c.setLoan(Loan.getLoanForCopy(c));
+				c.setLoan(Loan.getLoanFor(c));
 			}
 			
 		}
@@ -128,10 +137,6 @@ public class Copy implements Serializable {
 	
 	}
 
-	@Override
-	public String toString() {
-		return "Copy [id=" + id + ", videoGame=" + videoGame.getId() + ", owner=" + owner.getId() + ", loan=" + loan + "]";
-	}
 	
 	
 }

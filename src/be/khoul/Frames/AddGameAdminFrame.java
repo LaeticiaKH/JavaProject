@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import be.khoul.Pojo.Administrator;
 import be.khoul.Pojo.VideoGame;
@@ -26,6 +27,10 @@ public class AddGameAdminFrame extends JFrame {
 	private JPanel contentPane;
 	private JTextField tf_name_game;
 	private JLabel lbl_message;
+	private static Color color_background_label = Color.darkGray;
+	private static Color color_background_btn= Color.darkGray;
+	private static Color color_text = Color.white;
+
 
 	/**
 	 * Launch the application.
@@ -43,6 +48,18 @@ public class AddGameAdminFrame extends JFrame {
 		});
 	}
 	
+	public void designTitle(JLabel lbl_title) {
+		lbl_title.setForeground(color_text);
+		lbl_title.setBorder(new LineBorder(Color.white));
+		lbl_title.setOpaque(true);
+		lbl_title.setBackground(color_background_label);
+	}
+	
+	public void designButton(JButton btn) {
+		btn.setBackground(color_background_btn);
+		btn.setForeground(color_text);
+	}
+	
 	/**
 	 * Create the frame.
 	 */
@@ -55,11 +72,12 @@ public class AddGameAdminFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lbl_add_game = new JLabel("Ajout d'un jeu");
-		lbl_add_game.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_add_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
-		lbl_add_game.setBounds(188, 45, 245, 22);
-		contentPane.add(lbl_add_game);
+		JLabel lbl_title = new JLabel("Ajout d'un jeu");
+		lbl_title.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_title.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 20));
+		lbl_title.setBounds(0, 36, 656, 40);
+		designTitle(lbl_title);
+		contentPane.add(lbl_title);
 		
 		JLabel lbl_name_game = new JLabel("Nom du jeu :");
 		lbl_name_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
@@ -72,7 +90,7 @@ public class AddGameAdminFrame extends JFrame {
 		tf_name_game.setColumns(10);
 		
 		JLabel lbl_console = new JLabel("Console : ");
-		lbl_console.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbl_console.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_console.setBounds(76, 204, 85, 22);
 		contentPane.add(lbl_console);
 		
@@ -123,15 +141,20 @@ public class AddGameAdminFrame extends JFrame {
 							exist = true;
 						}
 					}
-					System.out.println("exist : " + exist);
 					
 					if(!exist) {
 						//Create video Game in DB
-						videoGame.create();
-						//Back to the previous frame
-						ConsultGamesAdminFrame consultGamesAdminFrame = new ConsultGamesAdminFrame(admin);
-						consultGamesAdminFrame.setVisible(true);
-						dispose();
+						if(videoGame.create()) {
+							//Back to the previous frame
+							ConsultGamesAdminFrame consultGamesAdminFrame = new ConsultGamesAdminFrame(admin);
+							consultGamesAdminFrame.setVisible(true);
+							dispose();
+						}
+						else {
+							lbl_message.setForeground(Color.RED);
+							lbl_message.setText("Il semblerait que l'ajout du jeu se soit mal déroulé.");	
+						}
+						
 					}
 					else {
 						lbl_message.setForeground(Color.RED);
@@ -148,6 +171,7 @@ public class AddGameAdminFrame extends JFrame {
 		});
 		btn_confirm.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_confirm.setBounds(457, 357, 107, 31);
+		designButton(btn_confirm);
 		contentPane.add(btn_confirm);
 		
 		JButton btn_back = new JButton("Retour");
@@ -160,6 +184,7 @@ public class AddGameAdminFrame extends JFrame {
 		});
 		btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_back.setBounds(54, 356, 107, 32);
+		designButton(btn_back);
 		contentPane.add(btn_back);
 		
 		

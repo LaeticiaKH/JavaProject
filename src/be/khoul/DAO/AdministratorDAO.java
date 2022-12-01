@@ -30,40 +30,13 @@ public class AdministratorDAO extends DAO<Administrator> {
 	
 	public ArrayList<Administrator> findAll() {
 		
-		ArrayList<Administrator> administratorList = new ArrayList<>();
-		try{
-			ResultSet result = this.connect.createStatement(
-					ResultSet.TYPE_SCROLL_INSENSITIVE,
-			ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM User WHERE usertype= 'admin'");
-			while(result.next())
-				administratorList.add(new Administrator(result.getString("username"), result.getString("password")));
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-		}
-		return administratorList;
+		return null;
 	}
 
 	
 	public Administrator find(int id) {
-		Administrator admin = null;
 		
-		try{
-			
-			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Users WHERE id_user = ?");
-			statement.setInt(1, id);
-			ResultSet result = statement.executeQuery();
-			if(result.next()) {
-			    admin = new Administrator(result.getString("username"), result.getString("password"));
-			}
-			
-				
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-		}
-		
-		return admin;
+		return null;
 	}
 
 	

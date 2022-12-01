@@ -9,6 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -31,6 +32,9 @@ public class ConsultGamesAdminFrame extends JFrame {
 	private ArrayList<VideoGame> listGames;
 	private DefaultTableModel model;
 	private JLabel lbl_message;
+	private static Color color_background_label = Color.darkGray;
+	private static Color color_background_btn= Color.darkGray;
+	private static Color color_text = Color.white;
 
 	/**
 	 * Launch the application.
@@ -49,6 +53,17 @@ public class ConsultGamesAdminFrame extends JFrame {
 		});
 	}
 
+	public void designTitle(JLabel lbl_title) {
+		lbl_title.setForeground(color_text);
+		lbl_title.setBorder(new LineBorder(Color.white));
+		lbl_title.setOpaque(true);
+		lbl_title.setBackground(color_background_label);
+	}
+	
+	public void designButton(JButton btn) {
+		btn.setBackground(color_background_btn);
+		btn.setForeground(color_text);
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -61,6 +76,14 @@ public class ConsultGamesAdminFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		JLabel lbl_title = new JLabel("Jeux Vidéo");
+		lbl_title.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		lbl_title.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_title.setBounds(0, 10, 634, 35);
+		designTitle(lbl_title);
+		contentPane.add(lbl_title);
+		
+		
 		listGames = VideoGame.getAllVideoGames();
 		for(VideoGame v :listGames) {
 			v.getVideoGameCopies();
@@ -70,8 +93,8 @@ public class ConsultGamesAdminFrame extends JFrame {
 	    String[] nomCol = {"Nom", "Crédits", "Console"};
 		
 	    JScrollPane scrollPane = new JScrollPane();
-	    scrollPane.setSize(593, 252);
-	    scrollPane.setLocation(25, 48);
+	    scrollPane.setSize(593, 245);
+	    scrollPane.setLocation(25, 55);
 		contentPane.add(scrollPane);
 	    
 	    table = new JTable();
@@ -90,6 +113,7 @@ public class ConsultGamesAdminFrame extends JFrame {
 		});
 		btn_retour.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_retour.setBounds(34, 397, 112, 29);
+		designButton(btn_retour);
 		contentPane.add(btn_retour);
 		
 		JButton btn_change_credit = new JButton("Changer crédit");
@@ -113,6 +137,7 @@ public class ConsultGamesAdminFrame extends JFrame {
 		});
 		btn_change_credit.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_change_credit.setBounds(426, 332, 134, 29);
+		designButton(btn_change_credit);
 		contentPane.add(btn_change_credit);
 		
 		JButton btn_add_game = new JButton("Ajouter un jeu");
@@ -125,6 +150,7 @@ public class ConsultGamesAdminFrame extends JFrame {
 		});
 		btn_add_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_add_game.setBounds(248, 332, 128, 29);
+		designButton(btn_add_game);
 		contentPane.add(btn_add_game);
 		
 		lbl_message = new JLabel("");
@@ -144,11 +170,18 @@ public class ConsultGamesAdminFrame extends JFrame {
 	                if(videoGame.getVideoGameCopies().size() == 0 && videoGame.getBookings().size() == 0) {
 	                	int dialogResult = JOptionPane.showConfirmDialog (null ,"Etes-vous sur de vouloir supprimer ce jeu vidéo ?"," Attention" , JOptionPane.YES_NO_OPTION);
 	                	if(dialogResult == JOptionPane.YES_OPTION){
-	                		videoGame.delete();
-	                	    model.removeRow(selectedRow);
-	                	    lbl_message.setVisible(true);
-						    lbl_message.setForeground(Color.GREEN);
-							lbl_message.setText("Jeu supprimé.");
+	                		if(videoGame.delete()) {
+	                			 model.removeRow(selectedRow);
+	 	                	    lbl_message.setVisible(true);
+	 						    lbl_message.setForeground(Color.GREEN);
+	 							lbl_message.setText("Jeu supprimé.");
+	                		}
+	                		else {
+	                			lbl_message.setVisible(true);
+	    						lbl_message.setForeground(Color.RED);
+	    						lbl_message.setText("Il semblerait que la suppression du jeu se soit mal déroulée");
+	                		}
+	                	   
 	                	}
 	                }
 	                else {
@@ -167,6 +200,7 @@ public class ConsultGamesAdminFrame extends JFrame {
 		});
 		btn_delete_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_delete_game.setBounds(30, 332, 158, 29);
+		designButton(btn_delete_game);
 		contentPane.add(btn_delete_game);
 		
 	    model = (DefaultTableModel) table.getModel();

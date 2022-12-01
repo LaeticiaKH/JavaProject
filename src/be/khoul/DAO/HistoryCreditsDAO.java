@@ -21,11 +21,12 @@ public class HistoryCreditsDAO extends DAO<HistoryCredits> {
 	public boolean create(HistoryCredits obj) {
 		boolean success = true;
 		
-		try(PreparedStatement statement = connect.prepareStatement("INSERT INTO HistoryCredits(change_date, new_credit, id_videogame) VALUES(?,?,?)");) {
+		try(PreparedStatement statement = connect.prepareStatement("INSERT INTO HistoryCredits(change_date, old_credit, new_credit, id_videogame) VALUES(?,?,?,?)")) {
 			
 			statement.setDate(1,Date.valueOf(obj.getChangeDate()));
 			statement.setInt(2, obj.getOldCredit());
-			statement.setInt(3, obj.getVideoGame().getId());
+			statement.setInt(3, obj.getNewCredit());
+			statement.setInt(4, obj.getVideoGame().getId());
 			
 			statement.executeUpdate();
 			
@@ -53,8 +54,22 @@ public class HistoryCreditsDAO extends DAO<HistoryCredits> {
 
 	@Override
 	public ArrayList<HistoryCredits> findAll() {
+		ArrayList<HistoryCredits> list = new ArrayList<>();
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM HistoryCredits");
+				ResultSet result = statement.executeQuery()){
+			
+			while(result.next()) {
+				VideoGameDAO videoGameDao = new VideoGameDAO(this.connect);
+				VideoGame videoGame = videoGameDao.find(result.getInt("id_videogame"));
+				HistoryCredits hc = new HistoryCredits(result.getDate("change_date").toLocalDate(), result.getInt("old_credit"), result.getInt("new_credit"), videoGame);
+				list.add(hc);
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		} 
 		
-		return null;
+		return list;
 	}
 
 	@Override
@@ -73,10 +88,11 @@ public class HistoryCreditsDAO extends DAO<HistoryCredits> {
 			statement.setInt(1, l.getCopy().getVideoGame().getId());
 			statement.setDate(2, Date.valueOf(l.getStartDate()));
 			
-			ResultSet result = statement.executeQuery();
-			while(result.next()) {
-				HistoryCredits h = new HistoryCredits(result.getDate("change_date").toLocalDate(), result.getInt("old_credit"), result.getInt("new_credit"), l.getCopy().getVideoGame());
-				list.add(h);
+			try(ResultSet result = statement.executeQuery()){
+				while(result.next()) {
+					HistoryCredits h = new HistoryCredits(result.getDate("change_date").toLocalDate(), result.getInt("old_credit"), result.getInt("new_credit"), l.getCopy().getVideoGame());
+					list.add(h);
+				}
 			}
 		}
 		catch(SQLException e){

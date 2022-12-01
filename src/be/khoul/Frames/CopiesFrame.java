@@ -8,6 +8,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -30,12 +31,14 @@ import java.awt.Color;
 public class CopiesFrame extends JFrame {
 
 	private JPanel contentPane;
-	private final JLabel lbl_copies = new JLabel("Mes copies");
 	private ArrayList<Copy> listCopies;
 	private JTable table;
 	private DefaultTableModel model;
 	private JLabel lbl_no_copy;
 	private JLabel lbl_message;
+	private static Color color_background_label = Color.darkGray;
+	private static Color color_background_btn= Color.darkGray;
+	private static Color color_text = Color.white;
 
 	/**
 	 * Launch the application.
@@ -53,10 +56,21 @@ public class CopiesFrame extends JFrame {
 		});
 	}
 
+	public void designTitle(JLabel lbl_title) {
+		lbl_title.setForeground(color_text);
+		lbl_title.setBorder(new LineBorder(Color.white));
+		lbl_title.setOpaque(true);
+		lbl_title.setBackground(color_background_label);
+	}
+	
+	public void designButton(JButton btn) {
+		btn.setBackground(color_background_btn);
+		btn.setForeground(color_text);
+	}
 	
 	public void showCopies(Player player) {
-		listCopies = player.getCopies();
-		System.out.println("Nombre de copies : " + listCopies.size());
+		listCopies = player.getOwnCopies();
+		
 		if(listCopies.size() > 0) {
 			String[] nomCol = { "Jeu", "Console", "Emprunteur", "Crédits", "Date de début", "Date de fin", "En cours"};
 			
@@ -106,10 +120,14 @@ public class CopiesFrame extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		lbl_copies.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_copies.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		lbl_copies.setBounds(222, 23, 172, 36);
-		contentPane.add(lbl_copies);
+		
+		
+		JLabel lbl_title = new JLabel("Mes copies");
+		lbl_title.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_title.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		lbl_title.setBounds(0, 23, 649, 36);
+		designTitle(lbl_title);
+		contentPane.add(lbl_title);
 		
 		lbl_no_copy = new JLabel("Vous n'avez pas encore prêté une copie");
 		lbl_no_copy.setHorizontalAlignment(SwingConstants.CENTER);
@@ -122,9 +140,12 @@ public class CopiesFrame extends JFrame {
 		lbl_message.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_message.setForeground(new Color(239, 37, 68));
 		lbl_message.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-		lbl_message.setBounds(39, 422, 554, 22);
+		lbl_message.setBounds(39, 431, 554, 22);
 		lbl_message.setVisible(false);
 		contentPane.add(lbl_message);
+		
+		showCopies(player);
+
 		
 		JButton btn_end_loan = new JButton("Finir emprunt");
 		btn_end_loan.addActionListener(new ActionListener() {
@@ -163,7 +184,8 @@ public class CopiesFrame extends JFrame {
 			}
 		});
 		btn_end_loan.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-		btn_end_loan.setBounds(479, 368, 114, 28);
+		btn_end_loan.setBounds(479, 381, 114, 28);
+		designButton(btn_end_loan);
 		contentPane.add(btn_end_loan);
 		
 		JButton btn_back = new JButton("Retour");
@@ -175,7 +197,8 @@ public class CopiesFrame extends JFrame {
 			}
 		});
 		btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-		btn_back.setBounds(39, 368, 114, 28);
+		btn_back.setBounds(39, 381, 114, 28);
+		designButton(btn_back);
 		contentPane.add(btn_back);
 		
 		JButton btn_remove_copy = new JButton("Retirer copie");
@@ -192,11 +215,14 @@ public class CopiesFrame extends JFrame {
 	                if(copy.isAvailable()) {
 	                	if(copy.delete()) {
 	                		listCopies.remove(copy);
-	                		table = null;
 	                		model.removeRow(selectedRow);
 	                		lbl_message.setVisible(true);
 		                	lbl_message.setText("Copie retiré");
 		                	
+	                	}
+	                	else {
+	                		lbl_message.setVisible(true);
+		                	lbl_message.setText("Il semblerait que le retrait de la copie ne se soit pas bien déroulé.");
 	                	}
 	                
 	                }
@@ -213,21 +239,15 @@ public class CopiesFrame extends JFrame {
 		   }
 		});
 		btn_remove_copy.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-		btn_remove_copy.setBounds(257, 368, 114, 28);
+		btn_remove_copy.setBounds(257, 381, 114, 28);
+		designButton(btn_remove_copy);
 		contentPane.add(btn_remove_copy);
-		
-		showCopies(player);
 		
 		if(listCopies.size() == 0) {
 			btn_end_loan.setEnabled(false);
 			btn_remove_copy.setEnabled(false);
+			lbl_no_copy.setVisible(true);
 		}
-		
-		
-		
-	
-		
-		
 		
 		
 	}

@@ -42,11 +42,6 @@ public abstract class User implements Serializable{
 		this.password = password;
 	}
 	
-	@Override
-	public String toString() {
-		return "Pseudo: " + username + " Mot de passe:  " + password;
-	}
-	
 	
 	//Methods for UserDAO
 	public static User logIn(String username, String password) {

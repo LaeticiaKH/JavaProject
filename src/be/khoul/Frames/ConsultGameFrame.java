@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -22,6 +23,9 @@ import java.awt.event.ActionEvent;
 public class ConsultGameFrame extends JFrame {
 
 	private JPanel contentPane;
+	private static Color color_background_label = Color.darkGray;
+	private static Color color_background_btn= Color.darkGray;
+	private static Color color_text = Color.white;
 	
 	/**
 	 * Launch the application.
@@ -37,6 +41,18 @@ public class ConsultGameFrame extends JFrame {
 				}
 			}
 		});
+	}
+	
+	public void designTitle(JLabel lbl_title) {
+		lbl_title.setForeground(color_text);
+		lbl_title.setBorder(new LineBorder(Color.white));
+		lbl_title.setOpaque(true);
+		lbl_title.setBackground(color_background_label);
+	}
+	
+	public void designButton(JButton btn) {
+		btn.setBackground(color_background_btn);
+		btn.setForeground(color_text);
 	}
 
 	/**
@@ -58,7 +74,8 @@ public class ConsultGameFrame extends JFrame {
 		JLabel lbl_videogame = new JLabel(v.getName());
 		lbl_videogame.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_videogame.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		lbl_videogame.setBounds(28, 29, 472, 59);
+		lbl_videogame.setBounds(0, 20, 540, 45);
+		designTitle(lbl_videogame);
 		contentPane.add(lbl_videogame);
 		
 		JLabel lbl_console = new JLabel("Console: " + v.getConsole());
@@ -71,7 +88,7 @@ public class ConsultGameFrame extends JFrame {
 		lbl_credits.setBounds(28, 141, 126, 21);
 		contentPane.add(lbl_credits);
 		
-		JLabel lbl_available = new JLabel("Exemplaire disponible : " + v.getAvailableCopiesForPlayer(player).size());
+		JLabel lbl_available = new JLabel("Exemplaire(s) disponible(s) : " + v.getAvailableCopiesForPlayer(player).size());
 		lbl_available.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		lbl_available.setBounds(28, 187, 270, 13);
 		contentPane.add(lbl_available);
@@ -86,6 +103,7 @@ public class ConsultGameFrame extends JFrame {
 			}
 		});
 		btn_back.setBounds(31, 348, 87, 29);
+		designButton(btn_back);
 		contentPane.add(btn_back);
 		
 		JLabel lbl_message = new JLabel("");
@@ -122,6 +140,7 @@ public class ConsultGameFrame extends JFrame {
 			}
 		});
 		btn_book.setBounds(202, 252, 96, 29);
+		designButton(btn_book);
 		contentPane.add(btn_book);
 		
 		JButton btn_lend = new JButton("Prêter");
@@ -142,6 +161,7 @@ public class ConsultGameFrame extends JFrame {
 		});
 		btn_lend.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_lend.setBounds(393, 252, 96, 29);
+		designButton(btn_lend);
 		contentPane.add(btn_lend);
 		
 		JButton btn_rent = new JButton("Louer");
@@ -169,13 +189,14 @@ public class ConsultGameFrame extends JFrame {
 		});
 		btn_rent.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_rent.setBounds(28, 252, 90, 29);
+		designButton(btn_rent);
 		contentPane.add(btn_rent);
 		
 		
 		if(!player.loanAllowed()) {
 			btn_book.setEnabled(false);
 			btn_rent.setEnabled(false);
-			lbl_message.setText("Vous n'avez pas assez de crédit pour louer un jeu");
+			lbl_message.setText("Vous n'avez pas assez de crédit pour louer ou réserver un jeu");
 		   	lbl_message.setForeground(Color.RED);
 		}
 		

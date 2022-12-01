@@ -65,14 +65,15 @@ public class CopyDAO extends DAO<Copy> {
 		ArrayList<Copy> list = new ArrayList<>();
 		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy c INNER JOIN VideoGame v ON c.id_videogame = v.id_videogame WHERE v.id_videogame = ?")){
 			
-			
 			statement.setInt(1, videoGame.getId());
-			ResultSet result = statement.executeQuery();
-			while(result.next()) {
-				PlayerDAO playerDao = new PlayerDAO(this.connect);
-				Copy c = new Copy(result.getInt("id_copy"), videoGame, playerDao.find(result.getInt("id_user_lender")));
-				list.add(c);
+			try(ResultSet result = statement.executeQuery()){
+				while(result.next()) {
+					PlayerDAO playerDao = new PlayerDAO(this.connect);
+					Copy c = new Copy(result.getInt("id_copy"), videoGame, playerDao.find(result.getInt("id_user_lender")));
+					list.add(c);
+				}
 			}
+			
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -87,12 +88,14 @@ public class CopyDAO extends DAO<Copy> {
 		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy c INNER JOIN VideoGame v ON c.id_videogame = v.id_videogame WHERE c.id_user_lender = ?")){
 			
 			statement.setInt(1, player.getId());
-			ResultSet result = statement.executeQuery();
-			while(result.next()) {
-				VideoGameDAO videoGameDao = new VideoGameDAO(this.connect);
-				Copy c = new Copy(result.getInt("id_copy"), videoGameDao.find(result.getInt("id_videogame")), player);
-				list.add(c);
+			try(ResultSet result = statement.executeQuery()){
+				while(result.next()) {
+					VideoGameDAO videoGameDao = new VideoGameDAO(this.connect);
+					Copy c = new Copy(result.getInt("id_copy"), videoGameDao.find(result.getInt("id_videogame")), player);
+					list.add(c);
+				}
 			}
+			
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -107,13 +110,17 @@ public class CopyDAO extends DAO<Copy> {
 		Copy copy = null;
 		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy WHERE id_copy = ?");){
 			statement.setInt(1, id);
-			ResultSet result =  statement.executeQuery();
-			if(result.next()) {
-				VideoGameDAO videoGameDao = new VideoGameDAO(this.connect);
-				PlayerDAO playerDao = new PlayerDAO(this.connect);
-				copy = new Copy(result.getInt("id_copy"), videoGameDao.find(result.getInt("id_videogame")), playerDao.find(result.getInt("id_user_lender")) );
-				
-			}	
+			
+			try(ResultSet result =  statement.executeQuery()){
+				if(result.next()) {
+					VideoGameDAO videoGameDao = new VideoGameDAO(this.connect);
+					PlayerDAO playerDao = new PlayerDAO(this.connect);
+					copy = new Copy(result.getInt("id_copy"), videoGameDao.find(result.getInt("id_videogame")), playerDao.find(result.getInt("id_user_lender")) );
+					
+				}	
+			}
+			
+			
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -125,14 +132,14 @@ public class CopyDAO extends DAO<Copy> {
 		boolean available = true;
 		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Copy c INNER JOIN Loan l ON c.id_copy = l.id_copy WHERE c.id_copy = ?")){
 			statement.setInt(1, id);
-			ResultSet result =  statement.executeQuery();
-			while(result.next()) {
-				if(result.getBoolean("ongoing")) {
-					available = false;
-				}
-	
-				
-			}	
+			
+			try(ResultSet result =  statement.executeQuery()){
+				while(result.next()) {
+					if(result.getBoolean("ongoing")) {
+						available = false;
+					}	
+				}	
+			}
 		}
 		catch(SQLException e){
 			e.printStackTrace();

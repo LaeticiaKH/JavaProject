@@ -1,5 +1,6 @@
 package be.khoul.Frames;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -8,6 +9,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import be.khoul.Pojo.*;
@@ -28,6 +30,9 @@ public class LoansFrame extends JFrame {
 	private JPanel contentPane;
 	private ArrayList<Loan> listLoans;
 	private JTable table;
+	private static Color color_background_label = Color.darkGray;
+	private static Color color_background_btn= Color.darkGray;
+	private static Color color_text = Color.white;
 
 	/**
 	 * Launch the application.
@@ -45,6 +50,18 @@ public class LoansFrame extends JFrame {
 		});
 	}
 
+
+	public void designTitle(JLabel lbl_title) {
+		lbl_title.setForeground(color_text);
+		lbl_title.setBorder(new LineBorder(Color.white));
+		lbl_title.setOpaque(true);
+		lbl_title.setBackground(color_background_label);
+	}
+	
+	public void designButton(JButton btn) {
+		btn.setBackground(color_background_btn);
+		btn.setForeground(color_text);
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -57,11 +74,13 @@ public class LoansFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lbl_loans = new JLabel("Mes emprunts");
-		lbl_loans.setHorizontalAlignment(SwingConstants.CENTER);
-		lbl_loans.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-		lbl_loans.setBounds(247, 10, 135, 44);
-		contentPane.add(lbl_loans);
+		JLabel lbl_title = new JLabel("Mes emprunts");
+		lbl_title.setHorizontalAlignment(SwingConstants.CENTER);
+		lbl_title.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+		designTitle(lbl_title);
+		lbl_title.setBounds(0, 10, 684, 44);
+		
+		contentPane.add(lbl_title);
 		
 		JLabel lbl_no_loan= new JLabel("Vous n'avez pas encore loué de jeu");
 		lbl_no_loan.setHorizontalAlignment(SwingConstants.CENTER);
@@ -80,6 +99,7 @@ public class LoansFrame extends JFrame {
 		});
 		btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 		btn_back.setBounds(34, 360, 89, 31);
+		designButton(btn_back);
 		contentPane.add(btn_back);
 		
 		player.getOwnLoans();

@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import be.khoul.Pojo.Booking;
@@ -20,6 +21,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 
 public class BookingsFrame extends JFrame {
@@ -28,6 +30,10 @@ public class BookingsFrame extends JFrame {
 	private JTable table;
 	private ArrayList<Booking> listBookings;
 	private JLabel lbl_message;
+	private static Color color_background_label = Color.darkGray;
+	private static Color color_background_btn= Color.darkGray;
+	private static Color color_text = Color.white;
+	
 	
 
 	/**
@@ -46,6 +52,18 @@ public class BookingsFrame extends JFrame {
 		});
 	}
 
+	public void designTitle(JLabel lbl_title) {
+		lbl_title.setForeground(color_text);
+		lbl_title.setBorder(new LineBorder(Color.white));
+		lbl_title.setOpaque(true);
+		lbl_title.setBackground(color_background_label);
+	}
+	
+	public void designButton(JButton btn) {
+		btn.setBackground(color_background_btn);
+		btn.setForeground(color_text);
+	}
+
 	/**
 	 * Create the frame.
 	 */
@@ -58,11 +76,12 @@ public class BookingsFrame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lbl_bookings = new JLabel("Mes réservations");
-	    lbl_bookings.setHorizontalAlignment(SwingConstants.CENTER);
-	    lbl_bookings.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
-	    lbl_bookings.setBounds(223, 20, 161, 38);
-	    contentPane.add(lbl_bookings);
+		JLabel lbl_title = new JLabel("Mes réservations");
+	    lbl_title.setHorizontalAlignment(SwingConstants.CENTER);
+	    lbl_title.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 18));
+	    lbl_title.setBounds(0, 20, 617, 38);
+	    designTitle(lbl_title);
+	    contentPane.add(lbl_title);
 	    
 	    JButton btn_back = new JButton("Retour");
 	    btn_back.addActionListener(new ActionListener() {
@@ -74,6 +93,7 @@ public class BookingsFrame extends JFrame {
 	    });
 	    btn_back.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 	    btn_back.setBounds(31, 409, 98, 31);
+	    designButton(btn_back);
 	    contentPane.add(btn_back);
 	    
 	    JLabel lbl_no_bookings = new JLabel("Vous n'avez fait aucune réservations pour l'instant.");
@@ -103,6 +123,7 @@ public class BookingsFrame extends JFrame {
 	    });
 	    btn_cancel.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
 	    btn_cancel.setBounds(426, 409, 161, 31);
+	    designButton(btn_cancel);
 	    contentPane.add(btn_cancel);
 	    
 	    lbl_message = new JLabel("");
@@ -111,16 +132,15 @@ public class BookingsFrame extends JFrame {
 	    lbl_message.setBounds(170, 419, 246, 13);
 	    contentPane.add(lbl_message);
 		
-		//listBookings = Booking.getBookings(player);
-	    player.getOwnBookings();
-	    listBookings = player.getBookings();
+	   
+	    listBookings = player.getOwnBookings();
 		if(listBookings.size() > 0) {
 			System.out.println(listBookings.size());
 		    String[] nomCol = {"Date", "Nom du jeu", "Console", "Durée"};
 			
 		    JScrollPane scrollPane = new JScrollPane();
-		    scrollPane.setSize(527, 323);
-		    scrollPane.setLocation(10, 78);
+		    scrollPane.setSize(556, 323);
+		    scrollPane.setLocation(31, 68);
 			contentPane.add(scrollPane);
 		    
 		    table = new JTable();
@@ -131,8 +151,9 @@ public class BookingsFrame extends JFrame {
 		    
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
 			model.setColumnIdentifiers(nomCol);
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			for(Booking b: listBookings) {
-				Object[] data ={b.getBookingDate(), b.getVideoGame().getName(), b.getVideoGame().getConsole(), b.getDuration()};
+				Object[] data ={b.getBookingDate().format(formatter), b.getVideoGame().getName(), b.getVideoGame().getConsole(), b.getDuration()};
 				model.addRow(data);
 			}
 		}

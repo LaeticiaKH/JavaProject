@@ -116,35 +116,23 @@ public class Loan implements Serializable{
 		int days =  (int) ChronoUnit.DAYS.between(startDate, endDate);
 		
 		//add days if the loan is not finished yet
-		System.out.println(LocalDate.now().isAfter(endDate));
 		if(LocalDate.now().isAfter(endDate) && ongoing == true) {
 			days += (int) ChronoUnit.DAYS.between(endDate, LocalDate.now());
 	
 		}
 		
-		System.out.println("Loan en cours : " + ongoing);
-		System.out.println("Nombre de jours :" + days);
 		//Calculate number of weeks (if the week started the week is included)
 		int weeks = days / 7;
 		if(days % 7 > 0) {
 			weeks++;
 		}
-		System.out.println("Nombre de semaines:" + weeks);
-		System.out.println("DEBUT :" + startDate + " FIN : " + endDate);
-		
 		
 		//Get all histories for the video game
 		videoGame.setHistoriesCredits(HistoryCredits.findHistoryCreditsFor(this));
 		ArrayList<HistoryCredits> histories = videoGame.getHistoriesCredits();
-		System.out.println(histories.size());
-		for(HistoryCredits h: histories) {
-			System.out.println(h);
-			
-		}
 		
 		if(histories.size() == 0) {
 			//if no credit change happened 
-			System.out.println("no credit change");
 			balance = weeks * videoGame.getCreditCost();
 			
 			return balance;
@@ -153,10 +141,8 @@ public class Loan implements Serializable{
 		
 		if(ChronoUnit.WEEKS.between(getStartDate(), histories.get(histories.size()-1).getChangeDate()) == 0) {
 			//if the last change happened on the first week of the loan
-			System.out.println("first week");
 			balance = weeks * videoGame.getCreditCost();
 		}
-		
 		else {
 			int firstChange = 0;
 			HistoryCredits latestChange = histories.get(0);
@@ -183,21 +169,16 @@ public class Loan implements Serializable{
 					//no change before, take the first change to get the old credit
 					if(firstChange == 0) {
 						//For the weeks before the first change
-						System.out.println("Dernier changement : " + latestChange);
 						balance += latestChange.getOldCredit();
-						System.out.println("No change happened during the starting week : " + balance);
 					}
 					else {
 						//for the weeks after the first change get the latest change to get the new credit
-						System.out.println("Dernier changement" + latestChange);
 						balance += latestChange.getNewCredit();
-						System.out.println("No change happened during the week : " + balance);
 					}
 					
 				}
-				System.out.println("Balance semaine " + i + "  : " + balance);
 			}
-			System.out.println("Balance final :" + balance);
+			
 		}
 
 		return balance;
@@ -222,11 +203,19 @@ public class Loan implements Serializable{
 	
 	public boolean endLoan() {
 		DAO<Loan> loanDao = adf.getLoanDAO();
-		ongoing = false;
-		borrower.removeCredits(calculateBalance());
-		lender.addCredits(calculateBalance());
+		int balance = calculateBalance();
+		if(borrower.removeCredits(balance) && lender.addCredits(balance)) {
+			ongoing = false;
+			Boolean success = loanDao.update(this);
+			if(!success) {
+				ongoing = true;
+				borrower.addCredits(balance);
+				lender.removeCredits(balance);
+			}
+			return success;
+		}
 		
-		return loanDao.update(this);
+		return false;
 
 	}
 	
@@ -240,15 +229,30 @@ public class Loan implements Serializable{
 	}
 	
 	public static ArrayList<Loan> getLoansFor(Player player) {
-		
-		return ((LoanDAO) loanDao).getLoansForPlayer(player);
+		ArrayList<Loan> allLoans = loanDao.findAll();
+		ArrayList<Loan> loansForPlayer = new ArrayList<>();
+
+		for(Loan l: allLoans) {
+			if(l.borrower.getId() == player.getId()){
+				loansForPlayer.add(l);
+			}
+		}
+		return loansForPlayer;
 	}
 	
-	public static Loan getLoanForCopy(Copy c) {
+	public static Loan getLoanFor(Copy copy) {
+		ArrayList<Loan> allLoans = loanDao.findAll();
+		Loan loanForCopy = null;
 		
-		return ((LoanDAO) loanDao).getLoanForCopy(c);
+		for(Loan l: allLoans) {
+			if(l.copy.getId() == copy.getId()){
+				loanForCopy = l;
+			}
+		}
+
+		return loanForCopy;
 	}
-	
+
 	
 	
 }

@@ -18,7 +18,7 @@ public class BookingDAO extends DAO<Booking> {
 	public boolean create(Booking obj){		
 		boolean success = true;
 		
-		try(PreparedStatement statement = connect.prepareStatement("INSERT INTO Booking(booking_date, duration, id_user_borrower, id_videogame) VALUES(?,?,?,?)");){
+		try(PreparedStatement statement = connect.prepareStatement("INSERT INTO Booking(booking_date, duration, id_user_borrower, id_videogame) VALUES(?,?,?,?)")){
 			
 			statement.setDate(1, Date.valueOf(obj.getBookingDate()));
 			statement.setInt(2, obj.getDuration());
@@ -56,8 +56,26 @@ public class BookingDAO extends DAO<Booking> {
 	}
 	
 	public ArrayList<Booking> findAll() {
+		ArrayList<Booking> listBookings = new ArrayList<>();
 		
-		return null;
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Booking");
+				ResultSet result = statement.executeQuery()){
+			
+			while(result.next()) {
+				VideoGameDAO videoGameDao = new VideoGameDAO(this.connect);
+				PlayerDAO playerDao = new PlayerDAO(this.connect);
+				VideoGame videoGame = videoGameDao.find(result.getInt("id_videogame"));
+				Player player = playerDao.find(result.getInt("id_user_borrower"));
+				listBookings.add(new Booking(result.getInt("id_booking"),result.getDate("booking_date").toLocalDate(), result.getInt("duration"), player, videoGame));
+			}
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			
+		}
+		
+		return listBookings;
 	}
 
 	@Override
@@ -69,16 +87,17 @@ public class BookingDAO extends DAO<Booking> {
 	public ArrayList<Booking> findBookingsFor(Player player){
 		ArrayList<Booking> listBookings = new ArrayList<>();
 		
-		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Booking WHERE id_user_borrower = ?");){
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Booking WHERE id_user_borrower = ?")){
 			
 			statement.setInt(1, player.getId());
 
-			ResultSet result = statement.executeQuery();
-			while(result.next()) {
-				VideoGameDAO videoGameDao = new VideoGameDAO(this.connect);
-				VideoGame videoGame = videoGameDao.find(result.getInt("id_videogame"));
-				
-				listBookings.add(new Booking(result.getInt("id_booking"),result.getDate("booking_date").toLocalDate(), result.getInt("duration"), player, videoGame));
+			try(ResultSet result = statement.executeQuery()){
+				while(result.next()) {
+					VideoGameDAO videoGameDao = new VideoGameDAO(this.connect);
+					VideoGame videoGame = videoGameDao.find(result.getInt("id_videogame"));
+					
+					listBookings.add(new Booking(result.getInt("id_booking"),result.getDate("booking_date").toLocalDate(), result.getInt("duration"), player, videoGame));
+				}
 			}
 			
 		}
@@ -92,15 +111,16 @@ public class BookingDAO extends DAO<Booking> {
 	
 	public ArrayList<Booking> findBookingsFor(VideoGame videoGame){
 		ArrayList<Booking> listBookings = new ArrayList<>();
-		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Booking WHERE id_videogame = ?");){
+		try(PreparedStatement statement = connect.prepareStatement("SELECT * FROM Booking WHERE id_videogame = ?")){
 			
 			statement.setInt(1, videoGame.getId());
 
-			ResultSet result = statement.executeQuery();
-			while(result.next()) {
-				PlayerDAO playerDao = new PlayerDAO(this.connect);
-				Player player = playerDao.find(result.getInt("id_user_borrower"));
-				listBookings.add(new Booking(result.getInt("id_booking"),result.getDate("booking_date").toLocalDate(), result.getInt("duration"), player, videoGame));
+			try(ResultSet result = statement.executeQuery();){
+				while(result.next()) {
+					PlayerDAO playerDao = new PlayerDAO(this.connect);
+					Player player = playerDao.find(result.getInt("id_user_borrower"));
+					listBookings.add(new Booking(result.getInt("id_booking"),result.getDate("booking_date").toLocalDate(), result.getInt("duration"), player, videoGame));
+				}
 			}
 			
 		}
