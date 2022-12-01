@@ -157,6 +157,7 @@ public class LoginFrame extends JFrame {
 				if(loginValid) {
 					maskErrorsMessage();
 					User u = User.logIn(tf_username.getText(), new String(pf_password.getPassword()));
+					
 					if(u != null) {
 						if(u instanceof Player) {
 							//Send player to the Home frame	
@@ -210,7 +211,7 @@ public class LoginFrame extends JFrame {
 		lbl_login_error.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_login_error.setForeground(new Color(240, 60, 78));
 		lbl_login_error.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 13));
-		lbl_login_error.setBounds(44, 326, 444, 33);
+		lbl_login_error.setBounds(32, 326, 456, 33);
 		lbl_login_error.setVisible(false);
 		contentPane.add(lbl_login_error);
 		

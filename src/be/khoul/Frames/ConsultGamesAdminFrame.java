@@ -171,10 +171,10 @@ public class ConsultGamesAdminFrame extends JFrame {
 	                	int dialogResult = JOptionPane.showConfirmDialog (null ,"Etes-vous sur de vouloir supprimer ce jeu vidéo ?"," Attention" , JOptionPane.YES_NO_OPTION);
 	                	if(dialogResult == JOptionPane.YES_OPTION){
 	                		if(videoGame.delete()) {
-	                			 model.removeRow(selectedRow);
+	                			model.removeRow(selectedRow);
 	 	                	    lbl_message.setVisible(true);
-	 						    lbl_message.setForeground(Color.GREEN);
 	 							lbl_message.setText("Jeu supprimé.");
+	 							lbl_message.setForeground(new Color(55, 175, 95));
 	                		}
 	                		else {
 	                			lbl_message.setVisible(true);

@@ -69,7 +69,6 @@ public class ConsultGameFrame extends JFrame {
 		
 		v.getVideoGameCopies();
 		v.getVideoGameBookings();
-		v.getBookingIntoLoan();
 		
 		JLabel lbl_videogame = new JLabel(v.getName());
 		lbl_videogame.setHorizontalAlignment(SwingConstants.CENTER);
@@ -149,7 +148,7 @@ public class ConsultGameFrame extends JFrame {
 				Copy copy = new Copy(v, player);
 				if(copy.create()) {
 					lbl_message.setText("Prêt réussi.");
-				   	lbl_message.setForeground(Color.GREEN);
+				   	lbl_message.setForeground(new Color(55, 175, 95));
 				   	v.getBookingIntoLoan();
 				}
 				else {

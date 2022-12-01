@@ -52,8 +52,10 @@ public class UserDAO extends DAO<User> {
 						
 					}
 					else {
+						
 						AdministratorDAO adminDao = new AdministratorDAO(this.connect);
 						admin = adminDao.find(id);
+	
 						return admin;
 					}
 				}

@@ -30,10 +30,7 @@ public class Booking implements Serializable {
 	}
 	
 	public Booking(LocalDate bookingDate, int duration , Player borrower, VideoGame videoGame) {
-		this.bookingDate = bookingDate;
-		this.duration= duration;
-		this.borrower = borrower;
-		this.videoGame = videoGame;
+		this(0,bookingDate, duration, borrower, videoGame);
 	}
 
 	

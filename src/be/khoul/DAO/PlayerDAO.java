@@ -24,18 +24,16 @@ public class PlayerDAO extends DAO<Player> {
 			statement.setInt(3, User.PLAYER);
 			statement.executeUpdate();
 			
-			try(PreparedStatement statement2 = connect.prepareStatement("INSERT INTO Player(id_user, credit, registration_date, date_of_birth, pseudo, is_bonus_given) VALUES(?,?,?,?,?)");
-					ResultSet key_user = statement.getGeneratedKeys()){
-				
+			try(PreparedStatement statement2 = connect.prepareStatement("INSERT INTO Player(id_user, credit, registration_date, date_of_birth, pseudo, is_bonus_given) VALUES(?,?,?,?,?,?)");){
+				ResultSet key_user = statement.getGeneratedKeys();
 				if(key_user.next()){
-					//statement = connect.prepareStatement("INSERT INTO Player(id_user, credit, registration_date, date_of_birth, pseudo, is_bonus_given) VALUES(?,?,?,?,?)");
-					statement.setInt(1, key_user.getInt(1));
-					statement.setInt(2, 10);
-					statement.setDate(3, Date.valueOf(obj.getRegistrationDate()));
-					statement.setDate(4, Date.valueOf(obj.getDateOfBirth()));
-					statement.setString(5, obj.getPseudo());
-					statement.setBoolean(6, obj.isBonusGiven());
-					statement.executeUpdate();
+					statement2.setInt(1, key_user.getInt(1));
+					statement2.setInt(2, 10);
+					statement2.setDate(3, Date.valueOf(obj.getRegistrationDate()));
+					statement2.setDate(4, Date.valueOf(obj.getDateOfBirth()));
+					statement2.setString(5, obj.getPseudo());
+					statement2.setBoolean(6, obj.isBonusGiven());
+					statement2.executeUpdate();
 				}
 			}
 			

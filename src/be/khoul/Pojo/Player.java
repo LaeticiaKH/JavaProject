@@ -42,15 +42,8 @@ public class Player extends User implements Serializable{
 	}
 	
 	public Player(String username, String password, int credit, LocalDate registrationDate, LocalDate dateOfBirth, String pseudo, boolean isBonusGiven){
-		super(username, password);
-		this.credit = credit;
-		this.registrationDate = registrationDate;
-		this.dateOfBirth = dateOfBirth;
-		this.pseudo = pseudo;
-		this.isBonusGiven = isBonusGiven;
-		this.bookings = new ArrayList<>();
-		this.loans = new ArrayList<>();
-		this.copies = new ArrayList<>();
+		this(0, username, password, credit, registrationDate, dateOfBirth, pseudo, isBonusGiven);
+		
 	}
 	
 	public Player() {

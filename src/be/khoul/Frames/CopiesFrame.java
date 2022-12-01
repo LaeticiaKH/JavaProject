@@ -88,7 +88,6 @@ public class CopiesFrame extends JFrame {
 			
 				model.setColumnIdentifiers(nomCol);
 				for(Copy c: listCopies) {
-					System.out.println(c);
 					VideoGame videoGame = c.getVideoGame();
 					Loan loan = c.getLoan();
 					

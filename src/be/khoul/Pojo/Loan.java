@@ -36,12 +36,7 @@ public class Loan implements Serializable{
 	}
 	
 	public Loan(LocalDate startDate, LocalDate endDate, boolean ongoing, Copy copy, Player lender, Player borrower) {
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.ongoing = ongoing;
-		this.copy = copy;
-		this.lender = lender;
-		this.borrower = borrower;
+		this(0, startDate, endDate, ongoing, copy, lender, borrower);
 	}
 
 	//Getters and Setters 

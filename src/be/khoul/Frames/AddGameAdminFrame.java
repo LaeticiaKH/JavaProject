@@ -98,7 +98,7 @@ public class AddGameAdminFrame extends JFrame {
 		choice_console.setBounds(201, 208, 123, 18);
 		contentPane.add(choice_console);
 		
-		String[] console = {"Nintendo Switch", "PS5" , "PS4", "Xbox Series X", "Wii U", "3DS"};
+		String[] console = {"Nintendo Switch", "PS5" , "PS4", "Xbox Series X", "Wii U", "3DS", "Xbox 360"};
 		
 		for(String s: console) {
 			choice_console.add(s);
@@ -119,8 +119,9 @@ public class AddGameAdminFrame extends JFrame {
 		
 
 		lbl_message = new JLabel("");
+		lbl_message.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl_message.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-		lbl_message.setBounds(146, 405, 381, 19);
+		lbl_message.setBounds(64, 405, 500, 19);
 		contentPane.add(lbl_message);
 		
 		JButton btn_confirm = new JButton("Confirmer");

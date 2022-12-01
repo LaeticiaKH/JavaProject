@@ -14,6 +14,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
 import java.awt.event.ActionEvent;
 
 public class CancelBookingFrame extends JFrame {
@@ -105,14 +106,14 @@ public class CancelBookingFrame extends JFrame {
 		designButton(btn_confirm);
 		contentPane.add(btn_confirm);
 		
-		JLabel lbl_video_game = new JLabel("Jeu :" + booking.getVideoGame().getName());
+		JLabel lbl_video_game = new JLabel("Jeu : " + booking.getVideoGame().getName());
 		lbl_video_game.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-		lbl_video_game.setBounds(59, 118, 170, 20);
+		lbl_video_game.setBounds(59, 118, 356, 20);
 		contentPane.add(lbl_video_game);
 		
 		JLabel lbl_console = new JLabel("Console : " + booking.getVideoGame().getConsole());
 		lbl_console.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-		lbl_console.setBounds(59, 167, 170, 20);
+		lbl_console.setBounds(59, 167, 235, 20);
 		contentPane.add(lbl_console);
 		
 		JLabel lbl_credit = new JLabel("Crédit : " + booking.getVideoGame().getCreditCost());
@@ -120,9 +121,10 @@ public class CancelBookingFrame extends JFrame {
 		lbl_credit.setBounds(59, 221, 170, 20);
 		contentPane.add(lbl_credit);
 		
-		JLabel lbl_date = new JLabel("Date de réservation : " + booking.getBookingDate());
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		JLabel lbl_date = new JLabel("Date de réservation : " + booking.getBookingDate().format(formatter));
 		lbl_date.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 12));
-		lbl_date.setBounds(59, 273, 170, 20);
+		lbl_date.setBounds(59, 273, 311, 20);
 		contentPane.add(lbl_date);
 		
 		lbl_message = new JLabel("");

@@ -35,8 +35,24 @@ public class AdministratorDAO extends DAO<Administrator> {
 
 	
 	public Administrator find(int id) {
+		Administrator admin = null;
 		
-		return null;
+		try{
+			
+			PreparedStatement statement = connect.prepareStatement("SELECT * FROM Users WHERE id_user = ?");
+			statement.setInt(1, id);
+			ResultSet result = statement.executeQuery();
+			if(result.next()) {
+			    admin = new Administrator(result.getString("username"), result.getString("password"));
+			}
+			
+				
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		
+		return admin;
 	}
 
 	

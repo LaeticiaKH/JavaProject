@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import be.khoul.DAO.DAO;
 import be.khoul.DAOFactory.AbstractDAOFactory;
@@ -24,16 +25,7 @@ public class VideoGame implements Serializable {
 	private ArrayList<HistoryCredits> historiesCredits;
 	
 	//Constructor
-	public VideoGame(String name, int creditCost, String console) {
-		
-		this.name = name;
-		this.creditCost = creditCost;
-		this.console = console;
-		bookings = new ArrayList<>();
-		copies = new ArrayList<>();
-		historiesCredits = new ArrayList<>();
-		
-	}
+	
 	
     public VideoGame(int id, String name, int creditCost, String console) {
 		
@@ -44,6 +36,11 @@ public class VideoGame implements Serializable {
 		bookings = new ArrayList<>();
 		copies = new ArrayList<>();
 		historiesCredits = new ArrayList<>();
+		
+	}
+    
+    public VideoGame(String name, int creditCost, String console) {
+		this(0, name, creditCost, console);
 		
 	}
 	
@@ -304,6 +301,7 @@ public class VideoGame implements Serializable {
 		return null;
 
 	}
+	
 	
 	public void getBookingIntoLoan() {
 		

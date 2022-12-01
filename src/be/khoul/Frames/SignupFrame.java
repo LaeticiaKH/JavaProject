@@ -31,6 +31,7 @@ public class SignupFrame extends JFrame {
 	private JPanel contentPane;
 	private JTextField tf_username;
 	private JPasswordField pf_password;
+	private JDateChooser dateChooser;
 	private JLabel lbl_date_error;
 	private JLabel lbl_username_error;
 	private JLabel lbl_password_error;
@@ -49,7 +50,7 @@ public class SignupFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SignupFrame frame = new SignupFrame();
+					LoginFrame frame = new LoginFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -139,6 +140,14 @@ public class SignupFrame extends JFrame {
 		lbl_pseudo_error.setVisible(false);
 	}
 	
+	public void emptyTextField() {
+		tf_username.setText("");
+		pf_password.setText("");
+		dateChooser.setDate(null);
+		tf_pseudo.setText("");
+		
+	}
+	
 	
 	/**
 	 * Create the frame.
@@ -190,7 +199,7 @@ public class SignupFrame extends JFrame {
 		lbl_dateofbirth.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 13));
 		contentPane.add(lbl_dateofbirth);
 		
-		JDateChooser dateChooser = new JDateChooser();
+	    dateChooser = new JDateChooser();
 		dateChooser.setBounds(161, 214, 138, 20);
 	    getContentPane().add(dateChooser);
 	    
@@ -218,7 +227,7 @@ public class SignupFrame extends JFrame {
 	    lbl_password_error = new JLabel("");
 	    lbl_password_error.setForeground(new Color(234, 58, 21));
 	    lbl_password_error.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-	    lbl_password_error.setBounds(56, 175, 431, 27);
+	    lbl_password_error.setBounds(37, 175, 450, 27);
 	    lbl_password_error.setVisible(false);
 	    contentPane.add(lbl_password_error);
 	    
@@ -236,8 +245,9 @@ public class SignupFrame extends JFrame {
 	    contentPane.add(lbl_pseudo_error);
 	    
 	    lbl_message = new JLabel("");
+	    lbl_message.setHorizontalAlignment(SwingConstants.CENTER);
 	    lbl_message.setFont(new Font("Yu Gothic UI Semibold", Font.BOLD, 12));
-	    lbl_message.setBounds(133, 396, 283, 29);
+	    lbl_message.setBounds(32, 396, 521, 29);
 	    lbl_message.setVisible(false);
 	    contentPane.add(lbl_message);
 	    
@@ -256,7 +266,9 @@ public class SignupFrame extends JFrame {
 	    			if(player.signUp()) {
 	    				lbl_message.setText("Inscription réussite");
 	    				lbl_message.setVisible(true);
-	    				lbl_message.setForeground(Color.GREEN);
+	    				lbl_message.setForeground(new Color(55, 175, 95));
+	    				emptyTextField();
+	    				
 	    			}
 	    			else {
 	    				lbl_message.setVisible(true);

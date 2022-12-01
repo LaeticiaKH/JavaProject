@@ -26,8 +26,8 @@ public class Copy implements Serializable {
 	}
 	
 	public Copy(VideoGame videoGame,Player owner) {
-		this.videoGame = videoGame;
-		this.owner = owner;
+		this(0, videoGame, owner);
+		
 	}
 	
 	//Getters and Setters

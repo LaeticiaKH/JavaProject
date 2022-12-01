@@ -135,7 +135,7 @@ public class BookingsFrame extends JFrame {
 	   
 	    listBookings = player.getOwnBookings();
 		if(listBookings.size() > 0) {
-			System.out.println(listBookings.size());
+	
 		    String[] nomCol = {"Date", "Nom du jeu", "Console", "Durée"};
 			
 		    JScrollPane scrollPane = new JScrollPane();
